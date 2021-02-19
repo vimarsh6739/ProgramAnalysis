@@ -1,0 +1,8 @@
+Heap contents before calls :: []
+Added [Thread 1]
+Contents are :: [Thread 1]
+Added [Thread 3]
+Contents are :: [Thread 1, Thread 3]
+Added [Thread 2]
+Contents are :: [Thread 1, Thread 3, Thread 2]
+Heap contents after calls ::[Thread 1, Thread 3, Thread 2]
