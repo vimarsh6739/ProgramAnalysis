@@ -34,10 +34,8 @@ class PushupMeter {
         int t1 = get_reward();
         int t2 = get_workers();
         
-        if(t2<=1){}
         set_workers(t2-1);
         set_reward(t1/2);
-        
     }
 }
 
