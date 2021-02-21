@@ -1,4 +1,4 @@
-class PushupMeter {
+public class dataracefree implements Runnable {
     
     // Access to variables is now data race-free
     // However absolute atomicity is not gauranteed in methods
@@ -6,72 +6,47 @@ class PushupMeter {
     int reward;
     int num_workers;
     
-    synchronized int get_reward(){
-        return this.reward;
-    }
+    synchronized int get_reward(){return this.reward;}
+    synchronized int get_workers(){return this.num_workers;}
     
-    synchronized void set_reward(int v){
-        this.reward = v;
-    }
-
-    synchronized int get_workers(){
-        return this.num_workers;
-    }
-
-    synchronized void set_workers(int v){
-        this.num_workers = v;
-    }
+    synchronized void set_reward(int v){this.reward = v;}
+    synchronized void set_workers(int v){this.num_workers = v;}
 
     void addPushups(int reps){
         int t1 = get_reward();
-        int t2 = get_workers();
-
         set_reward(t1 + reps);
+        int t2 = get_workers();
         set_workers(t2 + 1);
     }
 
     void cheatDay(){
         int t1 = get_reward();
-        int t2 = get_workers();
-        
-        set_workers(t2-1);
         set_reward(t1/2);
-        
+        int t2 = get_workers();
+        set_workers(t2-1);
     }
-}
 
-public class dataracefree {
+    @Override
+    public void run(){
+        try{Thread.sleep(0,5);}catch(InterruptedException e){}
+        addPushups(50);
+    }
 
-    public static void main(String[] args)
-        throws InterruptedException {
-        
-        PushupMeter o = new PushupMeter();
+    void startExecution(){
+        Thread t = new Thread(this);
+        try {
+            t.start();
+            Thread.sleep(0,10);
+            this.cheatDay();
+            System.out.println("Middle: [" + this.get_workers() + "," + this.get_reward()+"]");
+            t.join();
+        } catch (InterruptedException e) { e.printStackTrace();}
+    }
 
-        Thread t1 = new Thread(()->{
-            try{Thread.sleep(0,5);}
-            catch(InterruptedException e){}
-            o.addPushups(50);
-        });
-        Thread t2 = new Thread(()->{
-            try{Thread.sleep(0,5);}
-            catch(InterruptedException e){}
-            o.cheatDay();
-        });
-
-        System.out.println(o.get_reward());       // Prints initial values 
-        System.out.println(o.get_workers());
-        System.out.println("---------------");
-        
-        t1.start(); t2.start();
-
-        Thread.sleep(0,15);
-        System.out.println(o.get_reward());       // This might print buggy values 
-        System.out.println(o.get_workers());      // as t1, t2 and t3 are still running
-        System.out.println("---------------");
-        
-        t1.join(); t2.join();
-        
-        System.out.println(o.get_reward());       // This should print the final values
-        System.out.println(o.get_workers());  
+    public static void main(String args[]){
+        datarace o = new datarace();
+        System.out.println("Initial: [" + o.get_workers() + "," + o.get_reward()+"]");
+        o.startExecution();
+        System.out.println("Final: [" + o.get_workers() + "," + o.get_reward()+"]");
     }
 }
