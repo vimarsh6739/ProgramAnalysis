@@ -19,14 +19,10 @@
 \usepackage{csvsimple}
 \usepackage{tikz}
 
-%%%%%%%%%%% Tikz settings optimized for causal graphs.
+%%%%%%%%%%% Tikz settings 
 \usetikzlibrary{shapes,decorations,arrows,calc,arrows.meta,fit,positioning,backgrounds,petri}
 \tikzset{
-    -Latex,auto,node distance =1 cm and 1 cm,semithick ,
-    state/.style ={ellipse, draw, minimum width = 0.7 cm},
-    point/.style = {circle, draw, inner sep=0.04cm,fill,node contents={}},
-    bidirected/.style={Latex-Latex,dashed},
-    el/.style = {inner sep=2pt, align=left, sloped}
+  node distance=1.2cm
 }
 %%%%%%%%%%%
 \usepackage{cleveref}
@@ -123,7 +119,7 @@
         \label{fig::12}
       \end{figure}
       
-  % \clearpage
+  \clearpage
   \section{Verification of Amdahl's law}
     Amdahl's law states that the total speedup of a program is ultimately decided by the non-parallelizable portion of the porgram. \\
     To verify this, the snippet in \Cref{code::21} performs a modified parallel version of the \href{https://developer.nvidia.com/blog/six-ways-saxpy/}{\textbf{saxpy}} routine and calculates execution time and speedups by varying the number of threads.\\
@@ -134,10 +130,11 @@
     \begin{figure}[h]
       \centering
       \includegraphics[scale=0.5]{2_amdahl/speedup_graph.png}
-      \caption{Graph of mean speedup as a function of the number of threads. We see that for more number of threads, the speedup plateaus out. The exact timing values are recorded in \href{run:./2_amdahl/benchmarks.csv}{benchmarks.csv}}
+      \caption{Graph of mean speedup as a function of the number of threads. We see that for more number of threads, the speedup plateaus out. The exact timing values are recorded in \textbf{benchmarks.csv}}
       \label{fig::21}
     \end{figure}
-  % \clearpage
+
+  \clearpage
   \section{Java threads share the heap}
     We show that java threads share the heap using the snippet in \cref{code::31} and it's corresponding output in \cref{code::32}.\\
     Since the list is in heap memory, and all thread names are reflected in it, we can conclude that java threads share the heap.
@@ -146,84 +143,214 @@
 
     \lstinputlisting[caption={Output of the code in \cref{code::31}},label={code::32}]{3_heapshare/output.txt}
 
-  % \clearpage
-  \section{Happens Before Relation between statements}
-    In this section, the statement at line $i$ is represented as $S_i$. If there is a happens before relation from the action on line $i$ to line $j$, it is represented as $S_i$ HB $S_j$ 
+  \clearpage
+  \section{Happen Before Relation between statements}
+    In this section, the statement at line $i$ is represented as $S_i$. If there is a happens before relation from the action on line $i$ to line $j$, it is represented as $S_i$ $\rightarrow$ $S_j$. For statements with both $S_1 \rightarrow S_2$ and $S_2 \rightarrow S_1$, the happens before relations are  denoted by $S_1 \longleftrightarrow S_2$
     \subsection{For \textit{datarace.java}}
-      For \textit{datarace.java} whose snippet is provided in \Cref{code::11}, we have the following happens-before relations.
-      \begin{itemize}
-        \item \textbf{Main thread:}
-          \[
-            S47 \rightarrow S48 \rightarrow S49 \rightarrow S36 \rightarrow \mathbf{S38} \rightarrow S39 \rightarrow S40 \rightarrow S23 \rightarrow S9 \rightarrow S24 \rightarrow S12 \rightarrow S25 \rightarrow S10 \rightarrow S26 \rightarrow S13 \rightarrow S41 \rightarrow \mathbf{S42} \rightarrow S50 
-          \]
-        \item \textbf{Spawned thread:}
-          \[
-            \mathbf{S38} \rightarrow S31 \rightarrow S32 \rightarrow S16 \rightarrow S9 \rightarrow S17 \rightarrow S12 \rightarrow S18 \rightarrow S10 \rightarrow S19 \rightarrow S13 \rightarrow \mathbf{S42}
-            \]
-      \end{itemize}
-      There are no happens-before relations between the threads, and thus there is a data race in the access of \lstinline!this.reward! and \lstinline!this.num_workers!.
+      The Happens Before relations for all statements in \lstinline!datarace.java! are shown in \Cref{fig::41}.\\
+      From the graph, we see that there are conflicting accesses on statements S9, S12, S10 and S13, which are not ordered by a happens-before relationship. Hence we can also verify that a datarace exists in \lstinline!datarace.java!.
+      \begin{figure}[ht]
+        \centering
+        \begin{tikzpicture}
+          \begin{scope}%[every node/.style={fill=white,circle,thick, draw}]
+              \node[fill=blue!20!,thick,draw] (start) {Start};
+              \node (47) [right of=start] {S47};
+              \node (48)  [right of=47 ] {S48};
+              \node (49)  [right of=48 ] {S49};
+              \node (36)  [right of=49 ] {S36};
+              \node (38)  [right of=36 ] {S38};
+              
+              \node (39)  [below left=1cm and 2cm of 38] {S39};
+              \node (40)  [below of=39 ] {S40};
+              \node (23)  [below of=40,
+                            label={[blue]left:Main thread} ] {S23};
+              \node[fill=red!20!] (91)  [below of=23 ] {S9};
+              \node (24)  [below of=91 ] {S24};
+              \node[fill=red!20!] (121) [below of=24 ] {S12};
+              \node (25)  [below of=121] {S25};
+              \node[fill=red!20!] (101) [below of=25 ] {S10};
+              \node (26)  [below of=101] {S26};
+              \node[fill=red!20!] (131) [below of=26]  {S13};
+              \node (41)  [below of=131] {S41};
+              
+              \node (31)  [below right=1cm and 2cm of 38] {S31};
+              \node (32)  [below of=31 ] {S32};
+              \node (16)  [below of=32,
+                            label={[blue]right:Spawned thread} ] {S16};
+              \node[fill=red!20!] (92)  [below of=16 ] {S9};
+              \node (17)  [below of=92 ] {S17};
+              \node[fill=red!20!] (122) [below of=17,
+                                          label={[red]right:Red box denotes shared access}] {S12};
+              \node (18)  [below of=122] {S18};
+              \node[fill=red!20!] (102) [below of=18 ] {S10};
+              \node (19)  [below of=102] {S19};
+              \node[fill=red!20!] (132) [below of=19]  {S13};
+              
+              \node (42) [below right=1cm and 2cm  of 41] {S42};
+              \node (50) [below of=42] {S50};
+              \node[fill=blue!20!,thick,draw] (end) [below of=50] {End};
+          \end{scope} 
+          
+          \begin{scope}[>={latex[black]},
+                        every node/.style={fill=white,circle},
+                        every edge/.style={draw=black,thick}]
+              \path [->] (start) edge (47);
+              \path [->] (47) edge (48);
+              \path [->] (48) edge (49);
+              \path [->] (49) edge (36);
+              \path [->] (36) edge (38);
+
+              \path [->] (38) edge (39);
+              \path [->] (39) edge (40);
+              \path [->] (40) edge (23); 
+              \path [->] (23) edge (91); 
+              \path [->] (91) edge (24); 
+              \path [->] (24) edge (121); 
+              \path [->] (121) edge (25); 
+              \path [->] (25) edge (101);
+              \path [->] (101) edge (26); 
+              \path [->] (26) edge (131); 
+              \path [->] (131) edge (41); 
+
+              \path [->] (38) edge (31);
+              \path [->] (31) edge (32); 
+              \path [->] (32) edge (16); 
+              \path [->] (16) edge (92); 
+              \path [->] (92) edge (17); 
+              \path [->] (17) edge (122); 
+              \path [->] (122) edge (18); 
+              \path [->] (18) edge (102); 
+              \path [->] (102) edge (19); 
+              \path [->] (19) edge (132); 
+
+              \path [->] (132) edge (42); 
+              \path [->] (41) edge (42); 
+              \path [->] (42) edge (50); 
+              \path [->] (50) edge (end); 
+              % \path [->] (38) edge[bend right=60] node {$1$} (31); 
+            \end{scope}
+
+          \end{tikzpicture}
+        \caption{Showing all \textbf{Happens Before} Relations in \lstinline!datarace.java! as a directed graph. The statements S9, S10, S12 and S13 can be simaltaneously accessed, with no happens before relation between the accesses, leading to a data race.}
+        \label{fig::41}
+      \end{figure}
 
     \subsection{For \textit{dataracefree.java}}
-      For \textit{datarace.java} whose snippet is provided in \Cref{code::12}, we have the following happens before relations \textbf{in addition to the ones defined previously}. Note that $S9, S10, S12$ and $S13$ are accessed through a synchronized method lock on the main object in this snippet.
-      \begin{figure}[h]
-      \centering
-      \begin{tikzpicture}
-        \node (1) at (-1,0) {S38};
-        \node (a) at (-1,-1) {S23};
-        \node (b)[below=0.5cm of a] {S9}; 
-        \node (c)[below=0.5cm of b] {S24};
-        \node (d)[below=0.5cm of c] {S12};
-        \node (e)[below=0.5cm of d] {S25};
-        \node (f)[below=0.5cm of e] {S10}; 
-        \node (g)[below=0.5cm of f] {S26};
-        \node (h)[below=0.5cm of g] {S13};
-        
-        \node (i) at (1,-1) {S16};
-        \node (j)[below=0.5cm of i] {S9}; 
-        \node (k)[below=0.5cm of j] {S17};
-        \node (l)[below=0.5cm of k] {S12};
-        \node (m)[below=0.5cm of l] {S18};
-        \node (n)[below=0.5cm of m] {S10}; 
-        \node (o)[below=0.5cm of n] {S19};
-        \node (p)[below=0.5cm of o] {S13};
-        
-        \node (2)[below=1cm of h] {S42};
+      For \textit{dataracefree.java} whose snippet is provided in \Cref{code::12}, the happens before relations are visualized in \Cref{fig::42}. Note that since S9, S10, S12 and S13 are accessed through a synchronized methods, there is a happens-before relationship between the accesses. \\
+      Since all conflicting memory accesses are ordered by a happens before relationship, there is no data race in the program. \\
+      However, the total order of execution might still vary depending on the Java scheduler. Thus the given code is data-race free, but still not sequentially consistent.\\
+      Reasoning based on explanation given at \href{https://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.4.5}{Java Memory Model(JMM) docs}
+      \begin{figure}[ht]
+        \centering
+        \begin{tikzpicture}
+          \begin{scope}%[every node/.style={fill=white,circle,thick, draw}]
+              \node[fill=blue!20!,thick,draw] (start) {Start};
+              \node (47) [right of=start] {S47};
+              \node (48)  [right of=47 ] {S48};
+              \node (49)  [right of=48 ] {S49};
+              \node (36)  [right of=49 ] {S36};
+              \node (38)  [right of=36 ] {S38};
+              
+              \node (39)  [below left=1cm and 2cm of 38] {S39};
+              \node (40)  [below of=39 ] {S40};
+              \node (23)  [below of=40,
+                            label={[blue]left:Main thread} ] {S23};
+              \node[fill=red!20!] (91)  [below of=23 ] {S9};
+              \node (24)  [below of=91 ] {S24};
+              \node[fill=red!20!] (121) [below of=24 ] {S12};
+              \node (25)  [below of=121] {S25};
+              \node[fill=red!20!] (101) [below of=25 ] {S10};
+              \node (26)  [below of=101] {S26};
+              \node[fill=red!20!] (131) [below of=26]  {S13};
+              \node (41)  [below of=131] {S41};
+              
+              \node (31)  [below right=1cm and 2cm of 38] {S31};
+              \node (32)  [below of=31 ] {S32};
+              \node (16)  [below of=32,
+                            label={[blue]right:Spawned thread} ] {S16};
+              \node[fill=red!20!] (92)  [below of=16 ] {S9};
+              \node (17)  [below of=92 ] {S17};
+              \node[fill=red!20!] (122) [below of=17,
+                                          label={[red]right:Red box denotes shared and synchronized access}] {S12};
+              \node (18)  [below of=122] {S18};
+              \node[fill=red!20!] (102) [below of=18 ] {S10};
+              \node (19)  [below of=102] {S19};
+              \node[fill=red!20!] (132) [below of=19]  {S13};
+              
+              \node (42) [below right=1cm and 2cm  of 41] {S42};
+              \node (50) [below of=42] {S50};
+              \node[fill=blue!20!,thick,draw] (end) [below of=50] {End};
+          \end{scope} 
+          
+          \begin{scope}[>={latex[black]},
+                        every node/.style={fill=white,circle},
+                        every edge/.style={draw=black,thick}]
+              \path [->] (start) edge (47);
+              \path [->] (47) edge (48);
+              \path [->] (48) edge (49);
+              \path [->] (49) edge (36);
+              \path [->] (36) edge (38);
 
-        \path (1) edge (a);
-        \path (1) edge (i);
+              \path [->] (38) edge (39);
+              \path [->] (39) edge (40);
+              \path [->] (40) edge (23); 
+              \path [->] (23) edge (91); 
+              \path [->] (91) edge (24); 
+              \path [->] (24) edge (121); 
+              \path [->] (121) edge (25); 
+              \path [->] (25) edge (101);
+              \path [->] (101) edge (26); 
+              \path [->] (26) edge (131); 
+              \path [->] (131) edge (41); 
 
-        \path (a) edge (b);
-        \path (b) edge (c);
-        \path (c) edge (d);
-        \path (d) edge (e);
-        \path (e) edge (f);
-        \path (f) edge (g);
-        \path (g) edge (h);
+              \path [->] (38) edge (31);
+              \path [->] (31) edge (32); 
+              \path [->] (32) edge (16); 
+              \path [->] (16) edge (92); 
+              \path [->] (92) edge (17); 
+              \path [->] (17) edge (122); 
+              \path [->] (122) edge (18); 
+              \path [->] (18) edge (102); 
+              \path [->] (102) edge (19); 
+              \path [->] (19) edge (132); 
 
-        \path (i) edge (j);
-        \path (j) edge (k);
-        \path (k) edge (l);
-        \path (l) edge (m);
-        \path (m) edge (n);
-        \path (n) edge (o);
-        \path (o) edge (p);
-
-        \path (h) edge (2);
-        \path (p) edge (2);
-
-        \path[bidirected] (b) edge (j);
-        \path[bidirected] (d) edge (l);
-        \path[bidirected] (f) edge (n);
-        \path[bidirected] (h) edge (p);
-
-        \node[red, above] at (i.north) 
-        {spawned thread};
-        \node[red, above] at (1.north) {main thread};
-      \end{tikzpicture}
-      \caption{Graph showing Happens before relation graph between the $2$ threads in \lstinline!dataracefree.java!. This is in inclusion to the relations defined in section 4.1 }
-      \label{fig::42}
-    \end{figure}
-  % \clearpage
+              \path [->] (132) edge (42); 
+              \path [->] (41) edge (42); 
+              \path [->] (42) edge (50); 
+              \path [->] (50) edge (end); 
+              % \path [->] (38) edge[bend right=60] node {$1$} (31); 
+            \end{scope}
+            
+            \begin{scope}[>={Stealth[black]},
+            every node/.style={fill=white,circle},
+            every edge/.style={draw=black,thin}]
+            
+            \path [<->] (91) edge (92); 
+            \path [<->] (91) edge (122); 
+            \path [<->] (91) edge (102); 
+            \path [<->] (91) edge (132); 
+            
+            \path [<->] (121) edge (92); 
+            \path [<->] (121) edge (122); 
+            \path [<->] (121) edge (102); 
+            \path [<->] (121) edge (132); 
+            
+            \path [<->] (101) edge (92); 
+            \path [<->] (101) edge (122); 
+            \path [<->] (101) edge (102); 
+            \path [<->] (101) edge (132); 
+            
+            \path [<->] (131) edge (92); 
+            \path [<->] (131) edge (122); 
+            \path [<->] (131) edge (102); 
+            \path [<->] (131) edge (132); 
+            \end{scope}
+          
+          \end{tikzpicture}
+        \caption{Visualizing all \textbf{Happens Before} Relations in \textbf{\lstinline!dataracefree.java!} as a directed graph. The red block denoted synchronized access to that statement. There are edges between every unlock and subsequent lock of the statements in S9, S10, S12 and S13}
+        \label{fig::42}
+      \end{figure}
+  \clearpage
   \section{Deadlocks}
     \subsection{Using synchronized methods}
       I wrote a Java snippet which re-creates the classic Dining Philosopher's deadlock problem, where $5$ philosophers are seated at a table with only $5$ available forks. The code deadlocks when each philosopher picks up exactly $1$ fork for the meal. The snippet is present in \Cref{code::51}. The output of the code is given in the \Cref{fig::51}.
