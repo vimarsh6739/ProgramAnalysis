@@ -365,16 +365,21 @@
       \end{figure}
 
     \subsection{Using a CyclicBarrier}
-      The code snippet in \Cref{code::52} spawns $N$ threads which print a message and then synchronize at a barrier. Once the barrier is tripped by the last thread, it is again reset (hence \textbf{cyclic}), and the last thread runs the barrier action.\\
-      This barrier action involves spawning a new thread which again awaits at the same barrier(which is reset). Thus we have a cyclic dependency between the post-barrier thread, the cyclic barrier and the last thread, which are all waiting for each other. This leads to a deadlock between the last thread and the post-barrier thread.\\
+      The code snippet in \Cref{code::52} spawns $5$ threads which print a message and then synchronize at a barrier. Once the barrier is tripped by the last thread, it is again reset (hence \textbf{cyclic}), and the last thread runs code present at a common execution point. At that point, the last thread spawns $5$ new \lstinline!Worker()!  threads, which call \lstinline!barrier.await()!. This works since the barrier has been reset. \\
+      The above scenario leads to a deadlock. This deadlock exists between for entry and exit to the common execution point in \lstinline!BarrierHandler()!.\\
+      This cyclic dependency can be noted through the following 2 points.
+      \begin{itemize}
+        \item The last thread needs it's children threads to finish execution and \lstinline!join()!, to exit the shared barrier execution point.
+        \item The children threads of the last thread need the last thread to release hold of the shared barrier execution point to enter and finish execution.
+      \end{itemize}
       A screenshot of the execution is shown in \Cref{fig::52}
       
       \lstinputlisting[label={code::52},caption={Code implementing a cyclic barrier deadlock}]{5_deadlock/cyclicbarrierlock.java}
 
       \begin{figure}[ht]
         \centering
-        \includegraphics[scale=0.4]{5_deadlock/cyclic_barrier_deadlock.png}
-        \caption{The cyclic barrier deadlock in action. }
+        \includegraphics[scale=0.75]{5_deadlock/cyclic_barrier_deadlock.png}
+        \caption{The cyclic barrier deadlock in action. We see that the children of Thread-3 are unable to enter the shared barrier execution point, due to the presence of Thread 3, leading to \textbf{cyclic wait}.}
         \label{fig::52}
       \end{figure}
 

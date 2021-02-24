@@ -25,17 +25,38 @@ public class cyclicbarrierlock {
         @Override
         public void run(){
             String tid = Thread.currentThread().getName();
-            System.out.println("["+tid+"] cleaning up barrier");
+            System.out.println("["+tid+"] executing common code");
 
             Worker w = new Worker();
-            Thread t = new Thread(w,"Cleanup Thread");
-            t.start();
-            System.out.println("["+tid+"] waiting for ["+t.getName()+"] to finish");
+
+            Thread t1 = new Thread(w,tid+"-child1");
+            Thread t2 = new Thread(w,tid+"-child2");
+            Thread t3 = new Thread(w,tid+"-child3");
+            Thread t4 = new Thread(w,tid+"-child4");
+            Thread t5 = new Thread(w,tid+"-child5");
+            
+            t1.start();
+            t2.start();
+            t3.start();
+            t4.start();
+            t5.start();            
+
+            System.out.println("["+tid+"] waiting for ["+t1.getName()+"] to finish");
+            System.out.println("["+tid+"] waiting for ["+t2.getName()+"] to finish");
+            System.out.println("["+tid+"] waiting for ["+t3.getName()+"] to finish");
+            System.out.println("["+tid+"] waiting for ["+t4.getName()+"] to finish");
+            System.out.println("["+tid+"] waiting for ["+t5.getName()+"] to finish");
 
             // Unreachable code at runtime - results in deadlock
-            // There's a cyclic dependency between (t, this.barrier, tid)
+            // There's a cyclic dependency between (tid and it's child threads)
+            // Child threads need tid to exit to execute common code,
+            // and tid needs child threads to finish to exit common code.
             try{
-                t.join();
+                t1.join();
+                t2.join();
+                t3.join();
+                t4.join();
+                t5.join();
             } catch (InterruptedException e){
                 e.printStackTrace();
             }
