@@ -24,15 +24,15 @@ public class QTACoJavaParser implements QTACoJavaParserConstants {
         break label_1;
       }
       n2 = TypeDeclaration();
-      n1.addNode(n2);
+n1.addNode(n2);
     }
-    n1.nodes.trimToSize();
+n1.nodes.trimToSize();
     n4 = jj_consume_token(0);
-    n4.beginColumn++; n4.endColumn++;
+n4.beginColumn++; n4.endColumn++;
       n3 = JTBToolkit.makeNodeToken(n4);
-    {if ("" != null) return new Goal(n0,n1,n3);}
+{if ("" != null) return new Goal(n0,n1,n3);}
     throw new Error("Missing return statement in function");
-  }
+}
 
   static final public MainClass MainClass() throws ParseException {NodeToken n0;
    Token n1;

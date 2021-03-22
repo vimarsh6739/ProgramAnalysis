@@ -20,7 +20,7 @@ output=$2
 if [ -z "$2" ]
   then
     echo "Warning: No output file provided. Using default argument"
-    output="${input%.java}.out"
+    output="${input%.java}.txt"
 fi
 
 # Create the binary folder for compilation

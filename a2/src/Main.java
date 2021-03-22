@@ -6,8 +6,9 @@ public class Main {
         try {
             QTACoJavaParser __ = new QTACoJavaParser(System.in);
             Node root = QTACoJavaParser.Goal();
-            GJDepthFirst<String,String> v1 = new GJDepthFirst<>();
-            root.accept(v1,null);
+            CGPass cg = new CGPass();
+            root.accept(cg);
+            
             System.out.println("Program parsed succesfully");
 
             // 1. Write code in GJDepthFirst (copy it to CallGraphCreator.java) to create the call-graph.
