@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import jdk.jshell.Snippet.SubKind;
 import syntaxtree.*;
 import visitor.GJNoArguDepthFirst;
 import tools.*;
