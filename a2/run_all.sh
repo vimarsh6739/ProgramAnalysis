@@ -31,7 +31,8 @@ mkdir -p bin/
 
 # Compile all classes
 echo "Compiling source"
-javac -sourcepath src/ -d bin/ src/Main.java
+#javac -sourcepath src/ -d bin/ src/Main.java
+ant compile
 
 # Compute outputs for all inputs
 parallel singlerun ::: ./tests/inputs/*.java

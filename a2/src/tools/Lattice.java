@@ -15,6 +15,8 @@ public class Lattice {
         bottom = new HashSet<Reference>(allRefs);
     }
 
+    void updateBottom(Reference t){this.bottom.add(t);}
+
     void meet(Lattice s){this.curr.addAll(s.curr);}
 
     void join(Lattice s){this.curr.retainAll(s.curr);}
