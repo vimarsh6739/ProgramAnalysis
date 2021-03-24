@@ -17,9 +17,9 @@ The workspace contains the following folders, where:
 
 ## Building and running the code
 
-The code can be built into a `bin` folder using the following command
+The code can be built and run using the following command
 ```bash
-javac -sourcepath src/ -d bin/ src/Main.java
-java -cp bin/ Main < INPUT.java
+ant
+java -jar dist/AliasAnalysis.jar < INPUT.java
 ```
-where `INPUT.java` is the input program.
+where `INPUT.java` is an input program.
