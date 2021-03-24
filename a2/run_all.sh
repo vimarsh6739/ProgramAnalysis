@@ -16,7 +16,7 @@ singlerun (){
     output="${filename}.out"
     
     echo "Generating ${output}"
-    java -cp bin/ Main < $input > ./tests/outputs/"$output"
+    java -jar dist/AliasAnalysis.jar  < $input 
 
     # TODO: Comparison with sample outputs
     # echo "###### ${output} pass ######"
@@ -32,7 +32,8 @@ mkdir -p bin/
 # Compile all classes
 echo "Compiling source"
 #javac -sourcepath src/ -d bin/ src/Main.java
-ant compile
+ant clean 
+ant -v
 
 # Compute outputs for all inputs
 parallel singlerun ::: ./tests/inputs/*.java

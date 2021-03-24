@@ -8,11 +8,11 @@ public class Main {
             FieldPass p1 = new FieldPass();
             root.accept(p1);
             p1.cg.buildInheritanceInfo();
-            // p1.cg.printClassHierarchy();
+            p1.cg.printClassHierarchy();
             
-            // CGPass p2 = new CGPass(p1.cg);
-            // root.accept(p2);
-
+            CGPass p2 = new CGPass(p1.cg);
+            root.accept(p2);
+            System.out.println("Program Parsed Successfully");
         } catch (ParseException e) {
             System.out.println(e.toString());
         }

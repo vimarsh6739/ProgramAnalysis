@@ -108,6 +108,7 @@ public class Function {
         this.fields = new ArrayList<>();
         this.flow = new ArrayList<>();
         this.adj = new ArrayList<>();
+        this.fMap = new HashMap<>();
         this.stack = new HashMap<>();
     }   
 
@@ -143,7 +144,7 @@ public class Function {
     }
 
     /**
-     * Internal function to add Statement object of type FCALL
+     * Function call
      * @param op    Operation performed
      * @param x     The result variable
      * @param e1    Calling object
@@ -164,6 +165,13 @@ public class Function {
         flow.add(stmt);
     }
 
+    /**
+     * Load, Store or Basic Binary Operation
+     * @param op
+     * @param fx    
+     * @param e1
+     * @param e2
+     */
     public void addStatement(Operations op, String fx, String e1, String e2) {
         Mod stmt = null;
         Field x  = this.getField(fx);
@@ -196,6 +204,12 @@ public class Function {
         flow.add(stmt);
     }
 
+    /**
+     * Assignment or Unary operation
+     * @param op
+     * @param fx
+     * @param e1
+     */
 	public void addStatement(Operations op, String fx, String e1) {
         Field x = this.getField(fx);
         Field y = this.getField(e1);    // null for constants
@@ -217,6 +231,12 @@ public class Function {
         flow.add(stmt);
 	}
 
+    /**
+     * Allocation operation
+     * @param op
+     * @param fx
+     * @param r
+     */
 	public void addStatement(Operations op, String fx, Reference r) {
         
         Field x = this.getField(fx);
