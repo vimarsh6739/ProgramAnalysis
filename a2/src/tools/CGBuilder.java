@@ -197,6 +197,24 @@ public class CGBuilder {
     public void buildInheritanceInfo() {
         Map<ClassInfo, Boolean> visited = new HashMap<>(this.clist.size());
 
+        
+        for(ClassInfo c : clist){
+            visited.put(c, false);
+        }
+        
+        for(ClassInfo c : clist){
+            if(!visited.get(c)){
+                this.updateSubClassEntries(c, visited);
+            }
+        }
+
+        // Remove overridden functions from subclasses
+        for(ClassInfo c: clist){
+            if(c.pname!=null){
+                c.pruneAncestorEntries();
+            }
+        }
+
         boolean f = false;
         do {
             f = false;
@@ -205,16 +223,6 @@ public class CGBuilder {
             }
         } while(f);        
         
-        for(ClassInfo c : clist){
-            visited.put(c, false);
-        }
-
-        for(ClassInfo c : clist){
-            if(!visited.get(c)){
-                this.updateSubClassEntries(c, visited);
-            }
-        }
-
         this.addIntArrayClass();
     }
 

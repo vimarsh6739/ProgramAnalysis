@@ -84,8 +84,11 @@ public class ClassInfo {
         boolean change = false;
         
         List<Function> new_functions  = new ArrayList<>(this.functions);
+
         for(Function fc: c.functions){
             if(this.isOverridden(fc) && !this.isPresent(fc)){
+                // fc is necessarily a child overridden fn.
+                // add it to this.functions
                 new_functions.add(fc);
                 change = true;
             }
@@ -108,9 +111,45 @@ public class ClassInfo {
 
         // Merge functions using shallow copy
         for(Function f: p.functions) {
-            if(!this.isOverridden(f))
-                this.functions.add(f);
+            this.functions.add(f);
         }
+
+        this.pruneAncestorEntries();
+    }
+
+    /**
+     * Prunes overridden functions of ancestor in current class
+     */
+    void pruneAncestorEntries(){
+        
+        List<Function> l = new ArrayList<>();
+        
+        int n = this.functions.size();
+        for(int i = 0; i < n;++i){
+            Function fi = this.functions.get(i);
+            boolean add = true;
+            if(fi.cname.equals(this.cname)){
+                l.add(fi);
+            }
+            else{
+                for( int j = 0;j<n;++j){
+                    if(j!=i){
+                        Function fj = this.functions.get(j);
+                        if( fj.fname.equals(fi.fname) && 
+                            fj.cname.equals(this.cname)) {
+                            // Method is overridden in current class
+                            add = false;
+                        }
+                    }
+                }
+
+                if(add){
+                    l.add(fi);
+                }
+            }
+        }
+
+        this.functions = l;
     }
     
     /**

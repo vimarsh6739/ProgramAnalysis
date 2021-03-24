@@ -10,9 +10,9 @@ public class Main {
             p1.cg.buildInheritanceInfo();
             p1.cg.printClassHierarchy();
             
-            CGPass p2 = new CGPass(p1.cg);
-            root.accept(p2);
-            System.out.println("Program Parsed Successfully");
+            // CGPass p2 = new CGPass(p1.cg);
+            // root.accept(p2);
+            // System.out.println("Program Parsed Successfully");
         } catch (ParseException e) {
             System.out.println(e.toString());
         }
