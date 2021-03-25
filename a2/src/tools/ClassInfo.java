@@ -11,6 +11,7 @@ public class ClassInfo {
     String pname;               // name of parent class(if present)
     List<Field> fields;         // fields of current class 
     List<Function> functions;   // functions of curr class(includes superclass)
+    int num_refs;               // number of references of current class
     
     public ClassInfo(String cname) {
         this(cname, null);
@@ -21,6 +22,7 @@ public class ClassInfo {
         this.pname = pname;
         this.fields = new ArrayList<>();
         this.functions = new ArrayList<>();
+        this.num_refs = 0;
     }
 
     void addMethod(Function f){functions.add(f);}
@@ -158,12 +160,24 @@ public class ClassInfo {
     void printMembers() {
         String sp = "    ";
         System.out.println("  ->" + "Variables");
-        for(Field i : fields){
-            System.out.println(sp + "- " + i.type + " " + i.name + " [ class "+ ((MemberField)i).cname +" ]");
+        for(Field i : fields) {
+            if(i instanceof MemberField){
+                System.out.println(sp + "- " + i.type + " " + i.name + " [ from "+ ((MemberField)i).cname +" ]");
+            } else if(i instanceof BasicMemberField){
+                System.out.println(sp + "- " + i.type + " " + i.name + " [ from "+ ((BasicMemberField)i).cname +" ]");
+            }
         }
         System.out.println("  ->" + "Functions");
-        for(Function f : functions){
-            System.out.println(sp + "- " + f.fname + "()" + " [ class "+ f.cname +" ]");
+        for(Function f : functions) {
+            System.out.println(sp + "- "+f.cname+"::"+ f.fname + "()" );
         }
+    }
+    
+    /**
+     * Return number of refs
+     * @return
+     */
+    int getRefId() {
+        return ++this.num_refs;
     }
 }

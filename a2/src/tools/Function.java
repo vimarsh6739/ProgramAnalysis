@@ -129,7 +129,7 @@ public class Function {
     Field getField(String x){
         Field t = null;
         if(fMap.containsKey(x)){
-            // local field
+            // local field - either basic or func local
             t = fMap.get(x);
         } else {
             // member variable
@@ -244,4 +244,27 @@ public class Function {
         flow.add(stmt);
 	}
 
+    /**
+     * Initializes points to set for all function locals in stack
+     * @param refList List of all references
+     */
+    public void buildLattice(List<Reference> refList) {
+        for(Field f : this.fields) {
+            // Only local fields given a lattice value
+            if(f instanceof LocalField){
+                Lattice fv = new Lattice(refList);
+                this.stack.put(f, fv);
+            }
+        }
+    }
+
+    /**
+     * Print stack variables
+     */
+    public void printStack() {
+        for(Field f : this.stack.keySet()){
+            System.out.print("    " + "("+f.name+" : " + f.type + ")");
+            System.out.println(" -> { " + this.stack.get(f).printValue() + " }" );
+        }
+    }
 }

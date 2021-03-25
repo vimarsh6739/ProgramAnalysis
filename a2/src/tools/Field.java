@@ -29,5 +29,4 @@ public class Field {
     public Field copy(){
         return new Field(this);
     }
-    
 }

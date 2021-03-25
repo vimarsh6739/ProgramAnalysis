@@ -16,5 +16,21 @@ public class LocalField extends Field {
     LocalField(String type, String name, String fname){
         super(type, name);
         this.fname = fname;
-    }                      
+    }     
+    
+    /**
+     * Copy constructor
+     * @param other
+     */
+    public LocalField(LocalField other) {
+        this(other.type, other.name, other.fname);
+    }
+
+    /**
+     * Non-typecasted deep copy
+     */
+    @Override
+    public Field copy() {
+        return new LocalField(this) ;
+    }
 }

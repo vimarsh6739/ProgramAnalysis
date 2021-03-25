@@ -23,16 +23,13 @@ if [ -z "$2" ]
     output="${input%.java}.txt"
 fi
 
-# Create the binary folder for compilation
-mkdir -p bin/
-
 # Compile base code
 echo "Compiling source"
-javac -sourcepath src/ -d bin/ src/Main.java
+ant
 
 # Run program
 echo "Running on input ${bname}"
 
-java -cp bin/ Main < $input > $output
+(cat $input | java -jar dist/AliasAnalysis.jar) > $output
 
 echo "Generated output ${output}"

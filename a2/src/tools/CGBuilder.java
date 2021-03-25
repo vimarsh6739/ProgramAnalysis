@@ -59,7 +59,16 @@ public class CGBuilder {
      * @param name Identifier name
      */
     public void addClassField(String type, String name){
-        Field t = new MemberField(type, name, curr_class.cname);
+        Field t;
+        switch(type){
+            case "int":
+            case "boolean":
+                t = new BasicMemberField(type, name, curr_class.cname);
+                break;
+            default:
+                t = new MemberField(type, name, curr_class.cname);
+                break;
+        }
         curr_class.addField(t);
     }
 
@@ -70,7 +79,7 @@ public class CGBuilder {
      */
     public void addLocalField(String type, String name){
         Field t;
-        switch(type){
+        switch(type) {
             case "int":
             case "boolean":
                 t = new BasicField(type, name);
@@ -89,7 +98,7 @@ public class CGBuilder {
      * @param e2    The second argument
      * @param eargs Args in case of a function call
      */
-    public void addStatement(Operations op, String x, String e1, String e2, List<String> eargs){
+    public void addStatement(Operations op, String x, String e1, String e2, List<String> eargs) {
         switch(op) {
             case AND:
             case LEQ:
@@ -226,5 +235,50 @@ public class CGBuilder {
         this.addIntArrayClass();
     }
 
-    // Iterative worklist algo
+    // Lattice initialization
+
+    /**
+     * Creates and initializes lattice objects for all 
+     * functions and references
+     */
+    public void buildLattice() {
+        // Build lattice for all stacks
+        for(Function f : this.flist) {
+            f.buildLattice(this.refList);
+        }
+        
+        // For all references, update sigma 
+        for(Reference r : this.refList){
+            r.buildLattice(this.refList);
+            this.sigma.put(r, r.refMap);
+        }
+    }
+
+    /**
+     * Print lattice values
+     */
+    public void printLattice(){
+        
+        // Print sigma
+        System.out.println("Heap:");
+        for(Reference r : this.sigma.keySet()) {
+            String sp = "    ";
+            System.out.println("Reference " + r.cname + "_"+r.ref_id);
+            System.out.println(sp+"Locals are ->"+r.printValue());
+
+            Map<Field, Lattice> sigma_r = this.sigma.get(r);
+            
+            for(Field f : sigma_r.keySet()){
+                System.out.print(sp + "("+f.name+" : " + f.type + ")");
+                System.out.println(" -> { " + sigma_r.get(f).printValue() + " }" );
+            }
+        }
+
+        // Print stacks
+        System.out.println("Stack:");
+        for(Function f : this.flist){
+            System.out.println(f.cname+"::"+ f.fname + "()" );
+            f.printStack();
+        }
+    }
 }
