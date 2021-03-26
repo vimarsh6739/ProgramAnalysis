@@ -1,0 +1,44 @@
+Analyzing SwapInter::main
+Heap:
+Reference A@3
+    Fields are ->
+Reference A@1
+    Fields are ->
+Reference A@2
+    Fields are ->
+Reference A@4
+    Fields are ->
+Stack:
+SwapInter::main()
+    (t : A) -> {  A@1, A@4 }
+    (y : A) -> {  A@2 }
+    (x : A) -> {  A@1 }
+    (z : A) -> {  A@3 }
+A::swap()
+    (arg1 : A) -> {  A@1 }
+    (arg2 : A) -> {  A@2 }
+    (temp : A) -> {  A@4 }
+    (this : A) -> {  A@3 }
+------------------------------------------------
+Analyzing A::swap
+Heap:
+Reference A@3
+    Fields are ->
+Reference A@1
+    Fields are ->
+Reference A@2
+    Fields are ->
+Reference A@4
+    Fields are ->
+Stack:
+SwapInter::main()
+    (t : A) -> {  A@1, A@4 }
+    (y : A) -> {  A@2 }
+    (x : A) -> {  A@1 }
+    (z : A) -> {  A@3 }
+A::swap()
+    (arg1 : A) -> {  A@1, A@2 }
+    (arg2 : A) -> {  A@1, A@2, A@4 }
+    (temp : A) -> {  A@1, A@4 }
+    (this : A) -> {  A@3 }
+------------------------------------------------

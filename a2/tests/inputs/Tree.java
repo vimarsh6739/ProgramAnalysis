@@ -1,9 +1,13 @@
 class Tree {
     public static void main(String[] args) {
         
-        Node c1;Node c2;
-        Node a1;Node a2;
-        Node t1; Node t2; Node t3;
+        Node c1;
+        Node c2;
+        Node a1;
+        Node a2;
+        Node t1; 
+        Node t2; 
+        Node t3;
         boolean ret;
         int v;
         
@@ -49,7 +53,8 @@ class Node {
     }
 
     public boolean addRightNode(Node rt){
-        Node t; boolean b;
+        Node t; 
+        boolean b;
         b = true;
         t = this;
         /* rt alias? t */

@@ -1,0 +1,15 @@
+Analyzing Inheritance::main
+Heap:
+Stack:
+Inheritance::main()
+A::foo()
+    (this : A) -> {  }
+A::b()
+    (this : A) -> {  }
+B::b()
+    (this : B) -> {  }
+C::foo()
+    (this : C) -> {  }
+D::bar()
+    (this : D) -> {  }
+------------------------------------------------

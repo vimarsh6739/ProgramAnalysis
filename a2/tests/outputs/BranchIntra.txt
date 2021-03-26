@@ -1,0 +1,66 @@
+Analyzing BranchIntra::main
+Heap:
+Reference A@3
+    Fields are ->(f1 : B)
+    (f1 : B) -> {  B@1 }
+Reference B@2
+    Fields are ->(f0 : A)
+    (f0 : A) -> {  A@3 }
+Reference A@1
+    Fields are ->(f1 : B)
+    (f1 : B) -> {  B@1 }
+Reference C@1
+    Fields are ->(f0 : A)
+    (f0 : A) -> {  A@3, A@2 }
+Reference B@1
+    Fields are ->(f0 : A)
+    (f0 : A) -> {  A@1, A@2 }
+Reference A@2
+    Fields are ->(f1 : B)
+    (f1 : B) -> {  B@2 }
+Stack:
+BranchIntra::main()
+    (z : C) -> {  C@1 }
+    (x1 : A) -> {  A@1, A@2 }
+    (tx : A) -> {  A@3, A@2 }
+    (ty : B) -> {  B@2, B@1 }
+    (x : A) -> {  A@3, A@1, A@2 }
+    (x2 : A) -> {  A@3, A@1 }
+    (y1 : B) -> {  B@2 }
+    (y : B) -> {  B@1 }
+A::getf()
+    (this : A) -> {  A@1 }
+------------------------------------------------
+Analyzing A::getf
+Heap:
+Reference A@3
+    Fields are ->(f1 : B)
+    (f1 : B) -> {  B@1 }
+Reference B@2
+    Fields are ->(f0 : A)
+    (f0 : A) -> {  A@3 }
+Reference A@1
+    Fields are ->(f1 : B)
+    (f1 : B) -> {  B@1 }
+Reference C@1
+    Fields are ->(f0 : A)
+    (f0 : A) -> {  A@3, A@2 }
+Reference B@1
+    Fields are ->(f0 : A)
+    (f0 : A) -> {  A@1, A@2 }
+Reference A@2
+    Fields are ->(f1 : B)
+    (f1 : B) -> {  B@2 }
+Stack:
+BranchIntra::main()
+    (z : C) -> {  C@1 }
+    (x1 : A) -> {  A@1, A@2 }
+    (tx : A) -> {  A@3, A@2 }
+    (ty : B) -> {  B@2, B@1 }
+    (x : A) -> {  A@3, A@1, A@2 }
+    (x2 : A) -> {  A@3, A@1 }
+    (y1 : B) -> {  B@2 }
+    (y : B) -> {  B@1 }
+A::getf()
+    (this : A) -> {  A@1 }
+------------------------------------------------

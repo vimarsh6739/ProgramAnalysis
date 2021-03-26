@@ -1,0 +1,644 @@
+Analyzing LinkedList::main
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  }
+    (elem : Element) -> {  }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  }
+    (elem : Element) -> {  }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  }
+    (t2 : List) -> {  }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  }
+    (t3 : List) -> {  }
+    (l1 : List) -> {  }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@1 }
+    (e1 : Element) -> {  Element@1 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  }
+    (tmp : List) -> {  }
+    (aux : List) -> {  }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing Element::init
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  }
+    (elem : Element) -> {  }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  }
+    (elem : Element) -> {  }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  }
+    (t2 : List) -> {  }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  }
+    (t3 : List) -> {  }
+    (l1 : List) -> {  }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@1 }
+    (e1 : Element) -> {  Element@1 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  }
+    (tmp : List) -> {  }
+    (aux : List) -> {  }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing Element::init
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  }
+    (elem : Element) -> {  }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  }
+    (elem : Element) -> {  }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  }
+    (t2 : List) -> {  }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  }
+    (t3 : List) -> {  }
+    (l1 : List) -> {  }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@1 }
+    (e1 : Element) -> {  Element@1 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  }
+    (tmp : List) -> {  }
+    (aux : List) -> {  }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing Element::init
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  }
+    (elem : Element) -> {  }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  }
+    (elem : Element) -> {  }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  }
+    (t2 : List) -> {  }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  }
+    (t3 : List) -> {  }
+    (l1 : List) -> {  }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@1 }
+    (e1 : Element) -> {  Element@1 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  }
+    (tmp : List) -> {  }
+    (aux : List) -> {  }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing List::init
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  }
+    (elem : Element) -> {  }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  }
+    (elem : Element) -> {  Element@1 }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  }
+    (t2 : List) -> {  }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  }
+    (t3 : List) -> {  }
+    (l1 : List) -> {  }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@1 }
+    (e1 : Element) -> {  Element@1 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  }
+    (tmp : List) -> {  }
+    (aux : List) -> {  }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing List::push_back
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  }
+    (elem : Element) -> {  }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1 }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  }
+    (t2 : List) -> {  }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  }
+    (t3 : List) -> {  }
+    (l1 : List) -> {  }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@2, List@1 }
+    (e1 : Element) -> {  Element@1, Element@2, Element@3 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  List@1 }
+    (tmp : List) -> {  List@2 }
+    (aux : List) -> {  List@2 }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing List::push_back
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1 }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  }
+    (t2 : List) -> {  }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  }
+    (t3 : List) -> {  }
+    (l1 : List) -> {  }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@2, List@1 }
+    (e1 : Element) -> {  Element@1, Element@2, Element@3 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  List@2, List@1 }
+    (tmp : List) -> {  List@2 }
+    (aux : List) -> {  List@2 }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing LinkedList::main
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1 }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  List@2 }
+    (t2 : List) -> {  List@2 }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  List@2 }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  List@2 }
+    (t3 : List) -> {  List@2 }
+    (l1 : List) -> {  List@2 }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@2, List@1 }
+    (e1 : Element) -> {  Element@1, Element@2, Element@3 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  List@2, List@1 }
+    (tmp : List) -> {  List@2 }
+    (aux : List) -> {  List@2 }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing List::push_back
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1 }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  List@2 }
+    (t2 : List) -> {  List@2 }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  List@2 }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  List@2 }
+    (t3 : List) -> {  List@2 }
+    (l1 : List) -> {  List@2 }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@2, List@1 }
+    (e1 : Element) -> {  Element@1, Element@2, Element@3 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  List@2, List@1 }
+    (tmp : List) -> {  List@2 }
+    (aux : List) -> {  List@2 }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing List::init
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1, Element@2, Element@3 }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1, Element@2, Element@3 }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  List@2 }
+    (t2 : List) -> {  List@2 }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  List@2 }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  List@2 }
+    (t3 : List) -> {  List@2 }
+    (l1 : List) -> {  List@2 }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@2, List@1 }
+    (e1 : Element) -> {  Element@1, Element@2, Element@3 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  List@2, List@1 }
+    (tmp : List) -> {  List@2 }
+    (aux : List) -> {  List@2 }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing LinkedList::main
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1, Element@2, Element@3 }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1, Element@2, Element@3 }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  List@2 }
+    (t2 : List) -> {  List@2 }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  List@2 }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  List@2 }
+    (t3 : List) -> {  List@2 }
+    (l1 : List) -> {  List@2 }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@2, List@1 }
+    (e1 : Element) -> {  Element@1, Element@2, Element@3 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  List@2, List@1 }
+    (tmp : List) -> {  List@2 }
+    (aux : List) -> {  List@2 }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing LinkedList::main
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1, Element@2, Element@3 }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1, Element@2, Element@3 }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  List@2 }
+    (t2 : List) -> {  List@2 }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  List@2 }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  List@2 }
+    (t3 : List) -> {  List@2 }
+    (l1 : List) -> {  List@2 }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@2, List@1 }
+    (e1 : Element) -> {  Element@1, Element@2, Element@3 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  List@2, List@1 }
+    (tmp : List) -> {  List@2 }
+    (aux : List) -> {  List@2 }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing LinkedList::main
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1, Element@2, Element@3 }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1, Element@2, Element@3 }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  List@2 }
+    (t2 : List) -> {  List@2 }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  List@2 }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  List@2 }
+    (t3 : List) -> {  List@2 }
+    (l1 : List) -> {  List@2 }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@2, List@1 }
+    (e1 : Element) -> {  Element@1, Element@2, Element@3 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  List@2, List@1 }
+    (tmp : List) -> {  List@2 }
+    (aux : List) -> {  List@2 }
+    (this : List) -> {  List@1 }
+------------------------------------------------
+Analyzing List::push_back
+Heap:
+Reference Element@1
+    Fields are ->(val : int)
+Reference Element@2
+    Fields are ->(val : int)
+Reference Element@3
+    Fields are ->(val : int)
+Reference List@2
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1, Element@2, Element@3 }
+Reference List@1
+    Fields are ->(elem : Element),(next : List),(end : boolean)
+    (next : List) -> {  List@2 }
+    (elem : Element) -> {  Element@1, Element@2, Element@3 }
+Stack:
+LinkedList::main()
+    (l2 : List) -> {  List@2 }
+    (t2 : List) -> {  List@2 }
+    (head : List) -> {  List@1 }
+    (t1 : List) -> {  List@2 }
+    (el03 : Element) -> {  Element@3 }
+    (el02 : Element) -> {  Element@2 }
+    (l3 : List) -> {  List@2 }
+    (t3 : List) -> {  List@2 }
+    (l1 : List) -> {  List@2 }
+    (el01 : Element) -> {  Element@1 }
+Element::init()
+    (this : Element) -> {  Element@1, Element@2, Element@3 }
+Element::getVal()
+    (this : Element) -> {  }
+Element::equal()
+    (other : Element) -> {  }
+    (this : Element) -> {  }
+    (e : Element) -> {  }
+List::init()
+    (this : List) -> {  List@2, List@1 }
+    (e1 : Element) -> {  Element@1, Element@2, Element@3 }
+List::push_back()
+    (e : Element) -> {  Element@2, Element@3 }
+    (ptr : List) -> {  List@2, List@1 }
+    (tmp : List) -> {  List@2 }
+    (aux : List) -> {  List@2 }
+    (this : List) -> {  List@1 }
+------------------------------------------------

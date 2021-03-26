@@ -1,0 +1,5 @@
+Analyzing CHA_Tester::main
+Heap:
+Stack:
+CHA_Tester::main()
+------------------------------------------------

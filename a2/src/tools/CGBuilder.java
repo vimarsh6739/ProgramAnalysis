@@ -1,6 +1,7 @@
 package tools;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Driver class for building program call graph
@@ -15,8 +16,9 @@ public class CGBuilder {
     Function curr_fn;
     
     List<Reference> refList;                        // Reference list
-    Map<Reference, Map<Field, Lattice >> sigma;     // Heap
-    
+    Map<Reference, Map<Field, Lattice >> hpts;     // Heap
+    String root_cname;                              
+
     /**
      * Public constructor for Call Graph generator
      */
@@ -25,12 +27,37 @@ public class CGBuilder {
         this.cMap = new HashMap<>();
         this.flist = new ArrayList<>();
         this.refList = new ArrayList<>();
-        this.sigma = new HashMap<Reference, Map<Field, Lattice>>();
+        this.hpts = new HashMap<Reference, Map<Field, Lattice>>();
         this.curr_class=null;
         this.curr_fn=null;
+        this.root_cname=null;
     }
 
     // Update/add functions
+    
+    /**
+     * Set the root class
+     * @param cname
+     */
+    public void setRootClass(String cname){
+        this.root_cname = cname;
+    }
+    
+    /**
+     * Set current class
+     * @param cname
+     */
+    public void setCurrClass(String cname){
+        this.curr_class = cMap.get(cname);
+    }
+
+    /**
+     * Set current function
+     * @param fname
+     */
+    public void setCurrFn(String fname){
+        this.curr_fn = this.curr_class.getMethod(fname);
+    }
 
     /**
      * Add a class
@@ -51,6 +78,17 @@ public class CGBuilder {
         curr_fn = new Function(fname, this.curr_class.cname, this.curr_class);
         flist.add(curr_fn);                 // global fn list
         curr_class.addMethod(curr_fn);      // local fn list
+    }
+
+    /**
+     * Adds method of main class
+     * @param fname  = {@code main()}
+     */
+    public void addMainMethod(String fname){
+        curr_fn = new Function(fname, this.curr_class.cname, this.curr_class);
+        flist.add(curr_fn);                 // global fn list
+        curr_class.addMethod(curr_fn);      // local fn list
+        curr_fn.setMain();
     }
 
     /**
@@ -90,6 +128,19 @@ public class CGBuilder {
         curr_fn.addField(t);
     }
 
+    public void addFormalField(String type, String name){
+        Field t;
+        switch(type) {
+            case "int":
+            case "boolean":
+                t = new BasicField(type, name);
+            break;
+            default:
+                t = new LocalField(type, name, curr_fn.fname);
+        }
+        curr_fn.addFormalField(t);
+    }
+
     /**
      * Add a statement in the current function to it's object
      * @param op    Operation performed
@@ -99,6 +150,11 @@ public class CGBuilder {
      * @param eargs Args in case of a function call
      */
     public void addStatement(Operations op, String x, String e1, String e2, List<String> eargs) {
+        Field xf = this.curr_fn.getField(x);
+        Field e1f = null;
+        Field e2f = null;
+        List<Field> eargf= null;
+        
         switch(op) {
             case AND:
             case LEQ:
@@ -107,13 +163,17 @@ public class CGBuilder {
             case MULT:
             case ARRAYLOOKUP:
             case ARRAYASSIGN:
-                this.curr_fn.addStatement(op, x, e1, e2);
+                // Will never be null
+                e1f = this.curr_fn.getField(e1);
+                e2f = this.curr_fn.getField(e2);
+                this.curr_fn.addStatement(op, xf, e1f, e2f);
                 break;
 
             case ARRAYLENGTH:
             case ASSIGNCONST:
             case NOT:
-                this.curr_fn.addStatement(op, x, e1);
+                e1f = this.curr_fn.getField(e1);
+                this.curr_fn.addStatement(op, xf, e1f);
                 break;
             
             case ALLOCATE:                
@@ -122,29 +182,50 @@ public class CGBuilder {
                 ClassInfo c = cMap.get(e1);
                 Reference r = new Reference(c);
                 refList.add(r);
-                this.curr_fn.addStatement(op, x, r);
+                this.curr_fn.addStatement(op, xf, r);
                 break;
 
             case ASSIGN:
-                this.curr_fn.addStatement(op, x, e1);
+                e1f = this.curr_fn.getField(e1);
+                this.curr_fn.addStatement(op, xf, e1f);
                 break;
 
             case FCALL:
-                this.curr_fn.addStatement(op, x, e1, this.curr_class.getMethod(e2), eargs);
+                // Add all possible function calls as statements
+                // Possible as we know the types of every variable currently
+                e1f = this.curr_fn.getField(e1);
+                
+                ClassInfo caller = this.cMap.get(e1f.type);
+                List<Function> callerFlist = caller.getMethods(e2);
+                eargf = eargs.stream().map(elt -> this.curr_fn.getField(elt)).collect(Collectors.toList());                
+                this.curr_fn.addStatement(op, xf, e1f, callerFlist, eargf);
                 break;
 
             case LOAD:
-                this.curr_fn.addStatement(op, x, e1, e2);
+                e1f = this.curr_fn.getField(e1);
+                e2f = this.cMap.get(e1f.type).getField(e2);
+                this.curr_fn.addStatement(op, xf, e1f, e2f);
                 break;
 
             case STORE:
-                this.curr_fn.addStatement(op, x, e1, e2);
+                e1f = this.cMap.get(xf.type).getField(e1);
+                e2f = this.curr_fn.getField(e2);
+                this.curr_fn.addStatement(op, xf, e1f, e2f);
                 break;
 
             default:
         }
     }
     
+    /**
+     * Initializes the return value of the function
+     */
+    public void addReturn(String ret_val) {
+    
+        // System.out.println(this.curr_fn.fname + " <- " + ret_val);
+        this.curr_fn.setReturnName(ret_val);
+    }
+
     // Inheritance relations and int[] handling
 
     /**
@@ -162,7 +243,7 @@ public class CGBuilder {
     public void printClassHierarchy(){    
         for(ClassInfo c : this.clist){
             System.out.println("-> "+c.cname);
-            c.printMembers();
+            System.out.println(c);
         }
     }
 
@@ -235,42 +316,66 @@ public class CGBuilder {
         this.addIntArrayClass();
     }
 
-    // Lattice initialization
+    // Points to analysis
+    
+    /**
+     * Print all statements recorded for debugging purposes.
+     */
+    public void printStatements() {
+        for(ClassInfo c : this.clist){
+            System.out.println("-> "+c.cname);
+            for(Function f : c.functions){
+                if(f.cname.equals(c.cname)){
+                    f.printStatements();
+                }
+            }
+        }
+    }
 
     /**
      * Creates and initializes lattice objects for all 
      * functions and references
      */
     public void buildLattice() {
-        // Build lattice for all stacks
+        // Build lattice for all functions
         for(Function f : this.flist) {
             f.buildLattice(this.refList);
+            
+            if(!f.isMain) {
+                // System.out.println(f.fname);
+                // System.out.println(f.ret_val);
+                f.setReturnField();
+            }
         }
         
-        // For all references, update sigma 
+        // For all references, update heap 
         for(Reference r : this.refList){
             r.buildLattice(this.refList);
-            this.sigma.put(r, r.refMap);
+            this.hpts.put(r, r.refMap);
+        }
+
+        for(Function f : this.flist){
+            f.setHeap(this.hpts);
         }
     }
 
     /**
      * Print lattice values
      */
-    public void printLattice(){
+    public void printLattice() {
         
         // Print sigma
         System.out.println("Heap:");
-        for(Reference r : this.sigma.keySet()) {
+        for(Reference r : this.hpts.keySet()) {
             String sp = "    ";
-            System.out.println("Reference " + r.cname + "_"+r.ref_id);
-            System.out.println(sp+"Locals are ->"+r.printValue());
+            System.out.println("Reference " + r.cname + "@"+r.ref_id);
+            System.out.println(sp+"Fields are ->"+r.printValue());
 
-            Map<Field, Lattice> sigma_r = this.sigma.get(r);
+            Map<Field, Lattice> sigma_r = this.hpts.get(r);
             
             for(Field f : sigma_r.keySet()){
                 System.out.print(sp + "("+f.name+" : " + f.type + ")");
-                System.out.println(" -> { " + sigma_r.get(f).printValue() + " }" );
+                System.out.println(" -> { " + sigma_r.get(f) + " }" );
             }
         }
 
@@ -281,4 +386,112 @@ public class CGBuilder {
             f.printStack();
         }
     }
+
+    /**
+     * Performs points to analysis and builds points to sets for all variables
+     */
+    public void buildPointsToSets() {
+        
+        // Initialize worklist
+        Queue<Function> worklist = new LinkedList<>();
+        for(Function f : this.flist){
+            if(f.isMain){worklist.add(f);break;}
+        }
+
+        // Run algorithm until convergence of values
+        while(!worklist.isEmpty()){
+            Function f = worklist.poll();
+            // System.out.println("Analyzing "+f.cname+"::"+f.fname);
+
+            worklist.addAll(f.analyze());
+            f.updateSummary();
+ 
+            if(f.summaryChange && !f.isMain) {
+                // Add all callers of f to worklist
+                for(Function g : this.flist){
+                    if(g.calls(f)){
+                        worklist.add(g);
+                    }
+                }
+            }
+
+            f.resetChangeFlags();
+            // printLattice();
+            // System.out.println("------------------------------------------------");
+        }
+    }
+
+    /**
+     * Checks if the 2 variables in the current function are aliases or not
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean isAlias(String x, String y){
+        boolean ans = false;
+        Field fx = this.curr_fn.getField(x);
+        Field fy = this.curr_fn.getField(y);
+        Lattice lx = null;
+        Lattice lx_cp = null;
+        Lattice lthis = null;
+        Lattice lthis_cp = null;
+        Lattice ly = null;
+        Lattice ly_cp = null;
+        if(fx instanceof LocalField){
+            lx = this.curr_fn.pts.get(fx);
+            lx_cp = lx.copy();
+            if(fy instanceof LocalField){
+                ly = this.curr_fn.pts.get(fy);
+                lx_cp.join(ly);
+                if(!lx_cp.curr.isEmpty()){
+                    ans = true;
+                }
+            }
+            else if(fy instanceof MemberField){
+                lthis = this.curr_fn.pts.get(this.curr_fn.getField("this"));
+                lthis_cp = lthis.copy();
+                for(Reference rt : lthis_cp.curr){
+                    ly = rt.getLattice(fy);
+                    lx_cp=lx.copy();
+                    lx_cp.join(ly);
+                    if(!lx_cp.curr.isEmpty()){
+                        ans = true;
+                        break;
+                    }
+                }
+            }
+        } else 
+        if(fx instanceof MemberField){
+            if(fy instanceof LocalField){
+                lthis = this.curr_fn.pts.get(this.curr_fn.getField("this"));
+                lthis_cp = lthis.copy();
+                for(Reference rt : lthis_cp.curr){
+                    lx = rt.getLattice(fx);
+                    lx_cp = lx.copy();
+                    lx_cp.join(ly);
+                    if(!lx_cp.curr.isEmpty()){
+                        ans = true;
+                        break;
+                    }
+                }
+            }
+            else{
+                lthis = this.curr_fn.pts.get(this.curr_fn.getField("this"));
+                lthis_cp = lthis.copy();
+                for(Reference rt : lthis_cp.curr){
+                    lx = rt.getLattice(fx);
+                    ly = rt.getLattice(fy);
+                    lx_cp = lx.copy();
+                    ly_cp = ly.copy();
+                    lx_cp.join(ly);
+                    if(!lx_cp.curr.isEmpty()){
+                        ans = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+
 }

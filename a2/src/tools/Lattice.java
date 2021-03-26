@@ -1,6 +1,5 @@
 package tools;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,24 +62,50 @@ public class Lattice {
         return new Lattice(this);
     }
 
+    /**
+     * Set the final value of Lattice
+     * @param t
+     */
     void updateBottom(Reference t){this.bottom.add(t);}
 
+    /**
+     * Meet operation
+     * @param s
+     */
     void meet(Lattice s){this.curr.addAll(s.curr);}
 
+    /**
+     * Join operation 
+     * @param s
+     */
     void join(Lattice s){this.curr.retainAll(s.curr);}
     
-    boolean hasChanged(){return this.curr.equals(this.prev);}
+    /**
+     * Check if lattice value has changed
+     * @return boolean value
+     */
+    boolean hasChanged(){return !this.curr.equals(this.prev);}
 
+    /**
+     * Update previous value to current
+     */
     void updatePrev(){this.prev = new HashSet<Reference>(this.curr);}
 
-    String printValue() {
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder("");
         String prefix="";
         for(Reference r : this.curr){
             sb.append(prefix);
             prefix =",";
-            sb.append(" "+r.cname+"::"+r.ref_id);
+            sb.append(" "+r.cname+"@"+r.ref_id);
         }
         return sb.toString();
     }
+
+    /**
+     * Add the given reference to the current set
+     * @param r
+     */
+    void addRef(Reference r) {this.curr.add(r);}
 }

@@ -1,0 +1,940 @@
+Analyzing Tree::main
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  }
+    (rt : Node) -> {  }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  }
+    (rt : Node) -> {  }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  AddOperator@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  AddOperator@1 }
+Operand::setVal()
+    (t : Operand) -> {  }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  AddOperator@1 }
+------------------------------------------------
+Analyzing Node::setVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  }
+    (rt : Node) -> {  }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  }
+    (rt : Node) -> {  }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  AddOperator@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  AddOperator@1 }
+Operand::setVal()
+    (t : Operand) -> {  }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  AddOperator@1 }
+------------------------------------------------
+Analyzing Operand::setVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  }
+    (rt : Node) -> {  }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  }
+    (rt : Node) -> {  }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  AddOperator@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  AddOperator@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  AddOperator@1 }
+------------------------------------------------
+Analyzing Node::setVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  }
+    (rt : Node) -> {  }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  }
+    (rt : Node) -> {  }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  AddOperator@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  AddOperator@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  AddOperator@1 }
+------------------------------------------------
+Analyzing Operand::setVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  }
+    (rt : Node) -> {  }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  }
+    (rt : Node) -> {  }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  AddOperator@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  AddOperator@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  AddOperator@1 }
+------------------------------------------------
+Analyzing Node::addLeftNode
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  AddOperator@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  AddOperator@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  AddOperator@1 }
+------------------------------------------------
+Analyzing Node::addLeftNode
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  AddOperator@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  AddOperator@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  AddOperator@1 }
+------------------------------------------------
+Analyzing Node::addRightNode
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  AddOperator@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  AddOperator@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  AddOperator@1 }
+------------------------------------------------
+Analyzing Node::addRightNode
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  AddOperator@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  AddOperator@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  AddOperator@1 }
+------------------------------------------------
+Analyzing Node::getVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  AddOperator@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  AddOperator@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  AddOperator@1 }
+------------------------------------------------
+Analyzing AddOperator::getVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+------------------------------------------------
+Analyzing Operand::getVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+------------------------------------------------
+Analyzing Tree::main
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  AddOperator@2, Operand@1 }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  Operand@2, Operand@1 }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  Operand@2, Operand@1 }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+------------------------------------------------
+Analyzing Tree::main
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  AddOperator@2, Operand@1 }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  Operand@2, Operand@1 }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  Operand@2, Operand@1 }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+------------------------------------------------
+Analyzing Node::getVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  AddOperator@2, Operand@1 }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  Operand@2, Operand@1 }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  Operand@2, Operand@1 }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+------------------------------------------------
+Analyzing AddOperator::getVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  AddOperator@2, Operand@1 }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  Operand@2, Operand@1 }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  Operand@2, Operand@1 }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+------------------------------------------------
+Analyzing Operand::getVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  AddOperator@2, Operand@1 }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  Operand@2, Operand@1 }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  Operand@2, Operand@1 }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+------------------------------------------------
+Analyzing Node::getVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  AddOperator@2, Operand@1 }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  Operand@2, Operand@1 }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  Operand@2, Operand@1 }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+------------------------------------------------
+Analyzing AddOperator::getVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  AddOperator@2, Operand@1 }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  Operand@2, Operand@1 }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  Operand@2, Operand@1 }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+------------------------------------------------
+Analyzing Operand::getVal
+Heap:
+Reference Operand@2
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Reference AddOperator@2
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference AddOperator@1
+    Fields are ->(lt : Node),(rt : Node)
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Reference Operand@1
+    Fields are ->(val : int),(lt : Node),(rt : Node)
+    (rt : Node) -> {  }
+    (lt : Node) -> {  }
+Stack:
+Tree::main()
+    (a1 : Node) -> {  AddOperator@1 }
+    (t3 : Node) -> {  AddOperator@2, Operand@1 }
+    (c2 : Node) -> {  Operand@2 }
+    (t1 : Node) -> {  Operand@2, Operand@1 }
+    (c1 : Node) -> {  Operand@1 }
+    (a2 : Node) -> {  AddOperator@2 }
+    (t2 : Node) -> {  Operand@2, Operand@1 }
+Node::addLeftNode()
+    (lt : Node) -> {  Operand@2, Operand@1 }
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+Node::addRightNode()
+    (t : Node) -> {  AddOperator@2, AddOperator@1 }
+    (this : Node) -> {  AddOperator@2, AddOperator@1 }
+    (rt : Node) -> {  AddOperator@2, Operand@1 }
+Node::getVal()
+    (this : Node) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Node::setVal()
+    (this : Node) -> {  Operand@2, Operand@1 }
+AddOperator::getVal()
+    (this : AddOperator) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+Operand::setVal()
+    (t : Operand) -> {  Operand@2, Operand@1 }
+    (this : Operand) -> {  Operand@2, Operand@1 }
+Operand::getVal()
+    (this : Operand) -> {  Operand@2, AddOperator@2, AddOperator@1, Operand@1 }
+------------------------------------------------

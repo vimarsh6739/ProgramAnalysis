@@ -1,0 +1,17 @@
+Analyzing SwapIntra::main
+Heap:
+Reference A@1
+    Fields are ->
+Reference A@2
+    Fields are ->
+Reference A@4
+    Fields are ->
+Reference A@3
+    Fields are ->
+Stack:
+SwapIntra::main()
+    (z : A) -> {  A@3 }
+    (t : A) -> {  A@1, A@4 }
+    (x : A) -> {  A@1, A@2 }
+    (y : A) -> {  A@1, A@2, A@4 }
+------------------------------------------------

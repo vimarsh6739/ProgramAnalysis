@@ -1,8 +1,13 @@
 class BranchIntra {
     public static void main(String[] args) {
         
-        A x; A x1; A x2; A tx;
-        B y; B y1; B ty;
+        A x; 
+        A x1; 
+        A x2; 
+        A tx;
+        B y; 
+        B y1; 
+        B ty;
         C z; 
         int p;
         boolean f;

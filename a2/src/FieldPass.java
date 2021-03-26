@@ -60,6 +60,7 @@ public class FieldPass extends GJNoArguDepthFirst<String> {
         String fname = "";
         n.f0.accept(this);
         cname = n.f1.accept(this);
+        cg.setRootClass(cname);
         cg.addClass(cname, null);
         this.curr_cname = cname;
 
@@ -68,7 +69,7 @@ public class FieldPass extends GJNoArguDepthFirst<String> {
         n.f4.accept(this);
         n.f5.accept(this);
         fname = n.f6.accept(this);
-        cg.addMethod(fname);
+        cg.addMainMethod(fname);
         this.curr_fname = fname;
 
         n.f7.accept(this);
@@ -197,7 +198,7 @@ public class FieldPass extends GJNoArguDepthFirst<String> {
         cg.addMethod(fname);
         this.curr_fname = fname;
         this.fromFunction = true;
-        cg.addLocalField(this.curr_cname, "this");
+        cg.addFormalField(this.curr_cname, "this");
 
         n.f3.accept(this);
         n.f4.accept(this);
@@ -233,11 +234,12 @@ public class FieldPass extends GJNoArguDepthFirst<String> {
     */
     public String visit(FormalParameter n) {
         String _ret=null;
-        String type = ""; String name = "";
+        String type = ""; 
+        String name = "";
         type = n.f0.accept(this);
         name = n.f1.accept(this);
         if(this.fromFunction)
-            cg.addLocalField(type, name);
+            cg.addFormalField(type, name);
         return _ret;
     }
     

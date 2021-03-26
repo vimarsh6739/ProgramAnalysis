@@ -26,7 +26,7 @@ public class Reference {
         // Create new Field object for every member variable
         if(!ci.cname.equals("int[]")) {
             for(Field f : ci.fields) {
-                if(f instanceof MemberField){
+                if(f instanceof MemberField) {
                     mvars.add(new RefField( f.type, f.name, ((MemberField)f).cname, this));
                 } else if(f instanceof BasicMemberField){
                     mvars.add(f.copy());
@@ -102,5 +102,44 @@ public class Reference {
             sb.append("("+f.name+" : " + f.type + ")");
         }
         return sb.toString();
+    }
+
+    /**
+     * Returns a field for corresponding MemberField in reference
+     * @param keyF
+     * @return Corresponding RefField
+     */
+    Field getField(Field keyF) {
+
+        Field ans = null;
+        
+        if(keyF instanceof MemberField) {
+            MemberField search = (MemberField)keyF;
+
+            for(Field fr : this.mvars) {
+                RefField t;
+                // fr can be a BasicMemberField also
+                if(fr instanceof RefField){
+                    t = (RefField)fr;
+                    if(t.owner.equals(this) && t.type.equals(search.type) && t.cname.equals(search.cname) && t.name.equals(search.name))
+                    {
+                        ans = t;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    /**
+     * Function for reference specific lattice
+     * @param f of type {@code MemberField}
+     * @return Lattice for field in current reference
+     */
+    Lattice getLattice(Field f){
+        Field rf = this.getField(f);
+        return this.refMap.get(rf);
     }
 }

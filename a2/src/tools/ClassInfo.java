@@ -27,6 +27,11 @@ public class ClassInfo {
 
     void addMethod(Function f){functions.add(f);}
 
+    /**
+     * Returns function object of current class
+     * @param fname
+     * @return
+     */
     Function getMethod(String fname){
         Function m = null;
         for(Function f: this.functions){
@@ -37,8 +42,39 @@ public class ClassInfo {
         return m;
     }
 
+    /**
+     * Returns all possible functions accessible by the current class
+     * @param fname Function name
+     * @return {@code List<Function>}
+     */
+    List<Function> getMethods(String fname){
+        List<Function> flist = new ArrayList<>();
+        for(Function f : this.functions){
+            if(fname.equals(f.fname)){
+                flist.add(f);
+            }
+        }
+        return flist;
+    }
+
     void addField(Field f){fields.add(f);}
 
+    /**
+     * Returns the appropriate field object of the current string x
+     * @param x
+     * @return {@code Field} corresponding to x
+     */
+    Field getField(String x){
+        Field t=null;
+        for(Field f : this.fields){
+            if(f.name.equals(x)){
+                t = f;
+                break;
+            }
+        }
+        return t;
+    }
+    
     /**
      * Check if the function from ancestor or child is overridden in the 
      * current class.
@@ -157,20 +193,24 @@ public class ClassInfo {
     /**
      * Prints all function and field declarations
      */
-    void printMembers() {
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("");
         String sp = "    ";
-        System.out.println("  ->" + "Variables");
+        sb.append("  ->" + "Variables\n");
         for(Field i : fields) {
             if(i instanceof MemberField){
-                System.out.println(sp + "- " + i.type + " " + i.name + " [ from "+ ((MemberField)i).cname +" ]");
+                sb.append(sp + "- " + i.type + " " + i.name + " [ from "+ ((MemberField)i).cname +" ]\n");
             } else if(i instanceof BasicMemberField){
-                System.out.println(sp + "- " + i.type + " " + i.name + " [ from "+ ((BasicMemberField)i).cname +" ]");
+                sb.append(sp + "- " + i.type + " " + i.name + " [ from "+ ((BasicMemberField)i).cname +" ]\n");
             }
         }
-        System.out.println("  ->" + "Functions");
+        sb.append("  ->" + "Functions");
         for(Function f : functions) {
-            System.out.println(sp + "- "+f.cname+"::"+ f.fname + "()" );
+            sb.append(sp + "- "+f.cname+"::"+ f.fname + "()\n" );
         }
+        
+        return sb.toString();
     }
     
     /**

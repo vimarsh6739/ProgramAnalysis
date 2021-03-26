@@ -19,6 +19,7 @@ public enum Operations {
     FCALL,
     ASSIGNCONST,
     ASSIGN,
+    DOUBLEASSIGN,
     NOT,
     NONE
 }
