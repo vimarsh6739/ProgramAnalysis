@@ -439,10 +439,8 @@ public class CGBuilder {
      * @return
      */
     public boolean isAlias(String x, String y){
-        boolean ans = false;
         Field fx = this.curr_fn.getField(x);
         Field fy = this.curr_fn.getField(y);
         return this.curr_fn.checkAlias(fx, fy);
     }
-
 }
