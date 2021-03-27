@@ -70,7 +70,6 @@ mkdir -p ${outdir}
 
 # Compile all classes
 echo "Compiling source"
-ant clean
 ant
 
 # Compute outputs for all inputs
@@ -81,7 +80,7 @@ else
     echo -e "${RED}GNU Parallel NOT DETECTED."
     echo -e "Beginning serial execution of tests.${NC}"
     # Evaluate serially
-    for FILE in "${indir}"/* ; do
+    for FILE in "${indir}"/*.java ; do
         singlerun ${FILE} ${outdir} ${expdir}
     done
 fi

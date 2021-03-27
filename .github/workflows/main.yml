@@ -27,7 +27,7 @@ jobs:
         java-version: '11.0.9'
         java-package: jdk
         architecture: x64
-    - name: Build Assignments
+    - name: Compile and run Alias Analysis
       run:
-        # Build the Alias Analyzer 
-        ant -noinput -buildfile a2/build.xml
+        # Run all testcases
+        cd a2 && ./run_all.sh
