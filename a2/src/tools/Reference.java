@@ -98,8 +98,8 @@ public class Reference {
         String prefix="";
         for(Field f : this.mvars){
             sb.append(prefix);
-            prefix =",";
-            sb.append("("+f.name+" : " + f.type + ")");
+            prefix =", ";
+            sb.append(f.name);//+" : " + f.type + ")");
         }
         return sb.toString();
     }

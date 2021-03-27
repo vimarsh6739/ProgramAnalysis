@@ -824,9 +824,9 @@ public class Function {
      * Print stack variables
      */
     void printStack() {
-        for(Field f : this.pts.keySet()){
-            System.out.print("    " + "("+f.name+" : " + f.type + ")");
-            System.out.println(" -> { " + this.pts.get(f) + " }" );
+        String sp = "\t";
+        for(Field f : this.pts.keySet()) {
+            System.out.println(sp + f.name+" -> {" + this.pts.get(f) + " }" );
         }
     }
 

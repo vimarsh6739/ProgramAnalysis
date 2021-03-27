@@ -367,22 +367,21 @@ public class CGBuilder {
         // Print sigma
         System.out.println("Heap:");
         for(Reference r : this.hpts.keySet()) {
-            String sp = "    ";
+            String sp = "\t";
             System.out.println("Reference " + r.cname + "@"+r.ref_id);
-            System.out.println(sp+"Fields are ->"+r.printValue());
-
+            System.out.println(sp+"Fields are -> "+r.printValue());
+            sp += "\t";
             Map<Field, Lattice> sigma_r = this.hpts.get(r);
             
             for(Field f : sigma_r.keySet()){
-                System.out.print(sp + "("+f.name+" : " + f.type + ")");
-                System.out.println(" -> { " + sigma_r.get(f) + " }" );
+                System.out.println(sp +f.name+" -> {" + sigma_r.get(f) + " }");
             }
         }
 
         // Print stacks
         System.out.println("Stack:");
         for(Function f : this.flist){
-            System.out.println(f.cname+"::"+ f.fname + "()" );
+            System.out.println("Function "+f.cname+"::"+ f.fname + "()" );
             f.printStack();
         }
     }

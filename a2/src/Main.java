@@ -18,10 +18,10 @@ public class Main {
             // cg.printStatements();
             cg.buildLattice(); 
             cg.buildPointsToSets();
-            // cg.printLattice();
+            cg.printLattice();
             
-            PrintPass p3 = new PrintPass(cg);
-            root.accept(p3);
+            // PrintPass p3 = new PrintPass(cg);
+            // root.accept(p3);
 
             // System.out.println("Program Parsed Successfully");
         } catch (ParseException e) {
