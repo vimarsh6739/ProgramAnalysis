@@ -3,31 +3,32 @@
 ## Parallel Script to run alias analysis on all ##
 ## testcases provided in the qTACoJava format.  ##
 ## Run as                                       ##
-## ./run_all.sh infolder outfolder              ##
+## ./run_all.sh infolder outfolder expfolder    ##
 ##################################################  
 
 singlerun () {
     input=$1
     outdir=$2
+    expdir=$3
     bname=$(basename ${input})
     
     # echo "###### Testing ${bname} ######"
     
     filename=${bname%.java}
-    output="${outdir}/${filename}.out"
-    
+    output="${outdir}/${filename}.txt"
+    expout="${expdir}/${filename}.txt"
+
     printf "Generating $(basename ${output}): "
     (cat $input | java -jar dist/AliasAnalysis.jar)  > ${output} 
     
     # TODO: Comparison with sample outputs
-    if cmp -s "${output}" "${output%.out}.txt"; then
+    if cmp -l "${output}" "${expout}"; then
         printf "${GREEN}PASS${NC}\n"
     else 
         printf "${RED}FAIL${NC}\n"
         cat ${output}
     fi 
 
-    rm -f ${output}
 }
 
 RED='\033[0;31m'    # Red color
@@ -51,6 +52,13 @@ if [ -z "$2" ]
     exit 1
 fi
 
+expdir=$3
+if [ -z "$3" ]
+  then
+    echo "Error: No expected output folder provided. Exiting script."
+    exit 1
+fi
+
 # Make the output directory if it doesn't exist
 mkdir -p ${outdir}
 
@@ -61,13 +69,13 @@ ant
 # Compute outputs for all inputs
 if type parallel >&  /dev/null; then
     # Evaluate parallely if GNU parallel is available 
-    parallel singlerun ::: ${indir}/*
+    parallel singlerun ::: ${indir}/* ::: ${outdir} ::: ${expdir}
 else
     echo -e "${RED}GNU Parallel NOT DETECTED."
     echo -e "Beginning serial execution of tests.${NC}"
     # Evaluate serially
     for FILE in "${indir}"/* ; do
-        singlerun ${FILE} ${outdir}
+        singlerun ${FILE} ${outdir} ${expdir}
     done
 fi
 
