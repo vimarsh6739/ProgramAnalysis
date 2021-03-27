@@ -1,6 +1,5 @@
 import visitor.GJNoArguDepthFirst;
 import syntaxtree.*;
-import visitor.*;
 import tools.*;
 
 public class PrintPass extends GJNoArguDepthFirst<String> {
@@ -16,10 +15,6 @@ public class PrintPass extends GJNoArguDepthFirst<String> {
     }
     
     public String visit(NodeToken n) { return n.tokenImage; }
-    
-    //
-    // User-generated visitor methods below
-    //
     
     /**
     * f0 -> "class"
@@ -191,5 +186,4 @@ public class PrintPass extends GJNoArguDepthFirst<String> {
         _ret = n.f0.accept(this);
         return _ret;
     }
-
 }

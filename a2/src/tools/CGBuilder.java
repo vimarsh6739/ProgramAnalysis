@@ -408,7 +408,7 @@ public class CGBuilder {
 
             worklist.addAll(f.analyze());
             f.updateSummary();
- 
+            
             if(f.summaryChange && !f.isMain) {
                 // Add all callers of f to worklist
                 for(Function g : this.flist){
@@ -416,6 +416,11 @@ public class CGBuilder {
                         worklist.add(g);
                     }
                 }
+            }
+
+            if(f.stackChange){
+                // Add function for reanalysis if it's stack changes
+                worklist.add(f);
             }
 
             if(showProgress) {

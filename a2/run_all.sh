@@ -1,10 +1,9 @@
 #!/bin/bash
-##################################################
-## Parallel Script to run alias analysis on all ##
-## testcases provided in the qTACoJava format.  ##
-## Run as                                       ##
-## ./run_all.sh infolder outfolder expfolder    ##
-##################################################  
+
+## Parallel Script to run alias analysis on all testcases provided in the qTACoJava format.   
+## Reads input from tests/inputs and tests/outputs and dumps outputs in tests/temp  
+## Usage:
+## ./run_all.sh <input folder> <output folder> <temp folder>  
 
 singlerun () {
     input=$1
@@ -12,28 +11,35 @@ singlerun () {
     expdir=$3
     bname=$(basename ${input})
     
-    # echo "###### Testing ${bname} ######"
-    
     filename=${bname%.java}
     output="${outdir}/${filename}.txt"
     expout="${expdir}/${filename}.txt"
+    
+    # Remove output file if it already exists
+    rm -f ${output}
+    
+    # Create an empty file
+    touch ${output}
 
-    printf "Generating $(basename ${output}): "
+    # Populate file
+    printf "Testing ${bname}: "
     (cat $input | java -jar dist/AliasAnalysis.jar)  > ${output} 
     
-    # TODO: Comparison with sample outputs
-    if cmp -l "${output}" "${expout}"; then
-        printf "${GREEN}PASS${NC}\n"
-    else 
-        printf "${RED}FAIL${NC}\n"
-        cat ${output}
-    fi 
+    # Compare with expected output
 
+    diff -w ${output} ${expout} &> /dev/null
+
+    if [ $? -ne 0 ]; then
+        printf "${RED}FAIL${NC}\n"
+    else 
+        printf "${GREEN}PASS${NC}\n"
+    fi 
 }
 
 RED='\033[0;31m'    # Red color
 NC='\033[0m'        # No Color
 GREEN='\033[0;32m'  # Green Color
+BLUE='\033[0;34m'   # Blue Color
 # Export function to be used by GNU Parallel 
 export -f singlerun
 
@@ -41,22 +47,22 @@ export -f singlerun
 indir=$1
 if [ -z "$1" ]
   then
-    echo "Error: No input directory provided. Exiting script."
-    exit 1
+    echo -e "${BLUE}WARNING: No input directory provided. Defaulting to ./tests/inputs/"
+    indir="tests/inputs"
 fi
 
-outdir=$2
+expdir=$2
 if [ -z "$2" ]
   then
-    echo "Error: No expected output directory provided. Exiting script."
-    exit 1
+    echo -e "WARNING: No expected output directory provided. Defaulting to ./tests/outputs/"
+    expdir="tests/outputs"
 fi
 
-expdir=$3
+outdir=$3
 if [ -z "$3" ]
   then
-    echo "Error: No expected output folder provided. Exiting script."
-    exit 1
+    echo -e "WARNING: No storage location provided for storing outputs. Defaulting to ./tests/temp/${NC}"
+    outdir="tests/temp"
 fi
 
 # Make the output directory if it doesn't exist
@@ -64,7 +70,8 @@ mkdir -p ${outdir}
 
 # Compile all classes
 echo "Compiling source"
-ant 
+ant clean
+ant
 
 # Compute outputs for all inputs
 if type parallel >&  /dev/null; then
@@ -78,4 +85,3 @@ else
         singlerun ${FILE} ${outdir} ${expdir}
     done
 fi
-

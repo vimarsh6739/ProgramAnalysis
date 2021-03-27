@@ -27,7 +27,7 @@ public class Function {
 
         @Override
         public String toString() {
-            return "";
+            return "you shouldn't see this :(";
         }
     }
 
@@ -545,22 +545,60 @@ public class Function {
          * Assign return value of function to v
          */
         void assignReturn(){
-
+            // Return value need not be in n.pts
             Lattice lv = null;
-            Lattice lret = n.pts.get(n.ret_field);
+            Lattice lret = null;
+            Lattice lthis = null;
+            Lattice lthis_cp = null;
+            Lattice lnthis = null;
+            Lattice lnthis_cp=null;
+            lret = n.pts.get(n.ret_field);
+            
             if(v instanceof LocalField) {
                 lv = pts.get(v);
-
-                // Take meet with lret
-                lv.meet(lret);
-            } else 
-            if(v instanceof MemberField){
-                Lattice lthis = pts.get(fMap.get("this"));
-                Lattice lthis_cp = lthis.copy();
-                for(Reference r : lthis_cp.curr){
-                    lv = r.getLattice(v);
-
+                if(n.ret_field instanceof LocalField){
                     lv.meet(lret);
+                }
+                else if(n.ret_field instanceof MemberField){
+                    lnthis = n.pts.get(n.fMap.get("this"));
+                    lnthis_cp = lnthis.copy();
+                    for(Reference rnt : lnthis_cp.curr) {
+                        lret = rnt.getLattice(n.ret_field);
+                        // Take meet with lret
+                        lv.meet(lret);
+                    }
+                }else{
+                    // type error
+                    // System.err.println("type error!");
+                }
+            } 
+            else if(v instanceof MemberField){
+                lthis = pts.get(fMap.get("this"));
+                lthis_cp = lthis.copy();
+                
+                if(n.ret_field instanceof LocalField){
+                    for(Reference r : lthis_cp.curr){
+                        lv = r.getLattice(v);
+                        // Take meet with lret
+                        lv.meet(lret);
+                    }
+                }
+                else if(n.ret_field instanceof MemberField){
+                    lnthis = n.pts.get(n.fMap.get("this"));
+                    lnthis_cp = lnthis.copy();
+                    for(Reference rnt : lnthis_cp.curr){
+                        lret = rnt.getLattice(n.ret_field);
+
+                        for(Reference rv : lthis_cp.curr){
+                            lv = rv.getLattice(v);
+                            // Take meet with lret
+                            lv.meet(lret);
+                        }
+                    }
+                }
+                else{
+                    // type error
+                    // System.err.println("Type error");
                 }
             }
             else{
@@ -602,7 +640,6 @@ public class Function {
             sb.append(") ;    [ class "+n.cname+" ]");
             return sb.toString();
         }
-
     }
 
     String fname;   
@@ -624,7 +661,8 @@ public class Function {
     boolean summaryChange;                      // summary of the function
     boolean retChange;                          // return value of function
     boolean heapChange;                         // heap of the function
-    boolean isMain;                             // is main()?                             
+    boolean isMain;                             // is main()? 
+    boolean stackChange;                        // has the stack changed?                            
 
     Set<Function> callSet;                      // set of all functions called by this
     
@@ -654,6 +692,7 @@ public class Function {
         this.hpts = null;
         this.summaryChange = false;
         this.isMain = false;
+        this.stackChange = false;
     }  
 
     /**
@@ -930,6 +969,19 @@ public class Function {
             }
         }
     }
+
+    /**
+     * Updates flag if stack has changed
+     */
+    void updateChangeStack(){
+        this.stackChange = false;
+        for(Field f : this.pts.keySet()){
+            if(pts.get(f).hasChanged()) {
+                this.stackChange = true;
+            }
+            pts.get(f).updatePrev();
+        }
+    }
     
     /**
      * Updates if the summary of the function after one run has changed or not.
@@ -940,6 +992,7 @@ public class Function {
             this.updateChangeReturn();
         }
         this.updateChangeHeap();
+        this.updateChangeStack();
         this.summaryChange = this.retChange | this.heapChange;
     }
 
@@ -996,6 +1049,7 @@ public class Function {
         this.retChange = false;
         this.heapChange = false;
         this.summaryChange = false;
+        this.stackChange = false;
     }
 
     /**
