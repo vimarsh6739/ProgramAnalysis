@@ -389,18 +389,22 @@ public class CGBuilder {
     /**
      * Performs points to analysis and builds points to sets for all variables
      */
-    public void buildPointsToSets() {
+    public void buildPointsToSets(boolean showProgress) {
         
         // Initialize worklist
         Queue<Function> worklist = new LinkedList<>();
         for(Function f : this.flist){
             if(f.isMain){worklist.add(f);break;}
         }
-
+        
+        int iter = 1;
         // Run algorithm until convergence of values
         while(!worklist.isEmpty()){
             Function f = worklist.poll();
-            // System.out.println("Analyzing "+f.cname+"::"+f.fname);
+            
+            if(showProgress)
+                System.out.println("Iter " + iter + ": In "+f.cname+"::"+f.fname);
+            iter++;
 
             worklist.addAll(f.analyze());
             f.updateSummary();
@@ -414,9 +418,12 @@ public class CGBuilder {
                 }
             }
 
+            if(showProgress) {
+                printLattice();
+                System.out.println("------------------------------------------------");
+            }
+
             f.resetChangeFlags();
-            // printLattice();
-            // System.out.println("------------------------------------------------");
         }
     }
 
@@ -430,67 +437,7 @@ public class CGBuilder {
         boolean ans = false;
         Field fx = this.curr_fn.getField(x);
         Field fy = this.curr_fn.getField(y);
-        Lattice lx = null;
-        Lattice lx_cp = null;
-        Lattice lthis = null;
-        Lattice lthis_cp = null;
-        Lattice ly = null;
-        Lattice ly_cp = null;
-        if(fx instanceof LocalField){
-            lx = this.curr_fn.pts.get(fx);
-            lx_cp = lx.copy();
-            if(fy instanceof LocalField){
-                ly = this.curr_fn.pts.get(fy);
-                lx_cp.join(ly);
-                if(!lx_cp.curr.isEmpty()){
-                    ans = true;
-                }
-            }
-            else if(fy instanceof MemberField){
-                lthis = this.curr_fn.pts.get(this.curr_fn.getField("this"));
-                lthis_cp = lthis.copy();
-                for(Reference rt : lthis_cp.curr){
-                    ly = rt.getLattice(fy);
-                    lx_cp=lx.copy();
-                    lx_cp.join(ly);
-                    if(!lx_cp.curr.isEmpty()){
-                        ans = true;
-                        break;
-                    }
-                }
-            }
-        } else 
-        if(fx instanceof MemberField){
-            if(fy instanceof LocalField){
-                lthis = this.curr_fn.pts.get(this.curr_fn.getField("this"));
-                lthis_cp = lthis.copy();
-                for(Reference rt : lthis_cp.curr){
-                    lx = rt.getLattice(fx);
-                    lx_cp = lx.copy();
-                    lx_cp.join(ly);
-                    if(!lx_cp.curr.isEmpty()){
-                        ans = true;
-                        break;
-                    }
-                }
-            }
-            else{
-                lthis = this.curr_fn.pts.get(this.curr_fn.getField("this"));
-                lthis_cp = lthis.copy();
-                for(Reference rt : lthis_cp.curr){
-                    lx = rt.getLattice(fx);
-                    ly = rt.getLattice(fy);
-                    lx_cp = lx.copy();
-                    ly_cp = ly.copy();
-                    lx_cp.join(ly);
-                    if(!lx_cp.curr.isEmpty()){
-                        ans = true;
-                        break;
-                    }
-                }
-            }
-        }
-        return ans;
+        return this.curr_fn.checkAlias(fx, fy);
     }
 
 }

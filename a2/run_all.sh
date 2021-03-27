@@ -3,7 +3,7 @@
 ## Parallel Script to run alias analysis on all ##
 ## testcases provided in the qTACoJava format.  ##
 ## Run as                                       ##
-## ./run_all.sh infile outfile                  ##
+## ./run_all.sh infolder outfolder              ##
 ##################################################  
 
 singlerun () {
@@ -14,19 +14,25 @@ singlerun () {
     # echo "###### Testing ${bname} ######"
     
     filename=${bname%.java}
-    output="${outdir}/${filename}.txt"
+    output="${outdir}/${filename}.out"
     
     printf "Generating $(basename ${output}): "
-    (cat $input | java -jar dist/AliasAnalysis.jar)  > $output 
+    (cat $input | java -jar dist/AliasAnalysis.jar)  > ${output} 
     
     # TODO: Comparison with sample outputs
-    printf "PASS\n"
-    # echo "###### ${output} fail ######"
+    if cmp -s "${output}" "${output%.out}.txt"; then
+        printf "${GREEN}PASS${NC}\n"
+    else 
+        printf "${RED}FAIL${NC}\n"
+        cat ${output}
+    fi 
+
+    rm -f ${output}
 }
 
-RED='\033[0;31m'
-NC='\033[0m' # No Color
-
+RED='\033[0;31m'    # Red color
+NC='\033[0m'        # No Color
+GREEN='\033[0;32m'  # Green Color
 # Export function to be used by GNU Parallel 
 export -f singlerun
 
@@ -41,7 +47,7 @@ fi
 outdir=$2
 if [ -z "$2" ]
   then
-    echo "Error: No output directory provided. Exiting script."
+    echo "Error: No expected output directory provided. Exiting script."
     exit 1
 fi
 

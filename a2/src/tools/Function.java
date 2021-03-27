@@ -459,6 +459,48 @@ public class Function {
         }
         
         /**
+         * Assigns only those references which can call the current function from 
+         * w.
+         */
+        void assignThis(){
+            Lattice lformal = n.pts.get(n.fields.get(0));
+            Lattice lactual = null;
+            if(w instanceof LocalField){
+                lactual = pts.get(w);
+                for(Reference rw : lactual.curr){
+                    // Add rw to lformal iff the current function is visible in
+                    // rw.ci
+                    for(Function fpos : rw.ci.functions){
+                        if(fpos.equals(n)){
+                            lformal.addRef(rw);
+                        }
+                    }
+                }
+            } else {
+                Lattice lthis = pts.get(fMap.get("this"));
+                Lattice lthis_cp = lthis.copy();
+                for(Reference rt : lthis_cp.curr){
+                    lactual = rt.getLattice(w);
+                    Lattice lactual_cp = lactual.copy();
+                    for(Reference rw : lactual_cp.curr){
+                        // Add rw to lformal iff the current function is visible in
+                        // rw.ci
+                        for(Function fpos : rw.ci.functions){
+                            if(fpos.equals(n)){
+                                lformal.addRef(rw);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(lformal.hasChanged()){
+                this.addToQueue = true;
+                lformal.updatePrev();
+            }
+        }
+
+        /**
          * Assign formal parameter at index to arg
          * @param i Index
          * @param actual The current actual parameter
@@ -532,14 +574,14 @@ public class Function {
             this.addToQueue = false;
             // Do formals = actuals for function
             
-            this.assignFormal(0, w);
+            this.assignThis();
+            // this.assignFormal(0, w);
             for(int i=0;i<args.size();++i){
                 this.assignFormal(i+1, args.get(i));
             }
 
             // Do v = return_val
             this.assignReturn();
-
         }
 
         @Override
@@ -936,7 +978,12 @@ public class Function {
      * Set ret_field
      */
     void setReturnField() {
+        // System.out.println(this.fname);
+        // System.out.println(this.cname);
+        // System.out.println(this.ret_val);
         this.ret_field = this.getField(this.ret_val);
+        // System.out.println(this.ret_field);
+        // System.out.println(this.fMap.keySet());
         // System.out.println(this.fname);
         // System.out.println(this.ret_val);
         this.ret_type = this.ret_field.type; 
@@ -970,4 +1017,72 @@ public class Function {
             System.out.println((c++) + "      "+i);
         }
     }
+
+    /**
+     * Check if the 2 fields are aliases or not
+     * @param fx
+     * @param fy
+     * @return {@code boolean} flag
+     */
+    public boolean checkAlias(Field fx, Field fy) {
+        boolean isAlias = false;
+        Lattice lx = null;
+        Lattice ly = null;
+        Lattice lthis = null;
+        if(fx instanceof MemberField && fy instanceof MemberField){            
+            lthis = pts.get(fMap.get("this"));
+            for(Reference rt : lthis.curr){
+                lx = rt.getLattice(fx);
+                ly = rt.getLattice(fy);
+                for(Reference rx : lx.curr){
+                    if(ly.curr.contains(rx)){
+                        isAlias = true;
+                        break;
+                    }
+                }
+                if(isAlias)break;
+            }
+        }
+        else if(fx instanceof MemberField){
+            lthis = pts.get(fMap.get("this"));
+            ly = pts.get(fy);
+            for(Reference rt : lthis.curr){
+                lx = rt.getLattice(fx);
+                for(Reference rx : lx.curr){
+                    if(ly.curr.contains(rx)){
+                        isAlias = true;
+                        break;
+                    }
+                }
+                if(isAlias)break;
+            }
+        }
+        else if(fy instanceof MemberField){
+            lthis = pts.get(fMap.get("this"));
+            lx = pts.get(fx);
+            for(Reference rt : lthis.curr){
+                ly = rt.getLattice(fy);
+                for(Reference rx : lx.curr){
+                    if(ly.curr.contains(rx)){
+                        isAlias = true;
+                        break;
+                    }
+                }
+                if(isAlias)break;
+            }
+        }
+        else{
+            lx = pts.get(fx);
+            ly = pts.get(fy);
+            for(Reference rx : lx.curr){
+                if(ly.curr.contains(rx)){
+                    isAlias = true;
+                    break;
+                }
+            }
+        }
+
+        return isAlias;
+    }
+
 }

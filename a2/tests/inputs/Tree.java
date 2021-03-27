@@ -30,11 +30,11 @@ class Tree {
         t2 = a2.lt;
         t3 = a2.rt;
 
-        /* t1 alias? c1 */
+        /* t3 alias? c2 */
         /* t1 alias? c2 */
-        /* t1 alias? t2 */
+        /* t1 alias? a2 */
+        /* t3 alias? a2 */
         /* t2 alias? t3 */
-        /* t1 alias? t3 */
         System.out.println(v);
     }
 }

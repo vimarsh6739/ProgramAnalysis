@@ -1,4 +1,4 @@
-class CHA_Tester {
+class CHA_Test1 {
     public static void main(String[] args) {
         int x;
         x = 5;
@@ -25,12 +25,12 @@ class A{
 }
 
 
-class C extends B{
+class C extends B {
     C f1;
     B f2;
 }
 
-class E extends D{
+class E extends D {
     A f0;
     B f1;
     D f2;
@@ -41,7 +41,7 @@ class F{
     B f0;
 }
 
-class G extends F{
+class G extends F {
     G f1;
     F f0;
 }

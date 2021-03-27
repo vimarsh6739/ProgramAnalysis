@@ -6,13 +6,13 @@ import tools.*;
 public class PrintPass extends GJNoArguDepthFirst<String> {
     
     CGBuilder cg;
-    String curr_cname;
-    String curr_fname;
+    String cname;
+    String fname;
 
     public PrintPass(CGBuilder cg) {
         this.cg = cg;
-        this.curr_cname="";
-        this.curr_fname="";
+        this.cname="";
+        this.fname="";
     }
     
     public String visit(NodeToken n) { return n.tokenImage; }
@@ -20,19 +20,6 @@ public class PrintPass extends GJNoArguDepthFirst<String> {
     //
     // User-generated visitor methods below
     //
-    
-    /**
-    * f0 -> MainClass()
-    * f1 -> ( TypeDeclaration() )*
-    * f2 -> <EOF>
-    */
-    public String visit(Goal n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        return _ret;
-    }
     
     /**
     * f0 -> "class"
@@ -57,15 +44,19 @@ public class PrintPass extends GJNoArguDepthFirst<String> {
     public String visit(MainClass n) {
         String _ret=null;
         String cname = "";
+        String fname = "";
         n.f0.accept(this);
         cname = n.f1.accept(this);
-        this.cg.setCurrClass(cname);
+        this.cname = cname;
+        cg.setCurrClass(cname);
+
         n.f2.accept(this);
         n.f3.accept(this);
         n.f4.accept(this);
         n.f5.accept(this);
-        n.f6.accept(this);
-        this.cg.setCurrFn("main");
+        fname = n.f6.accept(this);
+        this.fname = fname;
+        cg.setCurrFn(fname);
 
         n.f7.accept(this);
         n.f8.accept(this);
@@ -82,16 +73,6 @@ public class PrintPass extends GJNoArguDepthFirst<String> {
     }
     
     /**
-    * f0 -> ClassDeclaration()
-    *       | ClassExtendsDeclaration()
-    */
-    public String visit(TypeDeclaration n) {
-        String _ret=null;
-        n.f0.accept(this);
-        return _ret;
-    }
-    
-    /**
     * f0 -> "class"
     * f1 -> Identifier()
     * f2 -> "{"
@@ -101,9 +82,12 @@ public class PrintPass extends GJNoArguDepthFirst<String> {
     */
     public String visit(ClassDeclaration n) {
         String _ret=null;
+        String cname = "";
         n.f0.accept(this);
-        this.curr_cname = n.f1.accept(this);
-        this.cg.setCurrClass(this.curr_cname);
+        cname = n.f1.accept(this);
+        this.cname = cname;
+        cg.setCurrClass(cname);
+
         n.f2.accept(this);
         n.f3.accept(this);
         n.f4.accept(this);
@@ -123,28 +107,18 @@ public class PrintPass extends GJNoArguDepthFirst<String> {
     */
     public String visit(ClassExtendsDeclaration n) {
         String _ret=null;
+        String cname = "";
         n.f0.accept(this);
-        this.curr_cname = n.f1.accept(this);
-        this.cg.setCurrClass(this.curr_cname);
+        cname = n.f1.accept(this);
+        this.cname = cname;
+        cg.setCurrClass(cname);
+
         n.f2.accept(this);
         n.f3.accept(this);
         n.f4.accept(this);
         n.f5.accept(this);
         n.f6.accept(this);
         n.f7.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Type()
-    * f1 -> Identifier()
-    * f2 -> ";"
-    */
-    public String visit(VarDeclaration n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
         return _ret;
     }
     
@@ -165,10 +139,13 @@ public class PrintPass extends GJNoArguDepthFirst<String> {
     */
     public String visit(MethodDeclaration n) {
         String _ret=null;
+        String fname = "";
         n.f0.accept(this);
         n.f1.accept(this);
-        this.curr_fname = n.f2.accept(this);
-        this.cg.setCurrFn(this.curr_fname);
+        fname = n.f2.accept(this);
+        cg.setCurrFn(fname);
+        this.fname = fname;
+
         n.f3.accept(this);
         n.f4.accept(this);
         n.f5.accept(this);
@@ -183,93 +160,6 @@ public class PrintPass extends GJNoArguDepthFirst<String> {
     }
     
     /**
-    * f0 -> FormalParameter()
-    * f1 -> ( FormalParameterRest() )*
-    */
-    public String visit(FormalParameterList n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Type()
-    * f1 -> Identifier()
-    */
-    public String visit(FormalParameter n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> ","
-    * f1 -> FormalParameter()
-    */
-    public String visit(FormalParameterRest n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> ArrayType()
-    *       | BooleanType()
-    *       | IntegerType()
-    *       | Identifier()
-    */
-    public String visit(Type n) {
-        String _ret=null;
-        n.f0.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "int"
-    * f1 -> "["
-    * f2 -> "]"
-    */
-    public String visit(ArrayType n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "boolean"
-    */
-    public String visit(BooleanType n) {
-        String _ret=null;
-        n.f0.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "int"
-    */
-    public String visit(IntegerType n) {
-        String _ret=null;
-        n.f0.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> ( Query() )*
-    * f1 -> Statement()
-    */
-    public String visit(QStatement n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        return _ret;
-    }
-    
-    /**
     * f0 -> <SCOMMENT1>
     * f1 -> Identifier()
     * f2 -> "alias?"
@@ -280,363 +170,16 @@ public class PrintPass extends GJNoArguDepthFirst<String> {
         String _ret=null;
         String id1 = "";
         String id2 = "";
-        n.f0.accept(this);
-        id1 = n.f1.accept(this);
-        n.f2.accept(this);
-        id2 = n.f3.accept(this);
-        n.f4.accept(this);
-        if(cg.isAlias(id1, id2)){
-            System.out.println("Yes");
-        }
-        else{
-            System.out.println("No");
-        }
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Block()
-    *       | AssignmentStatement()
-    *       | ArrayAssignmentStatement()
-    *       | FieldAssignmentStatement()
-    *       | IfStatement()
-    *       | WhileStatement()
-    *       | PrintStatement()
-    */
-    public String visit(Statement n) {
-        String _ret=null;
-        n.f0.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "{"
-    * f1 -> ( QStatement() )*
-    * f2 -> "}"
-    */
-    public String visit(Block n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> "="
-    * f2 -> Expression()
-    * f3 -> ";"
-    */
-    public String visit(AssignmentStatement n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        n.f3.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> "["
-    * f2 -> Identifier()
-    * f3 -> "]"
-    * f4 -> "="
-    * f5 -> Identifier()
-    * f6 -> ";"
-    */
-    public String visit(ArrayAssignmentStatement n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        n.f3.accept(this);
-        n.f4.accept(this);
-        n.f5.accept(this);
-        n.f6.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> "."
-    * f2 -> Identifier()
-    * f3 -> "="
-    * f4 -> Identifier()
-    * f5 -> ";"
-    */
-    public String visit(FieldAssignmentStatement n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        n.f3.accept(this);
-        n.f4.accept(this);
-        n.f5.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "if"
-    * f1 -> "("
-    * f2 -> Identifier()
-    * f3 -> ")"
-    * f4 -> Statement()
-    * f5 -> "else"
-    * f6 -> Statement()
-    */
-    public String visit(IfStatement n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        n.f3.accept(this);
-        n.f4.accept(this);
-        n.f5.accept(this);
-        n.f6.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "while"
-    * f1 -> "("
-    * f2 -> Identifier()
-    * f3 -> ")"
-    * f4 -> Statement()
-    */
-    public String visit(WhileStatement n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        n.f3.accept(this);
-        n.f4.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "System.out.println"
-    * f1 -> "("
-    * f2 -> Identifier()
-    * f3 -> ")"
-    * f4 -> ";"
-    */
-    public String visit(PrintStatement n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        n.f3.accept(this);
-        n.f4.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> AndExpression()
-    *       | CompareExpression()
-    *       | PlusExpression()
-    *       | MinusExpression()
-    *       | TimesExpression()
-    *       | ArrayLookup()
-    *       | ArrayLength()
-    *       | MessageSend()
-    *       | FieldRead()
-    *       | PrimaryExpression()
-    */
-    public String visit(Expression n) {
-        String _ret=null;
-        n.f0.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> "&&"
-    * f2 -> Identifier()
-    */
-    public String visit(AndExpression n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> "<"
-    * f2 -> Identifier()
-    */
-    public String visit(CompareExpression n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> "+"
-    * f2 -> Identifier()
-    */
-    public String visit(PlusExpression n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> "-"
-    * f2 -> Identifier()
-    */
-    public String visit(MinusExpression n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> "*"
-    * f2 -> Identifier()
-    */
-    public String visit(TimesExpression n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> "["
-    * f2 -> Identifier()
-    * f3 -> "]"
-    */
-    public String visit(ArrayLookup n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        n.f3.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> "."
-    * f2 -> "length"
-    */
-    public String visit(ArrayLength n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> "."
-    * f2 -> Identifier()
-    */
-    public String visit(FieldRead n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> PrimaryExpression()
-    * f1 -> "."
-    * f2 -> Identifier()
-    * f3 -> "("
-    * f4 -> ( ArgList() )?
-    * f5 -> ")"
-    */
-    public String visit(MessageSend n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        n.f3.accept(this);
-        n.f4.accept(this);
-        n.f5.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> Identifier()
-    * f1 -> ( ArgRest() )*
-    */
-    public String visit(ArgList n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> ","
-    * f1 -> Identifier()
-    */
-    public String visit(ArgRest n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> IntegerLiteral()
-    *       | TrueLiteral()
-    *       | FalseLiteral()
-    *       | Identifier()
-    *       | ThisExpression()
-    *       | ArrayAllocationExpression()
-    *       | AllocationExpression()
-    *       | NotExpression()
-    */
-    public String visit(PrimaryExpression n) {
-        String _ret=null;
-        n.f0.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> <INTEGER_LITERAL>
-    */
-    public String visit(IntegerLiteral n) {
-        String _ret=null;
-        n.f0.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "true"
-    */
-    public String visit(TrueLiteral n) {
-        String _ret=null;
-        n.f0.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "false"
-    */
-    public String visit(FalseLiteral n) {
-        String _ret=null;
-        n.f0.accept(this);
+
+                n.f0.accept(this);
+        id1 =   n.f1.accept(this);
+                n.f2.accept(this);
+        id2 =   n.f3.accept(this);
+                n.f4.accept(this);
+        // System.out.println(id1 + "??" + id2);
+        if(cg.isAlias(id1, id2)){System.out.println("Yes");}
+        else{System.out.println("No");}
+
         return _ret;
     }
     
@@ -648,56 +191,5 @@ public class PrintPass extends GJNoArguDepthFirst<String> {
         _ret = n.f0.accept(this);
         return _ret;
     }
-    
-    /**
-    * f0 -> "this"
-    */
-    public String visit(ThisExpression n) {
-        String _ret=null;
-        n.f0.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "new"
-    * f1 -> "int"
-    * f2 -> "["
-    * f3 -> Identifier()
-    * f4 -> "]"
-    */
-    public String visit(ArrayAllocationExpression n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        n.f3.accept(this);
-        n.f4.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "new"
-    * f1 -> Identifier()
-    * f2 -> "("
-    * f3 -> ")"
-    */
-    public String visit(AllocationExpression n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        n.f2.accept(this);
-        n.f3.accept(this);
-        return _ret;
-    }
-    
-    /**
-    * f0 -> "!"
-    * f1 -> Identifier()
-    */
-    public String visit(NotExpression n) {
-        String _ret=null;
-        n.f0.accept(this);
-        n.f1.accept(this);
-        return _ret;
-    }
+
 }

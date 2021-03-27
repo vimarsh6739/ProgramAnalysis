@@ -1,36 +1,51 @@
 class LinkedList {
     public static void main(String[] args) {
-        List head ; List l1; List l2; List l3;
-        List t1; List t2; List t3;
-	    Element el01 ;
+        
+        List head; 
+        
+        List l1; 
+        List t1; 
+        List t2; 
+	    
+        Element el01 ;
 	    Element el02 ;
-	    Element el03 ;
+        
         boolean ret;
         int v;
+        
         head = new List();
         el01 = new Element();
         el02 = new Element();
-        el03 = new Element();
         
         v=100;
+        
         ret = el01.init(v);
-        v=200;
+        v = el01.getVal();
+        
         ret = el02.init(v);
-        v=300;
-        ret = el03.init(v);
+        v=el02.getVal();
+        
         
         ret = head.init(el01);
-        
+        ret = el01.equal(el02);
+
+        if(ret){
+            v = 12;
+            ret = el02.init(v);
+        }
+        else {
+            v = el02.getVal();
+            ret = el01.init(v);
+        }
+
         l1 = head.push_back(el02);
-        l2 = head.push_back(el03);
-        l3 = head.push_back(el03);
         t1 = head.next;
         t2 = l1.next;
-        t3 = l2.next;
         
-        /* t1 alias? l1 */
-        /* t2 alias? l2 */
-        /* t3 alias? l3 */
+        /* t2 alias? head */
+        /* t1 alias? head */
+        /* t1 alias? t2 */
+        /* l1 alias? head */
         System.out.println(v);
     }
 }
@@ -49,6 +64,7 @@ class Element{
         return val;
     }
 
+    
     public boolean equal(Element other){
         Element e;
         boolean ret;
@@ -68,6 +84,7 @@ class Element{
         b1 = val1m < val2;
         b2 = val2m < val1;
         f = b1 && b2;
+        /* e alias? other */
         ret = f;
         return ret;
     }
@@ -92,16 +109,18 @@ class List{
         List ptr;
         List tmp;
         List aux;
+        List THIS;
         boolean isNotEnd;
         boolean FALSE;
         boolean isEnd;
         FALSE=false;
         ptr = this;
+        THIS = this;
         ret=true;
         isEnd = ptr.end;
         isNotEnd = !isEnd;
 
-        while(isNotEnd){
+        while(isNotEnd) {
             tmp = ptr.next;
             ptr = tmp;
             isEnd=ptr.end;
@@ -111,6 +130,7 @@ class List{
         ptr.end=FALSE;
         aux = new List();
         ret = aux.init(e);
+        aux.next = THIS;
 
         /* ptr alias? aux */
         /* tmp alias? ptr */
