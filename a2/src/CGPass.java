@@ -416,6 +416,12 @@ public class CGPass extends GJNoArguDepthFirst<String> {
         this.e_arg2=  n.f4.accept(this);
         n.f5.accept(this);
         this.op=Operations.STORE;
+        // System.out.println(this.op);
+        // System.out.println(x);
+        // System.out.println(this.e_arg1);
+        // System.out.println(this.e_arg2);
+        // System.out.println(this.e_args.isEmpty());
+    
         cg.addStatement(this.op, x, this.e_arg1, this.e_arg2, this.e_args);       
         this.op=Operations.NONE;
         this.e_arg1="";

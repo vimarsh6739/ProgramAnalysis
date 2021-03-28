@@ -44,6 +44,7 @@ public class Main {
             // Second pass
             CGPass p2 = new CGPass(cg);
             root.accept(p2);
+            
             cg.buildLattice(); 
             
             cg.buildPointsToSets(showProgress);
@@ -55,7 +56,7 @@ public class Main {
             // Final pass
             PrintPass p3 = new PrintPass(cg);
             root.accept(p3);
-
+            
             // System.out.println("Program Parsed Successfully");
         } catch (ParseException e) {
             System.out.println(e.toString());

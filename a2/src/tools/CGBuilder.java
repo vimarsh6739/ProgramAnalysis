@@ -151,6 +151,8 @@ public class CGBuilder {
      */
     public void addStatement(Operations op, String x, String e1, String e2, List<String> eargs) {
         Field xf = this.curr_fn.getField(x);
+        // System.out.println(this.curr_fn.fMap.keySet());
+        // System.out.println(xf);
         Field e1f = null;
         Field e2f = null;
         List<Field> eargf= null;
@@ -208,6 +210,8 @@ public class CGBuilder {
                 break;
 
             case STORE:
+                // System.out.println(this.cMap.keySet());
+                // System.out.println(xf.type);
                 e1f = this.cMap.get(xf.type).getField(e1);
                 e2f = this.curr_fn.getField(e2);
                 this.curr_fn.addStatement(op, xf, e1f, e2f);
@@ -441,6 +445,11 @@ public class CGBuilder {
     public boolean isAlias(String x, String y){
         Field fx = this.curr_fn.getField(x);
         Field fy = this.curr_fn.getField(y);
-        return this.curr_fn.checkAlias(fx, fy);
+        if(fx.type.equals("int") || fx.type.equals("boolean") || fy.type.equals("int")||fy.type.equals("boolean")){
+            return false;
+        } 
+        else{
+            return this.curr_fn.checkAlias(fx, fy);
+        }  
     }
 }

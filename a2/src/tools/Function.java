@@ -155,13 +155,21 @@ public class Function {
             // System.out.println(lthis);
             Lattice lthis_cp = null;;
             Lattice lw = pts.get(w);
-            
+            // System.out.println(v.name + " is v");
+            // System.out.println(f);
+            // System.out.println(f.name + " is f");
+            // System.out.println(w.name + " is w");
+
             if(v instanceof LocalField){
                 lv = pts.get(v);
+                // System.out.println(lv);
                 lv_cp = lv.copy();
                 for(Reference r : lv_cp.curr){
                     lf = r.getLattice(f);
                     
+                    // System.out.println(lw);
+                    // System.out.println(r);
+                    // System.out.println(lf);
                     // Update the reference lattice values
                     lf.meet(lw);
                 }
@@ -315,6 +323,9 @@ public class Function {
         @Override
         void analyzeStatement() {
             Lattice lv = null;
+            // System.out.println(this);
+            // System.out.println(T.cname);
+            // System.out.println(fMap.keySet());
             if(v instanceof LocalField){
                 // Just add the reference to lattice
                 lv = pts.get(v);
@@ -325,6 +336,8 @@ public class Function {
             if(v instanceof MemberField){
                 Lattice lthis = pts.get(fMap.get("this"));
                 Lattice lthis_cp = lthis.copy();
+                // System.out.println(lthis);
+                // System.out.println(pts.get(Function.this.fields.get(0)));
                 for(Reference rt : lthis_cp.curr){
                     lv = rt.getLattice(v);
                     // Add the reference to the field
@@ -463,14 +476,14 @@ public class Function {
          * w.
          */
         void assignThis(){
-            Lattice lformal = n.pts.get(n.fields.get(0));
+            Lattice lformal = n.pts.get(n.fMap.get("this"));
             Lattice lactual = null;
             if(w instanceof LocalField){
                 lactual = pts.get(w);
                 for(Reference rw : lactual.curr){
                     // Add rw to lformal iff the current function is visible in
                     // rw.ci
-                    for(Function fpos : rw.ci.functions){
+                    for(Function fpos : rw.ci.ref_accessible_fns){
                         if(fpos.equals(n)){
                             lformal.addRef(rw);
                         }
@@ -485,7 +498,7 @@ public class Function {
                     for(Reference rw : lactual_cp.curr){
                         // Add rw to lformal iff the current function is visible in
                         // rw.ci
-                        for(Function fpos : rw.ci.functions){
+                        for(Function fpos : rw.ci.ref_accessible_fns){
                             if(fpos.equals(n)){
                                 lformal.addRef(rw);
                             }

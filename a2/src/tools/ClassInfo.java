@@ -7,11 +7,12 @@ import java.util.List;
  * Stores information about the classes, namely accessible fields and functions(vtable)
  */
 public class ClassInfo {
-    String cname;               // name of class
-    String pname;               // name of parent class(if present)
-    List<Field> fields;         // fields of current class 
-    List<Function> functions;   // functions of curr class(includes superclass)
-    int num_refs;               // number of references of current class
+    String cname;                       // name of class
+    String pname;                       // name of parent class(if present)
+    List<Field> fields;                 // fields of current class 
+    List<Function> functions;           // functions of curr class(includes superclass and subclass)
+    List<Function> ref_accessible_fns;  // includes only the functions accessible by an instance of the current class
+    int num_refs;                       // number of references of current class
     
     public ClassInfo(String cname) {
         this(cname, null);
@@ -22,10 +23,11 @@ public class ClassInfo {
         this.pname = pname;
         this.fields = new ArrayList<>();
         this.functions = new ArrayList<>();
+        this.ref_accessible_fns = new ArrayList<>();
         this.num_refs = 0;
     }
 
-    void addMethod(Function f){functions.add(f);}
+    void addMethod(Function f){functions.add(f);ref_accessible_fns.add(f);}
 
     /**
      * Returns function object of current class
@@ -150,6 +152,7 @@ public class ClassInfo {
         // Merge functions using shallow copy
         for(Function f: p.functions) {
             this.functions.add(f);
+            this.ref_accessible_fns.add(f);
         }
 
         this.pruneAncestorEntries();
@@ -161,13 +164,15 @@ public class ClassInfo {
     void pruneAncestorEntries(){
         
         List<Function> l = new ArrayList<>();
-        
+        List<Function> ref_l = new ArrayList<>();
+
         int n = this.functions.size();
         for(int i = 0; i < n;++i){
             Function fi = this.functions.get(i);
             boolean add = true;
             if(fi.cname.equals(this.cname)){
                 l.add(fi);
+                ref_l.add(fi);
             }
             else{
                 for( int j = 0;j<n;++j){
@@ -183,11 +188,13 @@ public class ClassInfo {
 
                 if(add){
                     l.add(fi);
+                    ref_l.add(fi);
                 }
             }
         }
 
         this.functions = l;
+        this.ref_accessible_fns = ref_l;
     }
     
     /**
@@ -205,11 +212,14 @@ public class ClassInfo {
                 sb.append(sp + "- " + i.type + " " + i.name + " [ from "+ ((BasicMemberField)i).cname +" ]\n");
             }
         }
-        sb.append("  ->" + "Functions");
+        sb.append("  ->" + "Functions\n");
         for(Function f : functions) {
             sb.append(sp + "- "+f.cname+"::"+ f.fname + "()\n" );
         }
-        
+        sb.append("  ->"+"Ref Accessible Functions\n");
+        for(Function f : ref_accessible_fns){
+            sb.append(sp + "- "+f.cname+"::"+ f.fname + "()\n" );
+        }
         return sb.toString();
     }
     
