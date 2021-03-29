@@ -7,8 +7,8 @@
 
 singlerun () {
     input=$1
-    outdir=$2
-    expdir=$3
+    # outdir=$2
+    # expdir=$3
     bname=$(basename ${input})
     
     filename=${bname%.java}
@@ -21,25 +21,28 @@ singlerun () {
     # Create an empty file
     touch ${output}
 
-    # Populate file
-    printf "Testing ${bname}: "
+    fmt_pass="%-40s${GREEN}%-10s${NC}\n"
+    fmt_fail="%-40s${RED}%-10s${NC}\n"
+
+    # Populate file 
     (cat $input | java -jar dist/AliasAnalysis.jar)  > ${output} 
     
     # Compare with expected output
-
     diff -w ${output} ${expout} &> /dev/null
 
     if [ $? -ne 0 ]; then
-        printf "${RED}FAIL${NC}\n"
+        printf ${fmt_fail} "Testing ${bname}: " "FAIL"
+        exit 1
     else 
-        printf "${GREEN}PASS${NC}\n"
+        printf ${fmt_pass} "Testing ${bname}: " "PASS"
     fi 
 }
 
-RED='\033[0;31m'    # Red color
-NC='\033[0m'        # No Color
-GREEN='\033[0;32m'  # Green Color
-BLUE='\033[0;34m'   # Blue Color
+export RED='\033[0;31m'    # Red color
+export NC='\033[0m'        # No Color
+export GREEN='\033[0;32m'  # Green Color
+export BLUE='\033[0;34m'   # Blue Color
+
 # Export function to be used by GNU Parallel 
 export -f singlerun
 
@@ -65,22 +68,36 @@ if [ -z "$3" ]
     outdir="tests/temp"
 fi
 
+export expdir
+export outdir
+
 # Make the output directory if it doesn't exist
 mkdir -p ${outdir}
 
 # Compile all classes
 echo "Compiling source"
-ant
+ant -v
+
+# Check number of failures
+fail=0
 
 # Compute outputs for all inputs
 if type parallel >&  /dev/null; then
     # Evaluate parallely if GNU parallel is available 
-    parallel singlerun ::: ${indir}/* ::: ${outdir} ::: ${expdir}
+    parallel singlerun ::: "${indir}"/*.java
+    fail=$?
 else
+	fail=0
     echo -e "${RED}GNU Parallel NOT DETECTED."
     echo -e "Beginning serial execution of tests.${NC}"
     # Evaluate serially
     for FILE in "${indir}"/*.java ; do
         singlerun ${FILE} ${outdir} ${expdir}
+        fail=$(( $fail + $? ))
     done
+fi
+
+# Return based on value of fail
+if [ $fail -ne 0 ] ; then 
+	exit 1
 fi
