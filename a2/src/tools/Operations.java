@@ -17,6 +17,7 @@ public enum Operations {
     ARRAYLENGTH,
     LOAD,
     FCALL,
+    ALLOCATEFCALL,
     ASSIGNCONST,
     ASSIGN,
     DOUBLEASSIGN,

@@ -655,6 +655,188 @@ public class Function {
         }
     }
 
+    /**
+     * {@code v = new A().n(...)}
+     */
+    class AllocateCallLabel extends Mod{
+        Reference T;
+        Function n;
+        List<Field> args;
+        Operations sop;
+        boolean addToQueue;
+
+        /**
+         * Default constructor
+         * @param v
+         * @param op
+         * @param T
+         * @param sop
+         * @param n
+         * @param args
+         */
+        public AllocateCallLabel(Field v, Operations op, Reference T, Operations sop, Function n, List<Field> args) {
+            super(v, op);
+            this.T = T;
+            this.n=n;
+            this.sop=sop;
+            this.args = new ArrayList<>(args);
+            this.addToQueue=false;
+        }
+
+        /**
+         * Assigns this pointer of called function
+         */
+        void assignThis(){
+            Lattice lformal = n.pts.get(n.fMap.get("this"));
+            lformal.addRef(this.T);
+
+            if(lformal.hasChanged()){
+                this.addToQueue = true;
+                lformal.updatePrev();
+            }
+        }
+
+        /**
+         * Assign formal parameter at index to arg
+         * @param i Index
+         * @param actual The current actual parameter
+         */
+        void assignFormal(int i, Field actual){
+            Lattice lformal = null;
+            Lattice lactual = null;
+            if(actual instanceof LocalField){
+                lformal = n.pts.get(n.fields.get(i));
+                lactual = pts.get(actual);
+
+                // update lformal
+                lformal.meet(lactual);
+                if(lformal.hasChanged()){
+                    this.addToQueue = true;
+                    lformal.updatePrev();
+                }
+            }
+            else if(actual instanceof MemberField){
+                lformal = n.pts.get(n.fields.get(i));
+                Lattice lthis = pts.get(fMap.get("this"));
+                Lattice lthis_cp = lthis.copy();
+                
+                for(Reference rt : lthis_cp.curr){
+                    lactual = rt.getLattice(actual);
+                    // System.out.println(lformal.equals(lactual));
+                    // System.out.println("Modifyme");
+                    // update for all possible parameters 
+                    lformal.meet(lactual);
+                    if(lformal.hasChanged()){
+                        this.addToQueue = true;
+                        lformal.updatePrev();
+                    }
+                }
+            }
+            else if(actual instanceof BasicField){
+                // do nothing
+            }
+        }
+
+        /**
+         * Assign return value of function to v
+         */
+        void assignReturn(){
+            // Return value need not be in n.pts
+            Lattice lv = null;
+            Lattice lret = null;
+            Lattice lthis = null;
+            Lattice lthis_cp = null;
+            Lattice lnthis = null;
+            Lattice lnthis_cp=null;
+            lret = n.pts.get(n.ret_field);
+            
+            if(v instanceof LocalField) {
+                lv = pts.get(v);
+                if(n.ret_field instanceof LocalField){
+                    lv.meet(lret);
+                }
+                else if(n.ret_field instanceof MemberField){
+                    lnthis = n.pts.get(n.fMap.get("this"));
+                    lnthis_cp = lnthis.copy();
+                    for(Reference rnt : lnthis_cp.curr) {
+                        lret = rnt.getLattice(n.ret_field);
+                        // Take meet with lret
+                        lv.meet(lret);
+                    }
+                }else{
+                    // type error
+                    // System.err.println("type error!");
+                }
+            } 
+            else if(v instanceof MemberField){
+                lthis = pts.get(fMap.get("this"));
+                lthis_cp = lthis.copy();
+                
+                if(n.ret_field instanceof LocalField){
+                    for(Reference r : lthis_cp.curr){
+                        lv = r.getLattice(v);
+                        // Take meet with lret
+                        lv.meet(lret);
+                    }
+                }
+                else if(n.ret_field instanceof MemberField){
+                    lnthis = n.pts.get(n.fMap.get("this"));
+                    lnthis_cp = lnthis.copy();
+                    for(Reference rnt : lnthis_cp.curr){
+                        lret = rnt.getLattice(n.ret_field);
+
+                        for(Reference rv : lthis_cp.curr){
+                            lv = rv.getLattice(v);
+                            // Take meet with lret
+                            lv.meet(lret);
+                        }
+                    }
+                }
+                else{
+                    // type error
+                    // System.err.println("Type error");
+                }
+            }
+            else{
+                // do nothing
+            }
+        }
+
+        @Override
+        void analyzeStatement() {
+
+            this.addToQueue = false;
+            // Do formals = actuals for function
+            
+            this.assignThis();
+            // this.assignFormal(0, w);
+            for(int i=0;i<args.size();++i){
+                this.assignFormal(i+1, args.get(i));
+            }
+
+            // Do v = return_val
+            this.assignReturn();
+        }
+        
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            if(v instanceof MemberField)sb.append("this.");
+            sb.append(v.name + " = new ");
+            sb.append(T.cname+"()."+n.fname+"(");
+            String pre="";
+            for(Field a : args){
+                sb.append(pre);
+                pre=",";
+                if(a instanceof MemberField || a instanceof BasicMemberField)
+                    sb.append("this.");
+                sb.append(a.name);
+            }
+            sb.append(") ;    [ class "+n.cname+" ]\t[ "+T.cname+"@"+T.ref_id+" ]");
+            return sb.toString();
+        }
+    }
+
     String fname;   
     String cname;
     ClassInfo ci;                               // Class of current function
@@ -756,11 +938,11 @@ public class Function {
 
     /**
      * Function call
-     * @param op    Operation performed
-     * @param v     The result variable
-     * @param w    Calling object
+     * @param op   Operation performed    
+     * @param v    The result variable    
+     * @param w    Calling object         
      * @param n    Function list(Afer CHA)
-     * @param args Function call args
+     * @param args Function call args     
      */
     void addStatement(Operations op, Field v, Field w, List<Function> n, List<Field> args){
         for(Function n1 : n) {
@@ -787,6 +969,42 @@ public class Function {
                 }
             }
             flow.add(stmt);
+        }
+    }
+
+    /**
+     * Function call with allocation combined
+     * @param op    Operation performed    
+     * @param v     The result variable    
+     * @param r     Calling Reference        
+     * @param n     Function list(Afer CHA)
+     * @param args  Function call args     
+     */
+    void addStatement(Operations op, Field v, Reference r, List<Function> n, List<Field> args) {
+        for(Function n1 : n){
+
+            // Check if function can be called by current reference
+            boolean add = false;
+            for(Function g : r.ci.ref_accessible_fns){
+                if(n1.equals(g)){
+                    add = true;
+                    break;
+                }
+            }
+            // Add if yes
+            if(add) {
+                Mod stmt = null;
+                this.callSet.add(n1);
+                if(v instanceof LocalField){
+                    // v = new A().n(...)
+                    stmt = new AllocateCallLabel(v, Operations.ASSIGN,r,Operations.ALLOCATE,n1,args);
+                }
+                else {
+                    // this.v = new A().n(...)
+                    stmt = new AllocateCallLabel(v, Operations.STORE,r,Operations.ALLOCATE,n1,args);
+                }
+                flow.add(stmt);
+            }
         }
     }
 
@@ -1026,6 +1244,13 @@ public class Function {
                 }
                 // Don't add multiple times
                 fcall.addToQueue = false;
+            } else if(stmt instanceof AllocateCallLabel){
+                AllocateCallLabel fcall = (AllocateCallLabel)stmt;  
+                if(fcall.addToQueue == true){
+                    res.add(fcall.n);
+                }
+                // Don't add multiple times
+                fcall.addToQueue = false;
             }
         }
 
@@ -1151,5 +1376,4 @@ public class Function {
 
         return isAlias;
     }
-
 }

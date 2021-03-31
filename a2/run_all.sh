@@ -76,7 +76,7 @@ mkdir -p ${outdir}
 
 # Compile all classes
 echo "Compiling source"
-ant -v
+ant 
 
 # Check number of failures
 fail=0

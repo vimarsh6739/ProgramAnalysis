@@ -156,7 +156,10 @@ public class CGBuilder {
         Field e1f = null;
         Field e2f = null;
         List<Field> eargf= null;
-        
+        ClassInfo c = null;
+        ClassInfo caller = null;
+        Reference r = null;
+        List<Function> callerFlist = null;
         switch(op) {
             case AND:
             case LEQ:
@@ -181,8 +184,8 @@ public class CGBuilder {
             case ALLOCATE:                
             case ARRAYALLOCATE:
                 // Make a new reference & update refList
-                ClassInfo c = cMap.get(e1);
-                Reference r = new Reference(c);
+                c = cMap.get(e1);
+                r = new Reference(c);
                 refList.add(r);
                 this.curr_fn.addStatement(op, xf, r);
                 break;
@@ -197,10 +200,20 @@ public class CGBuilder {
                 // Possible as we know the types of every variable currently
                 e1f = this.curr_fn.getField(e1);
                 
-                ClassInfo caller = this.cMap.get(e1f.type);
-                List<Function> callerFlist = caller.getMethods(e2);
+                caller = this.cMap.get(e1f.type);
+                callerFlist = caller.getMethods(e2);
                 eargf = eargs.stream().map(elt -> this.curr_fn.getField(elt)).collect(Collectors.toList());                
                 this.curr_fn.addStatement(op, xf, e1f, callerFlist, eargf);
+                break;
+            
+            case ALLOCATEFCALL:
+                caller = cMap.get(e1);
+                r = new Reference(caller);
+                refList.add(r);
+                
+                callerFlist = caller.getMethods(e2);
+                eargf = eargs.stream().map(elt -> this.curr_fn.getField(elt)).collect(Collectors.toList());                
+                this.curr_fn.addStatement(op, xf, r, callerFlist, eargf);
                 break;
 
             case LOAD:
@@ -416,9 +429,9 @@ public class CGBuilder {
             if(f.summaryChange && !f.isMain) {
                 // Add all callers of f to worklist
                 for(Function g : this.flist){
-                    if(g.calls(f)){
+                    // if(g.calls(f)){
                         worklist.add(g);
-                    }
+                    // }
                 }
             }
 
@@ -435,7 +448,7 @@ public class CGBuilder {
             f.resetChangeFlags();
         }
     }
-
+    
     /**
      * Checks if the 2 variables in the current function are aliases or not
      * @param x

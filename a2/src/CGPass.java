@@ -627,13 +627,28 @@ public class CGPass extends GJNoArguDepthFirst<String> {
     */
     public String visit(MessageSend n) {
         String _ret=null;
-        this.e_arg1 = n.f0.accept(this);
+        String temp = "";
+
+        temp = n.f0.accept(this);
+        if(this.op == Operations.ALLOCATE) {
+            // this.earg_1 already has classname
+        }
+        else {
+            this.e_arg1 = temp;
+        }
+        
         n.f1.accept(this);
         this.e_arg2 = n.f2.accept(this);
         n.f3.accept(this);
         n.f4.accept(this);
         n.f5.accept(this);
-        this.op=Operations.FCALL;
+
+        if(this.op == Operations.ALLOCATE) {
+            this.op = Operations.ALLOCATEFCALL;
+        }
+        else {
+            this.op=Operations.FCALL;
+        }
         return _ret;
     }
     
