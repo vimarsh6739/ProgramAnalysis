@@ -1,7 +1,7 @@
 # Why am I doing this?
 # It looks cool, that's why
 
-name: Vimarsh's JTB CI
+name: jtbCI
 
 # Controls when the action will run. 
 on:
@@ -27,7 +27,8 @@ jobs:
         java-version: '11.0.9'
         java-package: jdk
         architecture: x64
-    - name: Compile and run Alias Analysis
-      run:
+    - name:  Test Alias Analyzer
+      run: |
         # Run all testcases
-        cd a2 && ./run_all.sh
+        cd a2
+        ./run_all.sh
