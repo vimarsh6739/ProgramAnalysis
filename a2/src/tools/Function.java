@@ -1,6 +1,5 @@
 package tools;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Function {
 
@@ -452,7 +451,7 @@ public class Function {
         List<Field> args;
         Operations sop;     // whether there is a implicit this in the operation
         boolean addToQueue;
-
+        boolean isCalled;   // Check if function is called for current set
         /**
          * Default constructor for CallLabel
          * @param v Assigned return field
@@ -469,6 +468,7 @@ public class Function {
             this.n = n;
             this.args = new ArrayList<>(args);
             this.addToQueue = false;
+            this.isCalled = false;
         }
         
         /**
@@ -486,6 +486,7 @@ public class Function {
                     for(Function fpos : rw.ci.ref_accessible_fns){
                         if(fpos.equals(n)){
                             lformal.addRef(rw);
+                            this.isCalled = true;
                         }
                     }
                 }
@@ -501,6 +502,7 @@ public class Function {
                         for(Function fpos : rw.ci.ref_accessible_fns){
                             if(fpos.equals(n)){
                                 lformal.addRef(rw);
+                                this.isCalled=true;
                             }
                         }
                     }
@@ -623,16 +625,20 @@ public class Function {
         void analyzeStatement() {
             
             this.addToQueue = false;
-            // Do formals = actuals for function
+            // Only process formal and return vals if function is actually called
+            this.isCalled = false;
             
             this.assignThis();
-            // this.assignFormal(0, w);
-            for(int i=0;i<args.size();++i){
-                this.assignFormal(i+1, args.get(i));
-            }
 
-            // Do v = return_val
-            this.assignReturn();
+            if(this.isCalled) {
+                // Do formals = actuals for function
+                for(int i=0;i<args.size();++i){
+                    this.assignFormal(i+1, args.get(i));
+                }
+                
+                // Do v = return_val
+                this.assignReturn();
+            }
         }
 
         @Override
@@ -664,7 +670,7 @@ public class Function {
         List<Field> args;
         Operations sop;
         boolean addToQueue;
-
+        boolean isCalled;
         /**
          * Default constructor
          * @param v
@@ -681,6 +687,7 @@ public class Function {
             this.sop=sop;
             this.args = new ArrayList<>(args);
             this.addToQueue=false;
+            this.isCalled = false;
         }
 
         /**
@@ -688,7 +695,13 @@ public class Function {
          */
         void assignThis(){
             Lattice lformal = n.pts.get(n.fMap.get("this"));
-            lformal.addRef(this.T);
+            
+            for(Function fpos : this.T.ci.ref_accessible_fns){
+                if(fpos.equals(this.n)){
+                    lformal.addRef(this.T);
+                    this.isCalled = true;
+                }
+            }
 
             if(lformal.hasChanged()){
                 this.addToQueue = true;
@@ -805,17 +818,19 @@ public class Function {
         @Override
         void analyzeStatement() {
 
-            this.addToQueue = false;
-            // Do formals = actuals for function
-            
+            this.addToQueue = false;    
+            this.isCalled = false;
             this.assignThis();
-            // this.assignFormal(0, w);
-            for(int i=0;i<args.size();++i){
-                this.assignFormal(i+1, args.get(i));
-            }
+            if(this.isCalled == true){
 
-            // Do v = return_val
-            this.assignReturn();
+                // Do formals = actuals for function
+                for(int i=0;i<args.size();++i){
+                    this.assignFormal(i+1, args.get(i));
+                }
+                
+                // Do v = return_val
+                this.assignReturn();
+            }
         }
         
         @Override
