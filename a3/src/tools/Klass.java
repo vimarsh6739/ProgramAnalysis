@@ -8,7 +8,7 @@ public class Klass {
     boolean isThread;
     List<Field> cFields;
     List<Field> lFields;
-    List<Stmt> cfg;             // CFG corresponding to curr class
+    List<BB> cfg;             // CFG corresponding to curr class
 
     public Klass(String cname, boolean isThread) {
         this.cname = cname;
@@ -17,5 +17,4 @@ public class Klass {
         this.lFields = new ArrayList<>(); 
         this.cfg     = new ArrayList<>();
     }
-    
 }

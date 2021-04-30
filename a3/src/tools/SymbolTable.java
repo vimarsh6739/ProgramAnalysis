@@ -77,5 +77,11 @@ public class SymbolTable {
             }
         }
 	}
+
+	public void setClass(String cname) {
+        this.curr_class = this.cMap.get(cname);
+	}
+
+	public void resetClass() {this.curr_class=null;}
     
 }
