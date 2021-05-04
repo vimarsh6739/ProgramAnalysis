@@ -20,26 +20,25 @@ public class BB {
     int tid;                    // ThreadId(in PEG)
 
     public BB() {
-        op=NodeType.NOP;
-        inEdges=null;
-        outEdges=null;
-        ann=null;
-        bbid=-1;
-        tid=-1;
+        op=NodeType.NOP; bbid=tid=-1;
+        inEdges=outEdges=flowInfo=null;
     }
-
-    public BB(NodeType op, int bbid, int tid) {
-        this.op = op;
-        this.bbid = bbid;
-        this.tid = tid;
-        this.inEdges = new ArrayList<>();
-        this.flowInfo = new ArrayList<>();
-        this.outEdges = new ArrayList<>();
-    }
-
+    
     public BB(NodeType op, int bbid, int tid, String ann){
-        this(op, bbid,tid);
+        this.op=op;
+        this.bbid=bbid;
+        this.tid=tid;
         this.ann = ann;
+        this.inEdges    = new ArrayList<>();
+        this.flowInfo   = new ArrayList<>();
+        this.outEdges   = new ArrayList<>();
+        
     }
+
+    /**
+     * Overridden method for recursive basic blocks
+     * @param blk
+     */
+	public void addNode(BB blk) {}
 
 }

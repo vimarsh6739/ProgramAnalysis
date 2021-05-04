@@ -1,7 +1,9 @@
 package tools;
 
 public class WaitingPredNode extends BB {
-    public WaitingPredNode(int bbid,int tid) {
-        super(NodeType.WAIT_PRED, bbid,tid);
+    Field buffer;
+    public WaitingPredNode(int bbid,int tid,Field buffer) {
+        super(NodeType.WAITING_PRED, bbid,tid,null);
+        this.buffer = buffer;
     }
 }

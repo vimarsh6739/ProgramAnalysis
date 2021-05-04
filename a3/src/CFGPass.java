@@ -192,6 +192,10 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(MethodDeclaration n) {
       String _ret=null;
+      // Add begin node
+      this.op = NodeType.BEGIN;
+      this.arg1=this.arg2=this.arg3=null;
+      this.st.addStatement(op, this.lbl, this.arg1, this.arg2, this.arg3);
       n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
@@ -358,11 +362,13 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(IfStatement n) {
       String _ret=null;
+      
       n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
       n.f3.accept(this);
       n.f4.accept(this);
+
       n.f5.accept(this);
       n.f6.accept(this);
       return _ret;

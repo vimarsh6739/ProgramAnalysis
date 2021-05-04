@@ -1,7 +1,9 @@
 package tools;
 
 public class NotifiedEntryNode extends BB {
-    public NotifiedEntryNode(int bbid,int tid) {
-        super(NodeType.NOTIFY_ENTRY,bbid,tid);
+    Field buffer;
+    public NotifiedEntryNode(int bbid,int tid,Field buffer) {
+        super(NodeType.NOTIFIED_ENTRY,bbid,tid,null);
+        this.buffer=buffer;
     }
 }

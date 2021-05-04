@@ -1,22 +1,24 @@
 package tools;
 
 public class IfElseNode extends BB {
-    BB ifBranch;
-    BB elseBranch;
+    BB ifNode;
+    BB elseNode;
     Field cond;
-    
-    public IfElseNode(NodeType op,int bbid,int tid,Field cond) {
-        super(op, bbid,tid);
-        ifBranch=null;
-        elseBranch=null;
-        this.cond=cond;
-    }   
     
     public IfElseNode(NodeType op, int bbid,int tid, String ann,Field cond){
         super(op,bbid,tid,ann);
-        ifBranch=null;
-        elseBranch=null;  
+        ifNode=null;
+        elseNode=null;  
         this.cond=cond;
     }
     
+    @Override
+    public void addNode(BB blk){
+        if(this.ifNode == null){
+            this.ifNode = blk;
+        }
+        else{
+            this.elseNode = blk;
+        }
+    }
 }

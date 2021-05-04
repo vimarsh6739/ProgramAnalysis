@@ -19,10 +19,12 @@ public class SymbolTable {
     int N_BLKS;
     Map<Field,Integer> thFieldMap;      // maps field to it's tid
     Map<Integer,Klass> thClassMap;      // maps threadId to it's class
-    Map<Integer,Deque<BlockNode>> thStackMap;  // maps threadId to current stack value
+    Map<Integer,Deque<BB>> thStackMap;  // maps threadId to current stack value
     Map<Integer, List<BB>> thPEGMap;    // PEG for respective thread
     Map<Integer, BB> thLastStmt;        // last added toplevel statement
-
+    
+    Map<Field, List<BB>> monitor;       // monitor map for sync buffers   
+    
     Klass curr_class;
     boolean inRun;
     
@@ -103,11 +105,11 @@ public class SymbolTable {
             List<BB> curr_cfg = new ArrayList<>();
             this.thPEGMap.put(tid, curr_cfg);
 
-            Deque<BlockNode> curr_stack = new ArrayDeque<>();
+            Deque<BB> curr_stack = new ArrayDeque<>();
             this.thStackMap.put(tid, curr_stack);
         }
 
-        // Set st in BB
+        /** Set symbol table for all basic blocks */
         BB.st = this;
     }
 
@@ -115,12 +117,10 @@ public class SymbolTable {
     
     public void resetClass() {this.curr_class=null;}
     
-    public void addBlock(){
+    public void pushStack(int tid, BB blk){this.thStackMap.get(tid).push(blk);}
 
-    }
-
-    public void exitBlock(){
-        Deque<BlockNode> t_stack;
+    public void popStack(){
+        Deque<BB> t_stack;
         for(int tid : this.thStackMap.keySet()){
             if(this.thClassMap.get(tid) == this.curr_class){
                 t_stack = this.thStackMap.get(tid);
@@ -129,38 +129,49 @@ public class SymbolTable {
         }
     }
 
-    List<BB> getLayerList(int tid){
-        Deque<BlockNode> t_stack = this.thStackMap.get(tid);
+    void updateEntry(int tid, BB blk){
+        Deque<BB> t_stack = this.thStackMap.get(tid);
+        BB top;
         if(t_stack.isEmpty()){
-            return this.thPEGMap.get(tid);
+            this.thPEGMap.get(tid).add(blk);
         }
         else{
-            return t_stack.peek().subBlocks;
+            top = t_stack.peek();
+            top.addNode(blk);
         }
     }
 
     /**
      * Add basic blocks to PEG
-     * @param op    Basic block type
-     * @param lbl   Label
-     * @param f1    Arg1
-     * @param f2    Arg2
-     * @param f3    Arg3
+     * @param op        Basic block type
+     * @param lbl       Label
+     * @param arg1      Arg1
+     * @param arg2      Arg2
+     * @param arg3      Arg3
      */
-    public void addStatement(NodeType op, String ann, String f1, String f2, String f3){
+    public void addStatement(NodeType op, String ann, String arg1, String arg2, String arg3){
+        // basic block to be added
         BB blk; 
+
+        // Field value = null for constants or booleans
+        Field f1,f2,f3;
+        f1 = this.curr_class.getField(arg1);
+        f2 = this.curr_class.getField(arg2);
+        f3 = this.curr_class.getField(arg3);
+        
         for(int tid : this.thClassMap.keySet()){
             if(this.thClassMap.get(tid) == this.curr_class){
                 int bbid = this.getBlkId();
-                List<BB> curr_layer = this.getLayerList(tid);
 
                 switch(op){
                     case BEGIN:
+                        blk = new BeginNode(op,bbid,tid);
+                        this.updateEntry(tid, blk);
                         break;
         
                     case END:
-                        blk = new ThEndNode(op, bbid, tid);
-                        curr_layer.add(blk);
+                        blk = new EndNode(op, bbid, tid);
+                        this.updateEntry(tid, blk);
                         break;
                     
                     case ADD:
@@ -171,36 +182,68 @@ public class SymbolTable {
                     case MULT:
                     case SUB:
                     case PRINT:
+                    case ALLOCATE:
+                    case ASSIGN:
+                    case NOT:
+                        blk = new StmtNode(op, bbid, tid, ann, f1, f2, f3);
+                        this.updateEntry(tid, blk);
+                        break;
+
+                    case BLOCK:
+                        blk = new BlockNode(op, bbid, tid, ann);
+                        this.updateEntry(tid, blk);
+                        this.pushStack(tid, blk);
                         break;
         
                     case IF_ELSE:
+                        blk = new IfElseNode(op, bbid, tid, ann, f1);
+                        this.updateEntry(tid, blk);
+                        this.pushStack(tid,blk);
                         break;
                     
                     case WHILE:
+                        blk = new WhileNode(op, bbid, tid, ann, f1);
+                        this.updateEntry(tid, blk);
+                        this.pushStack(tid, blk);
                         break;
         
                     case SYNC:
+                        BB entry_blk = new EntryNode(bbid, tid, ann, f1);
+                        int body_bbid = this.getBlkId();
+                        int exit_bbid = this.getBlkId();
+                        BB exit_blk = new ExitNode(exit_bbid, tid, null, f1);
+                        blk = new SynchronizeNode(op, body_bbid, tid, null, f1,entry_blk,exit_blk);
+                        this.updateEntry(tid, blk);
+                        this.pushStack(tid, blk);
                         break;
         
                     case START:
+                        blk = new MsgStartNode(op, bbid, tid, ann, f1);
+                        this.updateEntry(tid, blk);
                         break;
         
                     case JOIN:
+                        blk = new MsgJoinNode(op, bbid, tid, ann, f1);
                         break;
                         
                     case WAIT:
+                        int waitPred_bbid = this.getBlkId();
+                        int notEntry_bbid = this.getBlkId();
+                        BB wait_pred_blk = new WaitingPredNode(waitPred_bbid, tid,f1);
+                        BB not_entry_blk = new NotifiedEntryNode(notEntry_bbid, tid,f1);
+                        blk = new MsgWaitNode(op, bbid, tid, ann, f1,wait_pred_blk,not_entry_blk);
+                        this.updateEntry(tid, blk);
                         break;
         
                     case NOTIFY:
-                        break;
-                        
                     case NOTIFYALL:
+                        blk = new MsgNotifyNode(op, bbid, tid, ann, f1);
+                        this.updateEntry(tid, blk);
                         break;
                         
                     default:
                         break;
                 }
-            
             }
         }
     }
