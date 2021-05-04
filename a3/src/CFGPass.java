@@ -464,11 +464,11 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
       String _ret=null;
       this.op = NodeType.PRINT;
       n.f0.accept(this);
-      arg1 = n.f1.accept(this);
-      n.f2.accept(this);
+      n.f1.accept(this);
+      arg1 = n.f2.accept(this);
       n.f3.accept(this);
       n.f4.accept(this);
-
+      
       this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
       lbl=null;
       arg1=null;

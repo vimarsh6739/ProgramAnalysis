@@ -13,7 +13,10 @@ public class Main {
             
             // Print variables
             st.updateThreads();
-            st.printVariables();
+            
+            CFGPass pass2 = new CFGPass(st);
+            root.accept(pass2);
+            st.printProgram();
             
         } catch (ParseException e) {
             e.printStackTrace();

@@ -11,4 +11,34 @@ public class MsgWaitNode extends BB {
         this.waitingPred=waitingPred;
         this.notifiedEntry=notifiedEntry;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("");
+        sb.append(st.nestIndent+"BB"+bbid+":\t");
+        
+        sb.append(buffer.name+".wait()\n");
+        
+        sb.append(st.nestIndent+"In edges = [");
+        String delim = "";
+        for(BB f : this.inEdges){
+            sb.append(f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"Out edges = [");
+        delim = "";
+        for(BB f : this.outEdges){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"Cross edges = [");
+        for(BB f : this.crossEdges){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n\n");
+        sb.append(this.waitingPred.toString());
+        sb.append(this.notifiedEntry.toString());
+        return sb.toString();
+    }
 }

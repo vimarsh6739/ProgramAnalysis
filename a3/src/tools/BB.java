@@ -13,7 +13,7 @@ public class BB {
     List<BB> inEdges;
     List<BB> flowInfo;
     List<BB> outEdges;
-
+    List<BB> crossEdges;
     NodeType op;
     int bbid;                   // global id of current basic block
     String ann;                 // user annotation 
@@ -21,7 +21,7 @@ public class BB {
 
     public BB() {
         op=NodeType.NOP; bbid=tid=-1;
-        inEdges=outEdges=flowInfo=null;
+        inEdges=outEdges=flowInfo=crossEdges=null;
     }
     
     public BB(NodeType op, int bbid, int tid, String ann){
@@ -32,13 +32,15 @@ public class BB {
         this.inEdges    = new ArrayList<>();
         this.flowInfo   = new ArrayList<>();
         this.outEdges   = new ArrayList<>();
-        
+        this.crossEdges = new ArrayList<>();
     }
 
-    /**
-     * Overridden method for recursive basic blocks
-     * @param blk
-     */
-	public void addNode(BB blk) {}
-
+    /** Overridden method for recursive basic blocks */
+    public void addNode(BB blk) {}
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("");
+        return sb.toString();
+    }
 }

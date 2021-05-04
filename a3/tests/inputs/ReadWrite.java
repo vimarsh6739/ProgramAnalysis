@@ -20,7 +20,7 @@ class ReadWrite{
 /* L1: */   r1.start();
             r2.start();
 /* L2: */   count=count+one;
-            w.join();
+            w1.join();
             r1.join();
             r2.join();
             System.out.println(count);

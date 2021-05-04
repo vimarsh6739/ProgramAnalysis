@@ -7,7 +7,8 @@ class FightClub{
             Buffer b1;
             Buffer b2;
             int one;int two;
-            one=1;two=2;
+            one=1;
+            two=2;
             b1 = new Buffer();
             b2 = new Buffer();
             uncle1 = new Rival();

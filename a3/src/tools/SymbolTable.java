@@ -27,7 +27,7 @@ public class SymbolTable {
     
     Klass curr_class;
     boolean inRun;
-    
+    String nestIndent;
     public SymbolTable() {
         this.cList      = new ArrayList<>();
         this.cMap       = new HashMap<>();
@@ -43,6 +43,7 @@ public class SymbolTable {
 
         this.curr_class = null;
         this.inRun      = false;
+        nestIndent = "";
     }
     
     /** Construct a new unique index for thread */
@@ -75,7 +76,6 @@ public class SymbolTable {
     
     public void addMemberField(String type, String var) {
         Field f;
-        System.out.println(type+ " " + var);
         if(this.fMap.containsKey(var)){
             f = this.fMap.get(var);
         }
@@ -224,6 +224,9 @@ public class SymbolTable {
         
                     case JOIN:
                         blk = new MsgJoinNode(op, bbid, tid, ann, f1);
+                        // System.out.println(arg1);
+                        // System.out.println(f1.name+" "+f1.type);
+                        this.updateEntry(tid, blk);
                         break;
                         
                     case WAIT:
@@ -280,6 +283,16 @@ public class SymbolTable {
                 }
                 System.out.println("}");
             }
+        }
+    }
+
+    public void printProgram() {
+        for(int tid : this.thPEGMap.keySet()){
+            System.out.println("THREAD "+tid+" : Class "+this.thClassMap.get(tid).cname);
+            for(BB f : this.thPEGMap.get(tid)){
+                System.out.print(f);
+            }
+            System.out.println("====================================================");
         }
     }
 }
