@@ -185,7 +185,7 @@ public class SymbolTable {
                     case ALLOCATE:
                     case ASSIGN:
                     case NOT:
-                        blk = new StmtNode(op, bbid, tid, ann, f1, f2, f3);
+                        blk = new StmtNode(op, bbid, tid, ann, f1, f2, f3,arg1,arg2,arg3);
                         this.updateEntry(tid, blk);
                         break;
 

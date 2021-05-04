@@ -12,7 +12,7 @@ public class MsgJoinNode extends BB{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
-        sb.append(st.nestIndent+"BB"+bbid+":\t");
+        sb.append(st.nestIndent+"BB"+bbid+": Label:"+this.ann+"\t");
         
         sb.append(tField.name+".join()\n");
 
