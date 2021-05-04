@@ -13,7 +13,7 @@ public class Main {
             
             // Print variables
             st.updateThreads();
-            // st.printVariables();
+            st.printVariables();
             
         } catch (ParseException e) {
             e.printStackTrace();

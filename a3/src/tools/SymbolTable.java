@@ -108,7 +108,7 @@ public class SymbolTable {
             Deque<BB> curr_stack = new ArrayDeque<>();
             this.thStackMap.put(tid, curr_stack);
         }
-
+        
         /** Set symbol table for all basic blocks */
         BB.st = this;
     }
@@ -144,7 +144,7 @@ public class SymbolTable {
     /**
      * Add basic blocks to PEG
      * @param op        Basic block type
-     * @param lbl       Label
+     * @param ann       Label
      * @param arg1      Arg1
      * @param arg2      Arg2
      * @param arg3      Arg3

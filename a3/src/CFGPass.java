@@ -67,7 +67,12 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
       n.f0.accept(this);
       this.curr_class=n.f1.accept(this);
       this.st.setClass(this.curr_class);
-      
+
+      // Add begin node
+      this.op = NodeType.BEGIN;
+      this.arg1=this.arg2=this.arg3=null;
+      this.st.addStatement(op, this.lbl, this.arg1, this.arg2, this.arg3);
+
       n.f2.accept(this);
       n.f3.accept(this);
       n.f4.accept(this);
@@ -196,6 +201,7 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
       this.op = NodeType.BEGIN;
       this.arg1=this.arg2=this.arg3=null;
       this.st.addStatement(op, this.lbl, this.arg1, this.arg2, this.arg3);
+
       n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
@@ -311,9 +317,15 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(Block n) {
       String _ret=null;
+      this.op = NodeType.BLOCK;
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      this.lbl=null;
+
       n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
+
+      this.st.popStack();
       return _ret;
    }
    
@@ -325,10 +337,13 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(AssignmentStatement n) {
       String _ret=null;
-      n.f0.accept(this);
+      arg1 = n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
       n.f3.accept(this);
+
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      lbl=arg1=arg2=arg3=null;
       return _ret;
    }
    
@@ -342,12 +357,18 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(FieldAssignmentStatement n) {
       String _ret=null;
-      n.f0.accept(this);
+      this.op = NodeType.FIELDASSIGN;
+
+      arg1  =  n.f0.accept(this);
       n.f1.accept(this);
-      n.f2.accept(this);
+      arg2  =  n.f2.accept(this);
       n.f3.accept(this);
-      n.f4.accept(this);
+      arg3  =  n.f4.accept(this);
       n.f5.accept(this);
+
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      lbl=arg1=arg2=arg3=null;
+
       return _ret;
    }
    
@@ -362,15 +383,22 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(IfStatement n) {
       String _ret=null;
+      this.op = NodeType.IF_ELSE;
       
       n.f0.accept(this);
       n.f1.accept(this);
-      n.f2.accept(this);
+      this.arg1   =  n.f2.accept(this);
       n.f3.accept(this);
-      n.f4.accept(this);
+      
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      arg1=null;
+      lbl=null;
 
-      n.f5.accept(this);
-      n.f6.accept(this);
+      n.f4.accept(this);   // accept if
+      n.f5.accept(this);   
+      n.f6.accept(this);   // accept else
+
+      this.st.popStack();
       return _ret;
    }
    
@@ -383,11 +411,19 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(WhileStatement n) {
       String _ret=null;
+      this.op = NodeType.WHILE;
+
       n.f0.accept(this);
       n.f1.accept(this);
-      n.f2.accept(this);
+      this.arg1 = n.f2.accept(this);
       n.f3.accept(this);
+      
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      arg1=null;
+      lbl=null;
+
       n.f4.accept(this);
+      this.st.popStack();
       return _ret;
    }
    
@@ -400,11 +436,20 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(SynchStatement n) {
       String _ret=null;
+      this.op = NodeType.SYNC;
+
       n.f0.accept(this);
       n.f1.accept(this);
-      n.f2.accept(this);
+      this.arg1 = n.f2.accept(this);
       n.f3.accept(this);
+
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      lbl   =  null;
+      arg1  =  null;
+
       n.f4.accept(this);
+
+      this.st.popStack();
       return _ret;
    }
    
@@ -417,11 +462,16 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(PrintStatement n) {
       String _ret=null;
+      this.op = NodeType.PRINT;
       n.f0.accept(this);
-      n.f1.accept(this);
+      arg1 = n.f1.accept(this);
       n.f2.accept(this);
       n.f3.accept(this);
       n.f4.accept(this);
+
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      lbl=null;
+      arg1=null;
       return _ret;
    }
    
@@ -447,9 +497,10 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(AndExpression n) {
       String _ret=null;
-      n.f0.accept(this);
+      this.op = NodeType.AND;
+      arg2 = n.f0.accept(this);
       n.f1.accept(this);
-      n.f2.accept(this);
+      arg3 = n.f2.accept(this);
       return _ret;
    }
    
@@ -460,9 +511,11 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(CompareExpression n) {
       String _ret=null;
-      n.f0.accept(this);
+      op = NodeType.LT;
+
+      arg2= n.f0.accept(this);
       n.f1.accept(this);
-      n.f2.accept(this);
+      arg3 = n.f2.accept(this);
       return _ret;
    }
    
@@ -473,9 +526,10 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(PlusExpression n) {
       String _ret=null;
-      n.f0.accept(this);
+      op = NodeType.ADD;
+      arg2 = n.f0.accept(this);
       n.f1.accept(this);
-      n.f2.accept(this);
+      arg3 = n.f2.accept(this);
       return _ret;
    }
    
@@ -486,9 +540,11 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(MinusExpression n) {
       String _ret=null;
-      n.f0.accept(this);
+      op = NodeType.SUB;
+
+      arg2 = n.f0.accept(this);
       n.f1.accept(this);
-      n.f2.accept(this);
+      arg3 = n.f2.accept(this);
       return _ret;
    }
    
@@ -499,9 +555,10 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(TimesExpression n) {
       String _ret=null;
-      n.f0.accept(this);
+      op = NodeType.MULT;
+      arg2 = n.f0.accept(this);
       n.f1.accept(this);
-      n.f2.accept(this);
+      arg3 = n.f2.accept(this);
       return _ret;
    }
    
@@ -512,9 +569,10 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(FieldRead n) {
       String _ret=null;
-      n.f0.accept(this);
+      op = NodeType.FIELDREAD;
+      arg2 = n.f0.accept(this);
       n.f1.accept(this);
-      n.f2.accept(this);
+      arg3 = n.f2.accept(this);
       return _ret;
    }
    
@@ -541,12 +599,19 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(callStartMethod n) {
       String _ret=null;
-      n.f0.accept(this);
+      this.op = NodeType.START;
+
+      arg1 = n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
       n.f3.accept(this);
       n.f4.accept(this);
       n.f5.accept(this);
+
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      lbl=null;
+      arg1=null;
+
       return _ret;
    }
    
@@ -560,12 +625,19 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(callNotifyMethod n) {
       String _ret=null;
-      n.f0.accept(this);
+      this.op = NodeType.NOTIFY;
+
+      arg1 = n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
       n.f3.accept(this);
       n.f4.accept(this);
       n.f5.accept(this);
+      
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      lbl=null;
+      arg1=null;
+
       return _ret;
    }
    
@@ -579,12 +651,17 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(callNotifyAllMethod n) {
       String _ret=null;
-      n.f0.accept(this);
+      this.op = NodeType.NOTIFYALL;
+      arg1=n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
       n.f3.accept(this);
       n.f4.accept(this);
       n.f5.accept(this);
+      
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      lbl=null;
+      arg1=null;
       return _ret;
    }
    
@@ -598,12 +675,18 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(callWaitMethod n) {
       String _ret=null;
-      n.f0.accept(this);
+      this.op = NodeType.WAIT;
+
+      arg1 = n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
       n.f3.accept(this);
       n.f4.accept(this);
       n.f5.accept(this);
+      
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      lbl=null;
+      arg1=null;
       return _ret;
    }
    
@@ -617,12 +700,18 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(callJoinMethod n) {
       String _ret=null;
-      n.f0.accept(this);
+      this.op = NodeType.JOIN;
+
+      arg1 = n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
       n.f3.accept(this);
       n.f4.accept(this);
       n.f5.accept(this);
+
+      this.st.addStatement(op, this.lbl, arg1, arg2, arg3);
+      lbl=null;
+      arg1=null;
       return _ret;
    }
    
@@ -637,7 +726,30 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(PrimaryExpression n) {
       String _ret=null;
-      n.f0.accept(this);
+      _ret = n.f0.accept(this);
+      switch (n.f0.which) {
+         case 0:
+         case 1:
+         case 2:
+         case 3:
+         case 4:
+            op = NodeType.ASSIGN;
+            arg2 = _ret;
+            break;
+      
+         case 5:
+            op = NodeType.ALLOCATE;
+            arg2 = _ret;
+            break;
+            
+         case 6:
+            op = NodeType.NOT;
+            arg2 = _ret;
+            break;
+
+         default:
+            break;
+      }
       return _ret;
    }
    
@@ -646,7 +758,7 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(IntegerLiteral n) {
       String _ret=null;
-      n.f0.accept(this);
+      _ret = n.f0.accept(this);
       return _ret;
    }
    
@@ -655,7 +767,7 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(TrueLiteral n) {
       String _ret=null;
-      n.f0.accept(this);
+      _ret = n.f0.accept(this);
       return _ret;
    }
    
@@ -664,7 +776,7 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(FalseLiteral n) {
       String _ret=null;
-      n.f0.accept(this);
+      _ret = n.f0.accept(this);
       return _ret;
    }
    
@@ -682,7 +794,7 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    */
    public String visit(ThisExpression n) {
       String _ret=null;
-      n.f0.accept(this);
+      _ret=n.f0.accept(this);
       return _ret;
    }
    
@@ -695,7 +807,7 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    public String visit(AllocationExpression n) {
       String _ret=null;
       n.f0.accept(this);
-      n.f1.accept(this);
+      _ret = n.f1.accept(this);
       n.f2.accept(this);
       n.f3.accept(this);
       return _ret;
@@ -708,7 +820,7 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    public String visit(NotExpression n) {
       String _ret=null;
       n.f0.accept(this);
-      n.f1.accept(this);
+      _ret = n.f1.accept(this);
       return _ret;
    }
    

@@ -47,8 +47,10 @@ public class SymbolPass extends GJNoArguDepthFirst<String> {
         n.f0.accept(this);
         cname = n.f1.accept(this);
         this.st.addClass(cname,true);
-        this.st.addMemberField(cname, "staticMain");
-        this.st.addThread("staticMain");
+        
+        // Ghost Static field corresponding to main class
+        this.st.addMemberField(cname, "main");
+        this.st.addThread("main");
 
         n.f2.accept(this);
         n.f3.accept(this);
