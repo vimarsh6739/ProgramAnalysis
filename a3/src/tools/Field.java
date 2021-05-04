@@ -5,23 +5,23 @@ import java.util.List;
 
 public class Field {
     String type;
-    String id;
+    String name;
     List<Klass> scope;
 
     public Field() {
-        type=id=null;
+        type=name=null;
         scope = new ArrayList<>();
     }
     
     public Field(Field f) {
         this.type = f.type;
-        this.id = f.id;
+        this.name = f.name;
         this.scope = new ArrayList<>(f.scope);
     }
 
     public Field(String type, String id){
         this.type = type;
-        this.id = id;
+        this.name = id;
         this.scope = new ArrayList<>();
 	}
 

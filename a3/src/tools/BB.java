@@ -4,18 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A generic Basic Block(part of both the CFG and PEG)
+ * General Basic Block
  */
 public class BB {
+    static SymbolTable st;      // link to global symbol table
+    
+    // Edges
     List<BB> inEdges;
+    List<BB> flowInfo;
     List<BB> outEdges;
-    Operations op;
-    int bbid;           // global id of current basic block
-    String ann;         // user annotation 
-    int tid;            // ThreadId(in PEG)
+
+    NodeType op;
+    int bbid;                   // global id of current basic block
+    String ann;                 // user annotation 
+    int tid;                    // ThreadId(in PEG)
 
     public BB() {
-        op=Operations.NOP;
+        op=NodeType.NOP;
         inEdges=null;
         outEdges=null;
         ann=null;
@@ -23,27 +28,18 @@ public class BB {
         tid=-1;
     }
 
-    public BB(Operations op, int bbid) {
+    public BB(NodeType op, int bbid, int tid) {
         this.op = op;
         this.bbid = bbid;
+        this.tid = tid;
         this.inEdges = new ArrayList<>();
+        this.flowInfo = new ArrayList<>();
         this.outEdges = new ArrayList<>();
-        tid=-1;
     }
 
-    public BB(Operations op, int bbid, String ann){
-        this(op, bbid);
+    public BB(NodeType op, int bbid, int tid, String ann){
+        this(op, bbid,tid);
         this.ann = ann;
     }
 
-    public BB(BB s,int tid) {
-        this.inEdges = new ArrayList<>();
-        this.outEdges = new ArrayList<>();
-        this.op     = s.op;
-        this.bbid   = s.bbid;
-        this.ann    = s.ann;
-        this.tid    = tid;
-    }
-
-    BB copy(int tid){return new BB(this,tid);}
 }

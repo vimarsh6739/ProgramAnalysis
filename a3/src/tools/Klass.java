@@ -8,13 +8,31 @@ public class Klass {
     boolean isThread;
     List<Field> cFields;
     List<Field> lFields;
-    List<BB> cfg;             // CFG corresponding to curr class
 
     public Klass(String cname, boolean isThread) {
         this.cname = cname;
         this.isThread = isThread; 
         this.cFields = new ArrayList<>();
         this.lFields = new ArrayList<>(); 
-        this.cfg     = new ArrayList<>();
+    }
+
+    public Field getField(String var) {
+        Field key=null;
+        
+        for(Field f : this.cFields){
+            if(f.name.equals(var)){
+                key=f;
+                break;
+            }
+        }
+
+        for(Field f : this.lFields){
+            if(f.name.equals(var)){
+                key=f;
+                break;
+            }
+        }
+
+        return key;
     }
 }

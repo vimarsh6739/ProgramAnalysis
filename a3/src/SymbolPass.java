@@ -47,6 +47,8 @@ public class SymbolPass extends GJNoArguDepthFirst<String> {
         n.f0.accept(this);
         cname = n.f1.accept(this);
         this.st.addClass(cname,true);
+        this.st.addMemberField(cname, "staticMain");
+        this.st.addThread("staticMain");
 
         n.f2.accept(this);
         n.f3.accept(this);
@@ -60,6 +62,7 @@ public class SymbolPass extends GJNoArguDepthFirst<String> {
         n.f11.accept(this);
         n.f12.accept(this);
         n.f13.accept(this);
+        this.inFunction = true;
         n.f14.accept(this);
         n.f15.accept(this);
         n.f16.accept(this);
@@ -73,6 +76,7 @@ public class SymbolPass extends GJNoArguDepthFirst<String> {
         n.f24.accept(this);
         n.f25.accept(this);
         n.f26.accept(this);
+        this.inFunction = false;
         n.f27.accept(this);
         return _ret;
     }
@@ -227,4 +231,26 @@ public class SymbolPass extends GJNoArguDepthFirst<String> {
         _ret = n.f0.accept(this);
         return _ret;
     }
+
+    /**
+     * f0 -> Identifier()
+     * f1 -> "."
+     * f2 -> "start"
+     * f3 -> "("
+     * f4 -> ")"
+     * f5 -> ";"
+     */
+    public String visit(callStartMethod n) {
+        String _ret=null;
+        String var = null;
+        var = n.f0.accept(this);
+        this.st.addThread(var);
+
+        n.f1.accept(this);
+        n.f2.accept(this);
+        n.f3.accept(this);
+        n.f4.accept(this);
+        n.f5.accept(this);
+        return _ret;
+     }
 }
