@@ -20,13 +20,13 @@ public class BlockNode extends BB{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
-        sb.append(st.nestIndent+"BB"+bbid+": (block start)\t {\n");
+        sb.append(st.nestIndent+"BB"+bbid+": BLOCK {\n");
         st.nestIndent += "\t";
         for(BB f : this.subBlocks){
             sb.append(f.toString()+"\n");
         }
         st.nestIndent = st.nestIndent.substring(0, st.nestIndent.length()-1);
-        sb.append(st.nestIndent+"}\tBB"+bbid+": (block end)\n\n");
+        sb.append(st.nestIndent+"END-BLOCK }\tBB"+bbid+":\n\n");
         return sb.toString();
     }
 }

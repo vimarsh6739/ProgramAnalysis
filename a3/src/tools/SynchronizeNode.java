@@ -23,13 +23,13 @@ public class SynchronizeNode extends BB{
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(entry.toString());
-        sb.append(st.nestIndent+"BB"+bbid+": (synchronized block)\t");
+        sb.append(st.nestIndent+"BB"+bbid+":\t");
         sb.append("SYNCHRONIZED("+buffer.name+"){\n");
         st.nestIndent += "\t";
         sb.append(body.toString());
         sb.append(exit.toString());
         st.nestIndent = st.nestIndent.substring(0, st.nestIndent.length()-1);
-        sb.append(st.nestIndent+"}\tBB"+bbid+": (synchronized block end)\n\n");
+        sb.append(st.nestIndent+"END-SYNCHRONIZED}\tBB"+bbid+": \n\n");
         return sb.toString();
     }
 }
