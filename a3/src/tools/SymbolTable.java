@@ -40,7 +40,8 @@ public class SymbolTable {
     Map<Field, Set<BB>> monitor;            // monitor map for sync buffers   
     Map<Field, Set<BB>> notifyNodes;        // set of notify(All) nodes for obj
     Map<Field, Set<BB>> waitingNodes;       // set of waiting nodes for obj
-
+    Map<Integer,Set<BB>> N;                 // flattened peg per thread
+    
     // Queries
     List<String> q_lhs;                 
     List<String> q_rhs;
@@ -73,7 +74,7 @@ public class SymbolTable {
         this.monitor = new HashMap<>();
         this.notifyNodes = new HashMap<>();
         this.waitingNodes = new HashMap<>();
-
+        this.N = new HashMap<>();
         this.q_lhs  = new ArrayList<>();
         this.q_rhs  = new ArrayList<>();
 
@@ -143,6 +144,8 @@ public class SymbolTable {
 
             Deque<BB> curr_stack = new ArrayDeque<>();
             this.thStackMap.put(tid, curr_stack);
+
+            this.N.putIfAbsent(tid, new LinkedHashSet<>());
         }
         
         /** Set symbol table for all basic blocks */
@@ -204,11 +207,13 @@ public class SymbolTable {
                         blk = new BeginNode(op,bbid,tid);
                         this.updateEntry(tid, blk);
                         this.thBeginBlks.put(tid, (BeginNode)blk);
+                        this.N.get(tid).add(blk);
                         break;
         
                     case END:
                         blk = new EndNode(op, bbid, tid);
                         this.updateEntry(tid, blk);
+                        this.N.get(tid).add(blk);
                         break;
                     
                     case ADD:
@@ -224,24 +229,28 @@ public class SymbolTable {
                     case NOT:
                         blk = new StmtNode(op, bbid, tid, ann, f1, f2, f3,arg1,arg2,arg3);
                         this.updateEntry(tid, blk);
+                        this.N.get(tid).add(blk);
                         break;
 
                     case BLOCK:
                         blk = new BlockNode(op, bbid, tid, ann);
                         this.updateEntry(tid, blk);
                         this.pushStack(tid, blk);
+                        this.N.get(tid).add(blk);
                         break;
         
                     case IF_ELSE:
                         blk = new IfElseNode(op, bbid, tid, ann, f1);
                         this.updateEntry(tid, blk);
                         this.pushStack(tid,blk);
+                        this.N.get(tid).add(blk);
                         break;
                     
                     case WHILE:
                         blk = new WhileNode(op, bbid, tid, ann, f1);
                         this.updateEntry(tid, blk);
                         this.pushStack(tid, blk);
+                        this.N.get(tid).add(blk);
                         break;
         
                     case SYNC:
@@ -257,16 +266,21 @@ public class SymbolTable {
                         blk = new SynchronizeNode(op, body_bbid, tid, null, f1,entry_blk,exit_blk);
                         this.updateEntry(tid, blk);
                         this.pushStack(tid, blk);
+                        this.N.get(tid).add(entry_blk);
+                        this.N.get(tid).add(blk);
+                        this.N.get(tid).add(exit_blk);
                         break;
         
                     case START:
                         blk = new MsgStartNode(op, bbid, tid, ann, f1);
                         this.updateEntry(tid, blk);
+                        this.N.get(tid).add(blk);
                         break;
         
                     case JOIN:
                         blk = new MsgJoinNode(op, bbid, tid, ann, f1);
                         this.updateEntry(tid, blk);
+                        this.N.get(tid).add(blk);
                         break;
                         
                     case WAIT:
@@ -278,6 +292,9 @@ public class SymbolTable {
                         this.updateEntry(tid, blk);
 
                         this.waitingNodes.get(f1).add(wait_pred_blk);
+                        this.N.get(tid).add(blk);
+                        this.N.get(tid).add(wait_pred_blk);
+                        this.N.get(tid).add(not_entry_blk);
                         break;
         
                     case NOTIFY:
@@ -286,6 +303,7 @@ public class SymbolTable {
                         this.updateEntry(tid, blk);
 
                         this.notifyNodes.get(f1).add(blk);
+                        this.N.get(tid).add(blk);
                         break;
                         
                     default:
