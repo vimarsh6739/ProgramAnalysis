@@ -3,6 +3,9 @@ package tools;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Always gotta jazz up class names!
+ */
 public class Clazz {
     String cname;
     boolean isThread;

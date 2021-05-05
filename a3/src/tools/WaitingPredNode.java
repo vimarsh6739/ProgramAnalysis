@@ -20,6 +20,13 @@ public class WaitingPredNode extends BB {
     }
 
     @Override
+    public void updateMonitor(Field obj, boolean b) {
+        if(b && obj != buffer){
+            st.monitor.get(obj).add(this);
+        }
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+":\t");

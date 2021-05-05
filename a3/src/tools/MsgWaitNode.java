@@ -63,6 +63,16 @@ public class MsgWaitNode extends BB {
     }
 
     @Override
+    public void updateMonitor(Field obj, boolean b) {
+        if(b){
+            st.monitor.get(obj).add(this);
+        }
+
+        this.waitingPred.updateMonitor(obj, b);
+        this.notifiedEntry.updateMonitor(obj, b);
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+": Label:"+this.ann+"\t");

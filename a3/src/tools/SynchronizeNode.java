@@ -52,6 +52,15 @@ public class SynchronizeNode extends BB{
     }
 
     @Override
+    public void updateMonitor(Field obj, boolean b) {
+        // Don't add entry blk to monitor if it's a part of it!
+        this.entry.updateMonitor(obj, b);
+        if(obj == buffer){  b=true; }
+        this.body.updateMonitor(obj, b);
+        this.exit.updateMonitor(obj, b);
+    }
+    
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(entry.toString());

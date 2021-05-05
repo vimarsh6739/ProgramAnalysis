@@ -56,9 +56,19 @@ public class BB {
     /** Overridden method for start edges between PEGs start */
     public void updateStartEdge(){}
     
+    /**
+     * Overridden method for computing monitor sets
+     * @param obj Synchronization buffer
+     * @param b   Membership flag
+     */
+    public void updateMonitor(Field obj, boolean b) {
+        if(b) {st.monitor.get(obj).add(this);}
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         return sb.toString();
     }
+
 }

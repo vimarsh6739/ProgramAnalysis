@@ -63,6 +63,16 @@ public class IfElseNode extends BB {
     }
 
     @Override
+    public void updateMonitor(Field obj, boolean b) {
+        if(b){
+            st.monitor.get(obj).add(this);
+        }
+
+        this.ifNode.updateMonitor(obj, b);
+        this.elseNode.updateMonitor(obj, b);
+    }
+    
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+": (if-else block)\t");

@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,16 +27,20 @@ public class SymbolTable {
     
     // Maps for worklist algo
     Map<Integer, BeginNode> thBeginBlks;    // threadId -> begin of PEG
-    Map<Field, List<BB>> Monitor;           // monitor map for sync buffers   
     
     Map<BB,BB>      waitingPred;            // waiting pred map
     Map<BB,BB>      waitingSucc;            // waiting succ map
-
+    
     Map<BB,Set<BB>> startPred;              // begin -> start
     Map<BB,Set<BB>> startSucc;              // start -> begin
     Map<BB,Set<BB>> notifyPred;             // notified-entry -> notify(All)
     Map<BB,Set<BB>> notifySucc;             // notify(All) -> notified-entry
     
+    Set<Field> sync_objs;                   // set of synchronization objs
+    Map<Field, Set<BB>> monitor;            // monitor map for sync buffers   
+    Map<Field, Set<BB>> notifyNodes;        // set of notify(All) nodes for obj
+    Map<Field, Set<BB>> waitingNodes;       // set of waiting nodes for obj
+
     // Queries
     List<String> q_lhs;                 
     List<String> q_rhs;
@@ -64,6 +69,11 @@ public class SymbolTable {
         this.notifyPred  = new HashMap<>();
         this.notifySucc  = new HashMap<>();
         
+        this.sync_objs = new LinkedHashSet<>();
+        this.monitor = new HashMap<>();
+        this.notifyNodes = new HashMap<>();
+        this.waitingNodes = new HashMap<>();
+
         this.q_lhs  = new ArrayList<>();
         this.q_rhs  = new ArrayList<>();
 
@@ -235,6 +245,11 @@ public class SymbolTable {
                         break;
         
                     case SYNC:
+                        this.sync_objs.add(f1);
+                        this.monitor.putIfAbsent(f1, new LinkedHashSet<>());
+                        this.notifyNodes.putIfAbsent(f1, new LinkedHashSet<>());
+                        this.waitingNodes.putIfAbsent(f1, new LinkedHashSet<>());
+
                         BB entry_blk = new EntryNode(bbid, tid, ann, f1);
                         int body_bbid = this.getBlkId();
                         int exit_bbid = this.getBlkId();
@@ -251,8 +266,6 @@ public class SymbolTable {
         
                     case JOIN:
                         blk = new MsgJoinNode(op, bbid, tid, ann, f1);
-                        // System.out.println(arg1);
-                        // System.out.println(f1.name+" "+f1.type);
                         this.updateEntry(tid, blk);
                         break;
                         
@@ -263,12 +276,16 @@ public class SymbolTable {
                         BB not_entry_blk = new NotifiedEntryNode(notEntry_bbid, tid,f1);
                         blk = new MsgWaitNode(op, bbid, tid, ann, f1,wait_pred_blk,not_entry_blk);
                         this.updateEntry(tid, blk);
+
+                        this.waitingNodes.get(f1).add(wait_pred_blk);
                         break;
         
                     case NOTIFY:
                     case NOTIFYALL:
                         blk = new MsgNotifyNode(op, bbid, tid, ann, f1);
                         this.updateEntry(tid, blk);
+
+                        this.notifyNodes.get(f1).add(blk);
                         break;
                         
                     default:
@@ -288,6 +305,9 @@ public class SymbolTable {
         this.q_rhs.add(q2);
     }
 
+    /**
+     * Builds the PEG and initializes the values of all constant sets
+     */
     void buildPEG(){
         for(int tid : this.thClassMap.keySet()){
             List<BB> peg = this.thPEGMap.get(tid);
@@ -307,6 +327,13 @@ public class SymbolTable {
             // add startPred and startSucc
             for(BB f : peg){
                 f.updateStartEdge();
+            }
+
+            // update Monitor maps
+            for(Field obj : this.sync_objs){
+                for(BB blk : peg){
+                    blk.updateMonitor(obj,false);
+                }
             }
         }
     }

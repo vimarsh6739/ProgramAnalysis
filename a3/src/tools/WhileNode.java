@@ -47,6 +47,15 @@ public class WhileNode extends BB {
     }
 
     @Override
+    public void updateMonitor(Field obj, boolean b) {
+        if(b){
+            st.monitor.get(obj).add(this);
+        }
+
+        this.body.updateMonitor(obj, b);
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+": (while block)\t");
