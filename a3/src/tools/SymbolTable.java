@@ -356,14 +356,14 @@ public class SymbolTable {
         String ts = "\t";
         System.out.println("Number of threads:"+N_THREADS);
         
-        System.out.println("THREAD MAPPINGS");
+        System.out.println("THREAD MAPPING");
         for(Field f : this.thFieldMap.keySet()){
             Integer tid = this.thFieldMap.get(f);
             Clazz k = this.thClassMap.get(tid);
             System.out.println(ts+"("+f.name+" : "+f.type+") -> " + tid.intValue()+" -> "+k.cname);
         }
         
-        System.out.println("VARIABLE MAPPINGS");
+        System.out.println("VARIABLE MAPPING");
         for(Clazz k: this.cList){
             System.out.println("Class " + k.cname);
             System.out.println("Members:");
@@ -399,6 +399,38 @@ public class SymbolTable {
         for(int i=0;i<q_lhs.size();++i){
             System.out.println("MHP("+q_lhs.get(i)+","+q_rhs.get(i)+")");
         }
+        System.out.println("====================================================");
+
     }
 
+    public void printSyncVariables(){
+        String ts = "\t";
+        System.out.println("SYNCHRONIZATION MAPS:");
+        int i=1;
+        for(Field obj : this.sync_objs){
+            System.out.println(i+". Sync buffer < "+obj.name+" : "+obj.type+" >");
+            System.out.print(ts+"Monitor nodes = [");
+            String delim="";
+            for(BB f : monitor.get(obj)){
+                System.out.print(delim+f.bbid);
+                delim=",";
+            }
+            delim="";
+            System.out.print("]\n"+ts+"Notify nodes = [");
+            for(BB f : notifyNodes.get(obj)){
+                System.out.print(delim+f.bbid);
+                delim=",";
+            }
+            delim="";
+            System.out.print("]\n"+ts+"Waiting nodes = [");
+            for(BB f : notifyNodes.get(obj)){
+                System.out.print(delim+f.bbid);
+                delim=",";
+            }
+            delim="";
+            System.out.print("]\n\n");
+            ++i;
+        }
+        System.out.println("====================================================");
+    }
 }

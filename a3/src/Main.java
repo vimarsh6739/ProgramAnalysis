@@ -19,7 +19,8 @@ public class Main {
             
             st.analyze();
             st.printProgram();
-            
+            st.printSyncVariables();
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
