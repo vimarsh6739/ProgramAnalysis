@@ -10,11 +10,14 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    String curr_class;
    String arg1, arg2, arg3;
    String lbl;
+   String q1;
+   String q2;
    public CFGPass(SymbolTable st){
       this.st = st;
       this.curr_class=null;
       this.op = NodeType.NOP;
       arg1=arg2=arg3=lbl=null;
+      q1=q2=null;
    }
    
    /**
@@ -834,10 +837,12 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
    public String visit(Query n) {
       String _ret=null;
       n.f0.accept(this);
-      n.f1.accept(this);
+      q1 = n.f1.accept(this);
       n.f2.accept(this);
-      n.f3.accept(this);
+      q2 = n.f3.accept(this);
       n.f4.accept(this);
+      this.st.addQuery(q1,q2);
+      q1=q2=null;
       return _ret;
    }
    

@@ -6,6 +6,11 @@ public class BeginNode extends BB {
     }
 
     @Override
+    public void updateSummary() {
+        this.flowInfo.add(this);
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append("BB"+bbid+": (method begin)\t");
@@ -15,7 +20,7 @@ public class BeginNode extends BB {
         sb.append("In edges = [");
         String delim = "";
         for(BB f : this.inEdges){
-            sb.append(f.bbid);
+            sb.append(delim+f.bbid);
             delim = ",";
         }
         sb.append("]\nOut edges = [");

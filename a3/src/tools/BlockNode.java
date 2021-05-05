@@ -2,6 +2,7 @@ package tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class BlockNode extends BB{
 
@@ -15,6 +16,47 @@ public class BlockNode extends BB{
     @Override
     public void addNode(BB blk){
         this.subBlocks.add(blk);
+    }
+
+    @Override
+    public void updateInEdge(BB parent) {
+        this.inEdges.addAll(parent.flowInfo);
+        // Recurse on subBlocks
+        if(!this.subBlocks.isEmpty()){
+            // Short circuit connection from parent to first sub-block
+            BB prev = parent;
+            for(BB f : this.subBlocks){
+                f.updateInEdge(prev);
+                f.updateSummary();
+                prev = f;
+            }
+        }
+    }
+
+    @Override
+    public void updateSummary() {
+        if(this.subBlocks.isEmpty()){
+            // empty block <fout = in>
+            this.flowInfo.addAll(this.inEdges);
+        }
+        else{
+            // non-empty block <fout = fout(subBlocks[-1])>
+            int idx = this.subBlocks.size()-1;
+            Set<BB> out_blks = this.subBlocks.get(idx).flowInfo;
+            this.flowInfo.addAll(out_blks);
+        }
+    }
+
+    @Override
+    public void updateOutEdge() {
+        for(BB f : this.inEdges){
+            f.outEdges.add(this);
+        }
+
+        // Recurse for subBlocks
+        for(BB sblk : this.subBlocks){
+            sblk.updateOutEdge();
+        }
     }
 
     @Override

@@ -25,6 +25,10 @@ public class SymbolTable {
     
     Map<Field, List<BB>> monitor;       // monitor map for sync buffers   
     
+    // Queries
+    List<String> q_lhs;                 
+    List<String> q_rhs;
+    
     Klass curr_class;
     boolean inRun;
     String nestIndent;
@@ -40,6 +44,9 @@ public class SymbolTable {
         this.thStackMap     = new HashMap<>();
         this.thPEGMap       = new HashMap<>();
         this.thLastStmt     = new HashMap<>();
+
+        this.q_lhs  = new ArrayList<>();
+        this.q_rhs  = new ArrayList<>();
 
         this.curr_class = null;
         this.inRun      = false;
@@ -250,6 +257,45 @@ public class SymbolTable {
             }
         }
     }
+    
+    /**
+     * MHP query
+     * @param q1
+     * @param q2
+     */
+    public void addQuery(String q1, String q2) {
+        this.q_lhs.add(q1);
+        this.q_rhs.add(q2);
+    }
+
+    void buildPEG(){
+        for(int tid : this.thClassMap.keySet()){
+            List<BB> peg = this.thPEGMap.get(tid);
+            peg.get(0).updateSummary();
+            for(int i = 1; i<peg.size(); ++i){
+                peg.get(i).updateInEdge(peg.get(i-1));
+                peg.get(i).updateSummary();
+            }
+
+            for(BB f : peg){
+                f.updateOutEdge();
+            }
+        }
+    }
+
+    void runWorklistAlgo(){
+
+    }
+
+    void outputQueries(){
+
+    }
+
+    public void analyze() {
+        this.buildPEG();
+        this.runWorklistAlgo();
+        this.outputQueries();
+    }
 
     public void printVariables() {
         String ts = "\t";
@@ -294,5 +340,10 @@ public class SymbolTable {
             }
             System.out.println("====================================================");
         }
+        System.out.println("QUERIES:");
+        for(int i=0;i<q_lhs.size();++i){
+            System.out.println("MHP("+q_lhs.get(i)+","+q_rhs.get(i)+")");
+        }
     }
+
 }

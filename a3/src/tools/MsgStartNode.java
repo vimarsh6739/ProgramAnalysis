@@ -8,6 +8,16 @@ public class MsgStartNode extends BB {
         super(op,bbid,tid,ann);
         this.tField=tField;
     }
+    
+    @Override
+    public void updateInEdge(BB parent) {
+        this.inEdges.addAll(parent.flowInfo);
+    }
+
+    @Override
+    public void updateSummary() {
+        this.flowInfo.add(this);
+    }
 
     @Override
     public String toString() {
@@ -19,7 +29,7 @@ public class MsgStartNode extends BB {
         sb.append(st.nestIndent+"In edges = [");
         String delim = "";
         for(BB f : this.inEdges){
-            sb.append(f.bbid);
+            sb.append(delim + f.bbid);
             delim = ",";
         }
         sb.append("]\n"+st.nestIndent+"Out edges = [");

@@ -16,6 +16,32 @@ public class WhileNode extends BB {
     }
 
     @Override
+    public void updateInEdge(BB parent) {
+        this.inEdges.addAll(parent.flowInfo);
+        this.flowInfo.add(this);
+
+        this.body.updateInEdge(this);
+        this.body.updateSummary();
+    }
+
+    @Override
+    public void updateSummary() {
+        // Add the natural loop!
+        this.inEdges.addAll(this.body.flowInfo);
+    }
+
+    @Override
+    public void updateOutEdge() {
+        // Takes care of self loops also
+        for(BB f : this.inEdges){
+            f.outEdges.add(this);
+        }
+
+        // Recurse on body
+        this.body.updateOutEdge();
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+": (while block)\t");

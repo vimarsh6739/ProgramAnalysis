@@ -13,6 +13,38 @@ public class MsgWaitNode extends BB {
     }
 
     @Override
+    public void updateInEdge(BB parent) {
+        // Perform DFS
+        this.inEdges.addAll(parent.flowInfo);
+        this.flowInfo.add(this);
+
+        this.waitingPred.updateInEdge(this);
+        this.waitingPred.updateSummary();
+
+        this.notifiedEntry.updateInEdge(this.waitingPred);
+        this.notifiedEntry.updateSummary();
+    }
+
+    @Override
+    public void updateSummary() {
+        // Remove this from wait blk
+        this.flowInfo.remove(this);
+
+        // Propogate flow info as that of notifiedEntry
+        this.flowInfo.addAll(this.notifiedEntry.flowInfo);
+    }
+
+    @Override
+    public void updateOutEdge() {
+        for(BB f : this.inEdges){
+            f.outEdges.add(this);
+        }
+
+        this.waitingPred.updateOutEdge();
+        this.notifiedEntry.updateOutEdge();
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+": Label:"+this.ann+"\t");
@@ -22,7 +54,7 @@ public class MsgWaitNode extends BB {
         sb.append(st.nestIndent+"In edges = [");
         String delim = "";
         for(BB f : this.inEdges){
-            sb.append(f.bbid);
+            sb.append(delim + f.bbid);
             delim = ",";
         }
         sb.append("]\n"+st.nestIndent+"Out edges = [");

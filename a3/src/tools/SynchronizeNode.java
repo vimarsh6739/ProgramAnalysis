@@ -20,6 +20,33 @@ public class SynchronizeNode extends BB{
     }
 
     @Override
+    public void updateInEdge(BB parent) {
+        // Short circuit connection to entry blk
+
+        this.entry.updateInEdge(parent);
+        this.entry.updateSummary();
+        
+        this.body.updateInEdge(this.entry);
+        this.body.updateSummary();
+        
+        this.exit.updateInEdge(this.body);
+        this.exit.updateSummary();
+    }
+
+    @Override
+    public void updateSummary() {
+        // outset of exit is the out of the current sync blk
+        this.flowInfo.addAll(this.exit.flowInfo);
+    }
+
+    @Override
+    public void updateOutEdge() {
+        this.entry.updateOutEdge();
+        this.body.updateOutEdge();
+        this.exit.updateOutEdge();
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(entry.toString());

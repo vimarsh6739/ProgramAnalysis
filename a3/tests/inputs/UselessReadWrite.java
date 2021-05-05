@@ -11,7 +11,7 @@ class UselessReadWrite{
 
 /* L1: */   w1.start();
 /* L2: */   count=count+one;
-            w.join();
+            w1.join();
             System.out.println(count);
         } 
         catch (Exception e) {
