@@ -3,8 +3,8 @@
 import syntaxtree.*;
 
 
+@SuppressWarnings("all")
 public class QParJavaParser implements QParJavaParserConstants {
-
   static final public Goal Goal() throws ParseException {MainClass n0;
    NodeListOptional n1 = new NodeListOptional();
    TypeDeclaration n2;

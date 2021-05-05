@@ -4,7 +4,7 @@ import syntaxtree.*;
 import java.util.Vector;
 
 /** Token Manager. */
-@SuppressWarnings ("unused")
+@SuppressWarnings ("all")
 public class QParJavaParserTokenManager implements QParJavaParserConstants {
 
   /** Debug output. */
