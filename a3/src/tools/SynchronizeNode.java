@@ -47,6 +47,11 @@ public class SynchronizeNode extends BB{
     }
 
     @Override
+    public void updateStartEdge() {
+        this.body.updateStartEdge();
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(entry.toString());

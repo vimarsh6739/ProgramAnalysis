@@ -24,7 +24,7 @@ public class IfElseNode extends BB {
 
     @Override
     public void updateInEdge(BB parent) {
-        this.inEdges.addAll(parent.flowInfo);
+        this.localPred.addAll(parent.flowInfo);
         this.flowInfo.add(this);
 
         // Perform DFS on ifNode
@@ -48,12 +48,18 @@ public class IfElseNode extends BB {
 
     @Override
     public void updateOutEdge() {
-        for(BB f : this.inEdges){
-            f.outEdges.add(this);
+        for(BB f : this.localPred){
+            f.localSucc.add(this);
         }
 
         this.ifNode.updateOutEdge();
         this.elseNode.updateOutEdge();
+    }
+
+    @Override
+    public void updateStartEdge() {
+        this.ifNode.updateStartEdge();
+        this.elseNode.updateStartEdge();
     }
 
     @Override

@@ -17,7 +17,7 @@ public class WhileNode extends BB {
 
     @Override
     public void updateInEdge(BB parent) {
-        this.inEdges.addAll(parent.flowInfo);
+        this.localPred.addAll(parent.flowInfo);
         this.flowInfo.add(this);
 
         this.body.updateInEdge(this);
@@ -27,18 +27,23 @@ public class WhileNode extends BB {
     @Override
     public void updateSummary() {
         // Add the natural loop!
-        this.inEdges.addAll(this.body.flowInfo);
+        this.localPred.addAll(this.body.flowInfo);
     }
 
     @Override
     public void updateOutEdge() {
         // Takes care of self loops also
-        for(BB f : this.inEdges){
-            f.outEdges.add(this);
+        for(BB f : this.localPred){
+            f.localSucc.add(this);
         }
 
         // Recurse on body
         this.body.updateOutEdge();
+    }
+
+    @Override
+    public void updateStartEdge() {
+        this.body.updateStartEdge();
     }
 
     @Override

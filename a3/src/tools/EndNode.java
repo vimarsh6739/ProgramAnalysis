@@ -7,7 +7,7 @@ public class EndNode extends BB {
 
     @Override
     public void updateInEdge(BB parent) {
-        this.inEdges.addAll(parent.flowInfo);
+        this.localPred.addAll(parent.flowInfo);
     }
     
     @Override
@@ -24,18 +24,13 @@ public class EndNode extends BB {
             
         sb.append("In edges = [");
         String delim = "";
-        for(BB f : this.inEdges){
+        for(BB f : this.localPred){
             sb.append(delim + f.bbid);
             delim = ",";
         }
         sb.append("]\nOut edges = [");
         delim = "";
-        for(BB f : this.outEdges){
-            sb.append(delim + f.bbid);
-            delim = ",";
-        }
-        sb.append("]\nCross edges = [");
-        for(BB f : this.crossEdges){
+        for(BB f : this.localSucc){
             sb.append(delim + f.bbid);
             delim = ",";
         }

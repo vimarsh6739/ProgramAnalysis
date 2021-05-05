@@ -3,13 +3,13 @@ package tools;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Klass {
+public class Clazz {
     String cname;
     boolean isThread;
     List<Field> cFields;
     List<Field> lFields;
 
-    public Klass(String cname, boolean isThread) {
+    public Clazz(String cname, boolean isThread) {
         this.cname = cname;
         this.isThread = isThread; 
         this.cFields = new ArrayList<>();

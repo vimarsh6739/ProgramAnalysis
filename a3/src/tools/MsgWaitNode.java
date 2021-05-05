@@ -10,12 +10,30 @@ public class MsgWaitNode extends BB {
         this.buffer=buffer;
         this.waitingPred=waitingPred;
         this.notifiedEntry=notifiedEntry;
+        
+        if(this.waitingPred instanceof WaitingPredNode){
+            WaitingPredNode tmp = (WaitingPredNode)this.waitingPred;
+            tmp.waitingSucc = this.notifiedEntry;
+            st.waitingSucc.put(this.waitingPred, this.notifiedEntry);
+        }
+        else{
+            System.out.println("Wrong type for waitingPred");
+        }
+        
+        if(this.notifiedEntry instanceof NotifiedEntryNode){
+            NotifiedEntryNode tmp = (NotifiedEntryNode)this.notifiedEntry;
+            tmp.waitingPred = this.waitingPred;
+            st.waitingPred.put(this.notifiedEntry, this.waitingPred);
+        }
+        else{
+            System.out.println("Wrong type for notifiedEntry");
+        }
     }
 
     @Override
     public void updateInEdge(BB parent) {
         // Perform DFS
-        this.inEdges.addAll(parent.flowInfo);
+        this.localPred.addAll(parent.flowInfo);
         this.flowInfo.add(this);
 
         this.waitingPred.updateInEdge(this);
@@ -36,8 +54,8 @@ public class MsgWaitNode extends BB {
 
     @Override
     public void updateOutEdge() {
-        for(BB f : this.inEdges){
-            f.outEdges.add(this);
+        for(BB f : this.localPred){
+            f.localSucc.add(this);
         }
 
         this.waitingPred.updateOutEdge();
@@ -51,20 +69,15 @@ public class MsgWaitNode extends BB {
         
         sb.append(buffer.name+".wait()\n");
         
-        sb.append(st.nestIndent+"In edges = [");
+        sb.append(st.nestIndent+"Local Pred edges = [");
         String delim = "";
-        for(BB f : this.inEdges){
+        for(BB f : this.localPred){
             sb.append(delim + f.bbid);
             delim = ",";
         }
-        sb.append("]\n"+st.nestIndent+"Out edges = [");
+        sb.append("]\n"+st.nestIndent+"Local Succ edges = [");
         delim = "";
-        for(BB f : this.outEdges){
-            sb.append(delim + f.bbid);
-            delim = ",";
-        }
-        sb.append("]\n"+st.nestIndent+"Cross edges = [");
-        for(BB f : this.crossEdges){
+        for(BB f : this.localSucc){
             sb.append(delim + f.bbid);
             delim = ",";
         }

@@ -2,6 +2,8 @@ package tools;
 
 public class WaitingPredNode extends BB {
     Field buffer;
+    BB waitingSucc;
+    
     public WaitingPredNode(int bbid,int tid,Field buffer) {
         super(NodeType.WAITING_PRED, bbid,tid,null);
         this.buffer = buffer;
@@ -9,7 +11,7 @@ public class WaitingPredNode extends BB {
 
     @Override
     public void updateInEdge(BB parent) {
-        this.inEdges.addAll(parent.flowInfo);
+        this.localPred.addAll(parent.flowInfo);
     }
 
     @Override
@@ -26,18 +28,13 @@ public class WaitingPredNode extends BB {
 
         sb.append(st.nestIndent+"In edges = [");
         String delim = "";
-        for(BB f : this.inEdges){
+        for(BB f : this.localPred){
             sb.append(delim + f.bbid);
             delim = ",";
         }
         sb.append("]\n"+st.nestIndent+"Out edges = [");
         delim = "";
-        for(BB f : this.outEdges){
-            sb.append(delim + f.bbid);
-            delim = ",";
-        }
-        sb.append("]\n"+st.nestIndent+"Cross edges = [");
-        for(BB f : this.crossEdges){
+        for(BB f : this.localSucc){
             sb.append(delim + f.bbid);
             delim = ",";
         }

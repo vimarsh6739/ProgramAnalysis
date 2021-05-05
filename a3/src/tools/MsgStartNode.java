@@ -1,22 +1,36 @@
 package tools;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class MsgStartNode extends BB {
     Field tField;
-
+    Set<BB> startSucc;
+    
     public MsgStartNode(NodeType op, int bbid,int tid, String ann, Field tField) {
         super(op,bbid,tid,ann);
         this.tField=tField;
+        this.startSucc = new LinkedHashSet<>();
+        st.startSucc.put(this, this.startSucc);
     }
     
     @Override
     public void updateInEdge(BB parent) {
-        this.inEdges.addAll(parent.flowInfo);
+        this.localPred.addAll(parent.flowInfo);
     }
 
     @Override
     public void updateSummary() {
         this.flowInfo.add(this);
+    }
+
+    @Override
+    public void updateStartEdge() {
+        int tid = st.thFieldMap.get(tField);
+        // Initial BB is always of type entry
+        BeginNode th_begin_blk = st.thBeginBlks.get(tid);
+        this.startSucc.add(th_begin_blk);
+        th_begin_blk.startPred.add(this);
     }
 
     @Override
@@ -26,20 +40,21 @@ public class MsgStartNode extends BB {
         
         sb.append(tField.name+".start()\n");
 
-        sb.append(st.nestIndent+"In edges = [");
+        sb.append(st.nestIndent+"Local In edges = [");
         String delim = "";
-        for(BB f : this.inEdges){
+        for(BB f : this.localPred){
             sb.append(delim + f.bbid);
             delim = ",";
         }
-        sb.append("]\n"+st.nestIndent+"Out edges = [");
+        sb.append("]\n"+st.nestIndent+"Local Out edges = [");
         delim = "";
-        for(BB f : this.outEdges){
+        for(BB f : this.localSucc){
             sb.append(delim + f.bbid);
             delim = ",";
         }
-        sb.append("]\n"+st.nestIndent+"Cross edges = [");
-        for(BB f : this.crossEdges){
+        sb.append("]\n"+st.nestIndent+"Start succ edges = [");
+        delim="";
+        for(BB f : this.startSucc){
             sb.append(delim + f.bbid);
             delim = ",";
         }

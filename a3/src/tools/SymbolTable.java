@@ -6,30 +6,41 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SymbolTable {
     
-    List<Klass> cList;
-    Map<String,Klass> cMap;
+    List<Clazz> cList;
+    Map<String,Clazz> cMap;
     
     List<Field> gfList;
     Map<String,Field> fMap;
     
     int N_THREADS;
     int N_BLKS;
-    Map<Field,Integer> thFieldMap;      // maps field to it's tid
-    Map<Integer,Klass> thClassMap;      // maps threadId to it's class
-    Map<Integer,Deque<BB>> thStackMap;  // maps threadId to current stack value
-    Map<Integer, List<BB>> thPEGMap;    // PEG for respective thread
-    Map<Integer, BB> thLastStmt;        // last added toplevel statement
+    Map<Field,Integer> thFieldMap;          // maps field to it's tid
+    Map<Integer,Clazz> thClassMap;          // maps threadId to it's class
+    Map<Integer,Deque<BB>> thStackMap;      // maps threadId to current stack value
+    Map<Integer, List<BB>> thPEGMap;        // PEG for respective thread
+    Map<Integer, BB> thLastStmt;            // last added toplevel statement 
     
-    Map<Field, List<BB>> monitor;       // monitor map for sync buffers   
+    // Maps for worklist algo
+    Map<Integer, BeginNode> thBeginBlks;    // threadId -> begin of PEG
+    Map<Field, List<BB>> Monitor;           // monitor map for sync buffers   
+    
+    Map<BB,BB>      waitingPred;            // waiting pred map
+    Map<BB,BB>      waitingSucc;            // waiting succ map
+
+    Map<BB,Set<BB>> startPred;              // begin -> start
+    Map<BB,Set<BB>> startSucc;              // start -> begin
+    Map<BB,Set<BB>> notifyPred;             // notified-entry -> notify(All)
+    Map<BB,Set<BB>> notifySucc;             // notify(All) -> notified-entry
     
     // Queries
     List<String> q_lhs;                 
     List<String> q_rhs;
     
-    Klass curr_class;
+    Clazz curr_class;
     boolean inRun;
     String nestIndent;
     public SymbolTable() {
@@ -44,7 +55,15 @@ public class SymbolTable {
         this.thStackMap     = new HashMap<>();
         this.thPEGMap       = new HashMap<>();
         this.thLastStmt     = new HashMap<>();
+        this.thBeginBlks  = new HashMap<>();
 
+        this.waitingPred = new HashMap<>();
+        this.waitingSucc = new HashMap<>();
+        this.startPred   = new HashMap<>();
+        this.startSucc   = new HashMap<>();
+        this.notifyPred  = new HashMap<>();
+        this.notifySucc  = new HashMap<>();
+        
         this.q_lhs  = new ArrayList<>();
         this.q_rhs  = new ArrayList<>();
 
@@ -60,7 +79,7 @@ public class SymbolTable {
     int getBlkId(){return ++N_BLKS;}
 
     public void addClass(String cname, boolean isThread) {
-        Klass k = new Klass(cname, isThread);
+        Clazz k = new Clazz(cname, isThread);
         this.cList.add(k);
         this.cMap.put(cname, k);
         this.curr_class = k;
@@ -105,7 +124,7 @@ public class SymbolTable {
         // Add class entried for each tid
         for(Field f : this.thFieldMap.keySet()){
             String cname = f.type;
-            Klass k = this.cMap.get(cname);
+            Clazz k = this.cMap.get(cname);
             int tid = this.thFieldMap.get(f);
             this.thClassMap.put(tid, k);
  
@@ -174,6 +193,7 @@ public class SymbolTable {
                     case BEGIN:
                         blk = new BeginNode(op,bbid,tid);
                         this.updateEntry(tid, blk);
+                        this.thBeginBlks.put(tid, (BeginNode)blk);
                         break;
         
                     case END:
@@ -271,14 +291,22 @@ public class SymbolTable {
     void buildPEG(){
         for(int tid : this.thClassMap.keySet()){
             List<BB> peg = this.thPEGMap.get(tid);
+
+            // add localPred
             peg.get(0).updateSummary();
             for(int i = 1; i<peg.size(); ++i){
                 peg.get(i).updateInEdge(peg.get(i-1));
                 peg.get(i).updateSummary();
             }
 
+            // add localSucc
             for(BB f : peg){
                 f.updateOutEdge();
+            }
+
+            // add startPred and startSucc
+            for(BB f : peg){
+                f.updateStartEdge();
             }
         }
     }
@@ -304,18 +332,18 @@ public class SymbolTable {
         System.out.println("THREAD MAPPINGS");
         for(Field f : this.thFieldMap.keySet()){
             Integer tid = this.thFieldMap.get(f);
-            Klass k = this.thClassMap.get(tid);
+            Clazz k = this.thClassMap.get(tid);
             System.out.println(ts+"("+f.name+" : "+f.type+") -> " + tid.intValue()+" -> "+k.cname);
         }
         
         System.out.println("VARIABLE MAPPINGS");
-        for(Klass k: this.cList){
+        for(Clazz k: this.cList){
             System.out.println("Class " + k.cname);
             System.out.println("Members:");
             for(Field f : k.cFields){
                 System.out.println(ts + f.name + " : "  + f.type);
                 System.out.print(ts+"Present in -> {");
-                for(Klass k1 : f.scope){
+                for(Clazz k1 : f.scope){
                     System.out.print(k1.cname+",");
                 }
                 System.out.println("}");
@@ -324,7 +352,7 @@ public class SymbolTable {
             for(Field f : k.lFields){
                 System.out.println(ts + f.name + " : "  + f.type);
                 System.out.print(ts+"Present in -> {");
-                for(Klass k1 : f.scope){
+                for(Clazz k1 : f.scope){
                     System.out.print(k1.cname+",");
                 }
                 System.out.println("}");

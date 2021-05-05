@@ -1,8 +1,16 @@
 package tools;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class BeginNode extends BB {
+
+    Set<BB> startPred;
+    
     public BeginNode(NodeType op,int bbid,int tid) {
         super(op,bbid,tid,null);
+        this.startPred = new LinkedHashSet<>();
+        st.startPred.put(this, this.startPred);
     }
 
     @Override
@@ -17,25 +25,26 @@ public class BeginNode extends BB {
         
         sb.append("Entry\n");
 
-        sb.append("In edges = [");
+        sb.append("Local Pred edges = [");
         String delim = "";
-        for(BB f : this.inEdges){
+        for(BB f : this.localPred){
             sb.append(delim+f.bbid);
             delim = ",";
         }
-        sb.append("]\nOut edges = [");
+        sb.append("]\nLocal Succ edges = [");
         delim = "";
-        for(BB f : this.outEdges){
+        for(BB f : this.localSucc){
             sb.append(delim + f.bbid);
             delim = ",";
         }
-        sb.append("]\nCross edges = [");
-        for(BB f : this.crossEdges){
+        sb.append("]\nStart Pred edges = [");
+        delim="";
+        for(BB f : st.startPred.get(this)){
             sb.append(delim + f.bbid);
             delim = ",";
         }
         sb.append("]\n\n");
-
+        
         return sb.toString();
     }
 }

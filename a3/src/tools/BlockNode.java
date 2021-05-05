@@ -20,7 +20,7 @@ public class BlockNode extends BB{
 
     @Override
     public void updateInEdge(BB parent) {
-        this.inEdges.addAll(parent.flowInfo);
+        this.localPred.addAll(parent.flowInfo);
         // Recurse on subBlocks
         if(!this.subBlocks.isEmpty()){
             // Short circuit connection from parent to first sub-block
@@ -37,7 +37,7 @@ public class BlockNode extends BB{
     public void updateSummary() {
         if(this.subBlocks.isEmpty()){
             // empty block <fout = in>
-            this.flowInfo.addAll(this.inEdges);
+            this.flowInfo.addAll(this.localPred);
         }
         else{
             // non-empty block <fout = fout(subBlocks[-1])>
@@ -49,13 +49,20 @@ public class BlockNode extends BB{
 
     @Override
     public void updateOutEdge() {
-        for(BB f : this.inEdges){
-            f.outEdges.add(this);
+        for(BB f : this.localPred){
+            f.localSucc.add(this);
         }
 
         // Recurse for subBlocks
         for(BB sblk : this.subBlocks){
             sblk.updateOutEdge();
+        }
+    }
+
+    @Override
+    public void updateStartEdge() {
+        for(BB sblk : this.subBlocks){
+            sblk.updateStartEdge();
         }
     }
 

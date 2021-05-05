@@ -16,7 +16,7 @@ public class StmtNode extends BB {
 
     @Override
     public void updateInEdge(BB parent) {
-        this.inEdges.addAll(parent.flowInfo);
+        this.localPred.addAll(parent.flowInfo);
     }
 
     @Override
@@ -43,18 +43,13 @@ public class StmtNode extends BB {
         sb.append("\n");
         sb.append(st.nestIndent+"In edges = [");
         String delim = "";
-        for(BB f : this.inEdges){
+        for(BB f : this.localPred){
             sb.append(delim + f.bbid);
             delim = ",";
         }
         sb.append("]\n"+st.nestIndent+"Out edges = [");
         delim = "";
-        for(BB f : this.outEdges){
-            sb.append(delim + f.bbid);
-            delim = ",";
-        }
-        sb.append("]\n"+st.nestIndent+"Cross edges = [");
-        for(BB f : this.crossEdges){
+        for(BB f : this.localSucc){
             sb.append(delim + f.bbid);
             delim = ",";
         }

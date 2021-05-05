@@ -6,7 +6,7 @@ import java.util.List;
 public class Field {
     String type;
     String name;
-    List<Klass> scope;
+    List<Clazz> scope;
 
     public Field() {
         type=name=null;

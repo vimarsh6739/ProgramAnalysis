@@ -11,7 +11,7 @@ public class MsgJoinNode extends BB{
 
     @Override
     public void updateInEdge(BB parent) {
-        this.inEdges.addAll(parent.flowInfo);
+        this.localPred.addAll(parent.flowInfo);
     }
 
     @Override
@@ -26,20 +26,15 @@ public class MsgJoinNode extends BB{
         
         sb.append(tField.name+".join()\n");
 
-        sb.append(st.nestIndent+"In edges = [");
+        sb.append(st.nestIndent+"Local Pred edges = [");
         String delim = "";
-        for(BB f : this.inEdges){
+        for(BB f : this.localPred){
             sb.append(delim + f.bbid);
             delim = ",";
         }
-        sb.append("]\n"+st.nestIndent+"Out edges = [");
+        sb.append("]\n"+st.nestIndent+"Local Succ edges = [");
         delim = "";
-        for(BB f : this.outEdges){
-            sb.append(delim + f.bbid);
-            delim = ",";
-        }
-        sb.append("]\n"+st.nestIndent+"Cross edges = [");
-        for(BB f : this.crossEdges){
+        for(BB f : this.localSucc){
             sb.append(delim + f.bbid);
             delim = ",";
         }

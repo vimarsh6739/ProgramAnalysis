@@ -1,16 +1,21 @@
 package tools;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class MsgNotifyNode extends BB{
     Field buffer;
-
+    Set<BB> notifySucc;
     public MsgNotifyNode(NodeType op, int bbid,int tid, String ann, Field buffer) {
         super(op,bbid,tid,ann);
         this.buffer=buffer;
+        this.notifySucc = new LinkedHashSet<>();
+        st.notifySucc.put(this, this.notifySucc);
     }
 
     @Override
     public void updateInEdge(BB parent) {
-        this.inEdges.addAll(parent.flowInfo);
+        this.localPred.addAll(parent.flowInfo);
     }
 
     @Override
@@ -27,20 +32,20 @@ public class MsgNotifyNode extends BB{
         if(op == NodeType.NOTIFY)sb.append("notify()\n");
         else sb.append("notifyAll()\n");
 
-        sb.append(st.nestIndent+"In edges = [");
+        sb.append(st.nestIndent+"Local Pred edges = [");
         String delim = "";
-        for(BB f : this.inEdges){
+        for(BB f : this.localPred){
             sb.append(delim + f.bbid);
             delim = ",";
         }
-        sb.append("]\n"+st.nestIndent+"Out edges = [");
+        sb.append("]\n"+st.nestIndent+"Local Succ edges = [");
         delim = "";
-        for(BB f : this.outEdges){
+        for(BB f : this.localSucc){
             sb.append(delim + f.bbid);
             delim = ",";
         }
-        sb.append("]\n"+st.nestIndent+"Cross edges = [");
-        for(BB f : this.crossEdges){
+        sb.append("]\n"+st.nestIndent+"Notify Succ edges = [");
+        for(BB f : this.notifySucc){
             sb.append(delim + f.bbid);
             delim = ",";
         }
