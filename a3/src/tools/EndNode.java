@@ -18,19 +18,43 @@ public class EndNode extends BB {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
-        sb.append("BB"+bbid+": (method end)\t");
+        sb.append("BB"+bbid+":\t");
         
-        sb.append("End\n");
+        sb.append("END\n");
             
-        sb.append("In edges = [");
+        sb.append("Local Pred edges = [");
         String delim = "";
         for(BB f : this.localPred){
             sb.append(delim + f.bbid);
             delim = ",";
         }
-        sb.append("]\nOut edges = [");
+        sb.append("]\nLocal Succ edges = [");
         delim = "";
         for(BB f : this.localSucc){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\nGEN = [");
+        delim = "";
+        for(BB f : this.GEN){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\nKILL = [");
+        delim = "";
+        for(BB f : this.KILL){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\nM = [");
+        delim = "";
+        for(BB f : this.M){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\nOUT = [");
+        delim = "";
+        for(BB f : this.OUT){
             sb.append(delim + f.bbid);
             delim = ",";
         }

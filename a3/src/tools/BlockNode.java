@@ -49,10 +49,11 @@ public class BlockNode extends BB{
 
     @Override
     public void updateOutEdge() {
-        for(BB f : this.localPred){
-            f.localSucc.add(this);
-        }
-
+        // As far as parent is concerned, it can never see a block
+        // for(BB f : this.localPred){
+        //     f.localSucc.add(this);
+        // }
+            
         // Recurse for subBlocks
         for(BB sblk : this.subBlocks){
             sblk.updateOutEdge();
@@ -68,12 +69,20 @@ public class BlockNode extends BB{
 
     @Override
     public void updateMonitor(Field obj, boolean b) {
-        if(b){
-            st.monitor.get(obj).add(this);
-        }
+        // No need to put blk in monitor as it will never appear in any outedge
+        // if(b){
+        //     st.monitor.get(obj).add(this);
+        // }
 
         for(BB sblk : this.subBlocks){
             sblk.updateMonitor(obj, b);
+        }
+    }
+
+    @Override
+    public void initializeGenKill() {
+        for(BB sblk : this.subBlocks){
+            sblk.initializeGenKill();
         }
     }
 

@@ -14,6 +14,12 @@ public class BB {
     Set<BB> flowInfo;
     Set<BB> localSucc;
 
+    // MHP sets
+    Set<BB> M;
+    Set<BB> OUT;
+    Set<BB> GEN;
+    Set<BB> KILL;
+
     NodeType op;
     int bbid;                   // global id of current basic block
     String ann;                 // user annotation 
@@ -32,6 +38,17 @@ public class BB {
         this.localPred  = new LinkedHashSet<>();
         this.flowInfo   = new LinkedHashSet<>();
         this.localSucc  = new LinkedHashSet<>();
+        
+        // Allocate MHP sets
+        this.M = new LinkedHashSet<>();
+        this.OUT = new LinkedHashSet<>();
+        this.GEN = new LinkedHashSet<>();
+        this.KILL = new LinkedHashSet<>();
+
+        st.M.put(this, this.M);
+        st.OUT.put(this, this.OUT);
+        st.GEN.put(this, this.GEN);
+        st.KILL.put(this, this.KILL);
     }
 
     /** Overridden method for recursive basic blocks */
@@ -56,6 +73,9 @@ public class BB {
     /** Overridden method for start edges between PEGs start */
     public void updateStartEdge(){}
     
+    /** Initialize the GEN and KILL sets for various nodes */
+    public void initializeGenKill(){}
+    
     /**
      * Overridden method for computing monitor sets
      * @param obj Synchronization buffer
@@ -67,7 +87,7 @@ public class BB {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder("BB"+this.bbid+" <NOP>");
         return sb.toString();
     }
 

@@ -59,6 +59,13 @@ public class SynchronizeNode extends BB{
         this.body.updateMonitor(obj, b);
         this.exit.updateMonitor(obj, b);
     }
+
+    @Override
+    public void initializeGenKill() {
+        this.entry.initializeGenKill();
+        this.body.initializeGenKill();
+        this.exit.initializeGenKill();
+    }
     
     @Override
     public String toString() {

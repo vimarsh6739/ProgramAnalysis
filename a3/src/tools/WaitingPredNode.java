@@ -33,15 +33,39 @@ public class WaitingPredNode extends BB {
         
         sb.append("("+buffer.name+",waiting-pred)\n");
 
-        sb.append(st.nestIndent+"In edges = [");
+        sb.append(st.nestIndent+"Local Pred edges = [");
         String delim = "";
         for(BB f : this.localPred){
             sb.append(delim + f.bbid);
             delim = ",";
         }
-        sb.append("]\n"+st.nestIndent+"Out edges = [");
+        sb.append("]\n"+st.nestIndent+"Local Succ edges = [");
         delim = "";
         for(BB f : this.localSucc){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"GEN = [");
+        delim = "";
+        for(BB f : this.GEN){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"KILL = [");
+        delim = "";
+        for(BB f : this.KILL){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"M = [");
+        delim = "";
+        for(BB f : this.M){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"OUT = [");
+        delim = "";
+        for(BB f : this.OUT){
             sb.append(delim + f.bbid);
             delim = ",";
         }

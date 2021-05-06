@@ -41,14 +41,25 @@ public class SymbolTable {
     Map<Field, Set<BB>> notifyNodes;        // set of notify(All) nodes for obj
     Map<Field, Set<BB>> waitingNodes;       // set of waiting nodes for obj
     Map<Integer,Set<BB>> N;                 // flattened peg per thread
+
+    // Maps for worklist algorithm
+    Map<BB,Set<BB>> M;                      // MHP map
+    Map<BB,Set<BB>> GEN;                    // Gen map
+    Map<BB,Set<BB>> KILL;                   // Kill map
+    Map<BB,Set<BB>> OUT;                    // Out map
     
+    // Labeled set
+    Map<String, Set<BB>> labelled_blks;     
+
     // Queries
     List<String> q_lhs;                 
     List<String> q_rhs;
     
+    // Metadata
     Clazz curr_class;
     boolean inRun;
     String nestIndent;
+
     public SymbolTable() {
         this.cList      = new ArrayList<>();
         this.cMap       = new HashMap<>();
@@ -70,17 +81,27 @@ public class SymbolTable {
         this.notifyPred  = new HashMap<>();
         this.notifySucc  = new HashMap<>();
         
-        this.sync_objs = new LinkedHashSet<>();
-        this.monitor = new HashMap<>();
-        this.notifyNodes = new HashMap<>();
-        this.waitingNodes = new HashMap<>();
-        this.N = new HashMap<>();
+        this.sync_objs      = new LinkedHashSet<>();
+        this.monitor        = new HashMap<>();
+        this.notifyNodes    = new HashMap<>();
+        this.waitingNodes   = new HashMap<>();
+        this.N              = new HashMap<>();
+
+        this.M      = new HashMap<>();
+        this.GEN    = new HashMap<>();
+        this.KILL   = new HashMap<>();
+        this.OUT    = new HashMap<>();
+
+        this.labelled_blks = new HashMap<>();
         this.q_lhs  = new ArrayList<>();
         this.q_rhs  = new ArrayList<>();
 
         this.curr_class = null;
         this.inRun      = false;
         nestIndent = "";
+
+        /** Set symbol table for all basic blocks */
+        BB.st = this;
     }
     
     /** Construct a new unique index for thread */
@@ -146,10 +167,7 @@ public class SymbolTable {
             this.thStackMap.put(tid, curr_stack);
 
             this.N.putIfAbsent(tid, new LinkedHashSet<>());
-        }
-        
-        /** Set symbol table for all basic blocks */
-        BB.st = this;
+        }        
     }
 
     public void setClass(String cname) {this.curr_class = this.cMap.get(cname);}
@@ -192,6 +210,11 @@ public class SymbolTable {
         // basic block to be added
         BB blk; 
 
+        // Initialize Labelled Map entry for curr label
+        if(ann != null){
+            this.labelled_blks.putIfAbsent(ann, new LinkedHashSet<>());
+        }
+
         // Field value = null for constants or booleans
         Field f1,f2,f3;
         f1 = this.curr_class.getField(arg1);
@@ -230,6 +253,9 @@ public class SymbolTable {
                         blk = new StmtNode(op, bbid, tid, ann, f1, f2, f3,arg1,arg2,arg3);
                         this.updateEntry(tid, blk);
                         this.N.get(tid).add(blk);
+
+                        if(ann != null)
+                            this.labelled_blks.get(ann).add(blk);    
                         break;
 
                     case BLOCK:
@@ -269,18 +295,24 @@ public class SymbolTable {
                         this.N.get(tid).add(entry_blk);
                         this.N.get(tid).add(blk);
                         this.N.get(tid).add(exit_blk);
+                        if(ann != null)
+                            this.labelled_blks.get(ann).add(entry_blk);
                         break;
         
                     case START:
                         blk = new MsgStartNode(op, bbid, tid, ann, f1);
                         this.updateEntry(tid, blk);
                         this.N.get(tid).add(blk);
+                        if(ann != null)
+                            this.labelled_blks.get(ann).add(blk);
                         break;
         
                     case JOIN:
                         blk = new MsgJoinNode(op, bbid, tid, ann, f1);
                         this.updateEntry(tid, blk);
                         this.N.get(tid).add(blk);
+                        if(ann != null)
+                            this.labelled_blks.get(ann).add(blk);
                         break;
                         
                     case WAIT:
@@ -295,6 +327,9 @@ public class SymbolTable {
                         this.N.get(tid).add(blk);
                         this.N.get(tid).add(wait_pred_blk);
                         this.N.get(tid).add(not_entry_blk);
+                        /** Have to decide on which block to give the label to here */
+                        if(ann != null)
+                            this.labelled_blks.get(ann).add(blk);
                         break;
         
                     case NOTIFY:
@@ -304,6 +339,8 @@ public class SymbolTable {
 
                         this.notifyNodes.get(f1).add(blk);
                         this.N.get(tid).add(blk);
+                        if(ann != null)
+                            this.labelled_blks.get(ann).add(blk);
                         break;
                         
                     default:
@@ -356,16 +393,30 @@ public class SymbolTable {
         }
     }
 
+    /** Initialize the GEN, KILL sets for PEG nodes */
+    void initializeSets(){
+        for(int tid : this.thClassMap.keySet()){
+            List<BB> peg = this.thPEGMap.get(tid);
+
+            for(BB f : peg){
+                f.initializeGenKill();
+            }
+        }
+    }
+    
+    /** Run MHP worklist algorithm, and update PEG along with MHP sets */
     void runWorklistAlgo(){
 
     }
-
+    
+    /** Output result for stored queries */
     void outputQueries(){
 
     }
 
     public void analyze() {
         this.buildPEG();
+        this.initializeSets();
         this.runWorklistAlgo();
         this.outputQueries();
     }
@@ -441,7 +492,7 @@ public class SymbolTable {
             }
             delim="";
             System.out.print("]\n"+ts+"Waiting nodes = [");
-            for(BB f : notifyNodes.get(obj)){
+            for(BB f : waitingNodes.get(obj)){
                 System.out.print(delim+f.bbid);
                 delim=",";
             }

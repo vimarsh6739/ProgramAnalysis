@@ -73,9 +73,15 @@ public class IfElseNode extends BB {
     }
     
     @Override
+    public void initializeGenKill() {
+        this.ifNode.initializeGenKill();
+        this.elseNode.initializeGenKill();    
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
-        sb.append(st.nestIndent+"BB"+bbid+": (if-else block)\t");
+        sb.append(st.nestIndent+"BB"+bbid+":\t");
         
         sb.append(st.nestIndent+"IF("+cond.name+")\n");
         st.nestIndent += "\t";
@@ -86,7 +92,7 @@ public class IfElseNode extends BB {
         st.nestIndent += "\t";
         sb.append(elseNode.toString());
         st.nestIndent = st.nestIndent.substring(0, st.nestIndent.length()-1);
-        sb.append(st.nestIndent+"ENDIF ->BB"+bbid+": (if-else block end)\n\n");
+        sb.append(st.nestIndent+"ENDIF ->BB"+bbid+":\n\n");
         return sb.toString();
     }
 }

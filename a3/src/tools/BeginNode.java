@@ -21,9 +21,9 @@ public class BeginNode extends BB {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
-        sb.append("BB"+bbid+": (method begin)\t");
+        sb.append("BB"+bbid+":\t");
         
-        sb.append("Entry\n");
+        sb.append("BEGIN\n");
 
         sb.append("Local Pred edges = [");
         String delim = "";
@@ -40,6 +40,30 @@ public class BeginNode extends BB {
         sb.append("]\nStart Pred edges = [");
         delim="";
         for(BB f : st.startPred.get(this)){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\nGEN = [");
+        delim = "";
+        for(BB f : this.GEN){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\nKILL = [");
+        delim = "";
+        for(BB f : this.KILL){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\nM = [");
+        delim = "";
+        for(BB f : this.M){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\nOUT = [");
+        delim = "";
+        for(BB f : this.OUT){
             sb.append(delim + f.bbid);
             delim = ",";
         }

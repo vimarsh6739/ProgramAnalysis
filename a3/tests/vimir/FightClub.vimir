@@ -1,0 +1,378 @@
+THREAD 0 : Class FightClub
+BB1:	BEGIN
+Local Pred edges = []
+Local Succ edges = [2]
+Start Pred edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB2: Label:null		one = 1;
+Local Pred edges = [1]
+Local Succ edges = [3]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB3: Label:null		two = 2;
+Local Pred edges = [2]
+Local Succ edges = [4]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB4: Label:null		b1 = new Buffer();
+Local Pred edges = [3]
+Local Succ edges = [5]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB5: Label:null		b2 = new Buffer();
+Local Pred edges = [4]
+Local Succ edges = [6]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB6: Label:null		uncle1 = new Rival();
+Local Pred edges = [5]
+Local Succ edges = [7]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB7: Label:null		uncle2 = new Rival();
+Local Pred edges = [6]
+Local Succ edges = [8]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB8: Label:null		uncle1.b1=b1;
+Local Pred edges = [7]
+Local Succ edges = [9]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB9: Label:null		uncle2.b1=b1;
+Local Pred edges = [8]
+Local Succ edges = [10]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB10: Label:null		uncle1.b2=b2;
+Local Pred edges = [9]
+Local Succ edges = [11]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB11: Label:null		uncle2.b2=b2;
+Local Pred edges = [10]
+Local Succ edges = [12]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB12: Label:null	uncle1.start()
+Local In edges = [11]
+Local Out edges = [13]
+Start succ edges = [25]
+GEN = [25]
+KILL = []
+M = []
+OUT = []
+
+BB13: Label:null	uncle2.start()
+Local In edges = [12]
+Local Out edges = [14]
+Start succ edges = [26]
+GEN = [26]
+KILL = []
+M = []
+OUT = []
+
+BB14: Label:L1	(b1,entry)
+Local Pred edges = [13]
+Local Succ edges = [18]
+GEN = []
+KILL = [17,18,21,22,20,16,33,35,41,43,44,45,37,29,34,38,42,46,47,48,40,32]
+M = []
+OUT = []
+
+BB15:	SYNCHRONIZED(b1){
+	BB17: BLOCK {
+		BB18: Label:L2	(b2,entry)
+		Local Pred edges = [14]
+		Local Succ edges = [22]
+		GEN = []
+		KILL = [21,22,20,41,43,37,42,46,40]
+		M = []
+		OUT = []
+
+		BB19:	SYNCHRONIZED(b2){
+			BB21: BLOCK {
+				BB22: Label:L3	b2.notifyAll()
+				Local Pred edges = [18]
+				Local Succ edges = [20]
+				Notify Succ edges = []
+				GEN = []
+				KILL = [44,47]
+				M = []
+				OUT = []
+
+
+			END-BLOCK }	BB21:
+
+			BB20:	(b2,exit)
+			Local Pred edges = [22]
+			Local Succ edges = [16]
+			GEN = []
+			KILL = []
+			M = []
+			OUT = []
+
+		END-SYNCHRONIZED}	BB19: 
+
+
+	END-BLOCK }	BB17:
+
+	BB16:	(b1,exit)
+	Local Pred edges = [20]
+	Local Succ edges = [23]
+	GEN = []
+	KILL = []
+	M = []
+	OUT = []
+
+END-SYNCHRONIZED}	BB15: 
+
+BB23: Label:null	uncle1.join()
+Local Pred edges = [16]
+Local Succ edges = [24]
+GEN = []
+KILL = [25,27,28,29,33,35,36,37,41,43,44,45,49]
+M = []
+OUT = []
+
+BB24: Label:null	uncle2.join()
+Local Pred edges = [23]
+Local Succ edges = []
+GEN = []
+KILL = [26,30,31,32,34,38,39,40,42,46,47,48,50]
+M = []
+OUT = []
+
+====================================================
+THREAD 1 : Class Rival
+BB25:	BEGIN
+Local Pred edges = []
+Local Succ edges = [27]
+Start Pred edges = [12]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB27: Label:null	(b1,entry)
+Local Pred edges = [25]
+Local Succ edges = [35]
+GEN = []
+KILL = [17,18,21,22,20,16,33,35,41,43,44,45,37,29,34,38,42,46,47,48,40,32]
+M = []
+OUT = []
+
+BB28:	SYNCHRONIZED(b1){
+	BB33: BLOCK {
+		BB35: Label:L4	(b2,entry)
+		Local Pred edges = [27]
+		Local Succ edges = [43]
+		GEN = []
+		KILL = [21,22,20,41,43,37,42,46,40]
+		M = []
+		OUT = []
+
+		BB36:	SYNCHRONIZED(b2){
+			BB41: BLOCK {
+				BB43: Label:null	b2.wait()
+				Local Pred edges = [35]
+				Local Succ edges = [44]
+				GEN = []
+				KILL = []
+				M = []
+				OUT = []
+
+				BB44:	(b2,waiting-pred)
+				Local Pred edges = [43]
+				Local Succ edges = [45]
+				GEN = []
+				KILL = []
+				M = []
+				OUT = []
+
+				BB45:	(b2,notified-entry)
+				Local Pred edges = [44]
+				Local Succ edges = [37]
+				Notify Pred edges = []
+				GEN = []
+				KILL = [21,22,20,41,43,37,42,46,40]
+				M = []
+				OUT = []
+
+
+			END-BLOCK }	BB41:
+
+			BB37:	(b2,exit)
+			Local Pred edges = [45]
+			Local Succ edges = [29]
+			GEN = []
+			KILL = []
+			M = []
+			OUT = []
+
+		END-SYNCHRONIZED}	BB36: 
+
+
+	END-BLOCK }	BB33:
+
+	BB29:	(b1,exit)
+	Local Pred edges = [37]
+	Local Succ edges = [49]
+	GEN = []
+	KILL = []
+	M = []
+	OUT = []
+
+END-SYNCHRONIZED}	BB28: 
+
+BB49:	END
+Local Pred edges = [29]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+====================================================
+THREAD 2 : Class Rival
+BB26:	BEGIN
+Local Pred edges = []
+Local Succ edges = [30]
+Start Pred edges = [13]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB30: Label:null	(b1,entry)
+Local Pred edges = [26]
+Local Succ edges = [38]
+GEN = []
+KILL = [17,18,21,22,20,16,33,35,41,43,44,45,37,29,34,38,42,46,47,48,40,32]
+M = []
+OUT = []
+
+BB31:	SYNCHRONIZED(b1){
+	BB34: BLOCK {
+		BB38: Label:L4	(b2,entry)
+		Local Pred edges = [30]
+		Local Succ edges = [46]
+		GEN = []
+		KILL = [21,22,20,41,43,37,42,46,40]
+		M = []
+		OUT = []
+
+		BB39:	SYNCHRONIZED(b2){
+			BB42: BLOCK {
+				BB46: Label:null	b2.wait()
+				Local Pred edges = [38]
+				Local Succ edges = [47]
+				GEN = []
+				KILL = []
+				M = []
+				OUT = []
+
+				BB47:	(b2,waiting-pred)
+				Local Pred edges = [46]
+				Local Succ edges = [48]
+				GEN = []
+				KILL = []
+				M = []
+				OUT = []
+
+				BB48:	(b2,notified-entry)
+				Local Pred edges = [47]
+				Local Succ edges = [40]
+				Notify Pred edges = []
+				GEN = []
+				KILL = [21,22,20,41,43,37,42,46,40]
+				M = []
+				OUT = []
+
+
+			END-BLOCK }	BB42:
+
+			BB40:	(b2,exit)
+			Local Pred edges = [48]
+			Local Succ edges = [32]
+			GEN = []
+			KILL = []
+			M = []
+			OUT = []
+
+		END-SYNCHRONIZED}	BB39: 
+
+
+	END-BLOCK }	BB34:
+
+	BB32:	(b1,exit)
+	Local Pred edges = [40]
+	Local Succ edges = [50]
+	GEN = []
+	KILL = []
+	M = []
+	OUT = []
+
+END-SYNCHRONIZED}	BB31: 
+
+BB50:	END
+Local Pred edges = [32]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+====================================================
+QUERIES:
+MHP(L1,L4)
+MHP(L2,L3)
+MHP(L2,L4)
+MHP(L3,L4)
+====================================================
+SYNCHRONIZATION MAPS:
+1. Sync buffer < b1 : Buffer >
+	Monitor nodes = [17,18,21,22,20,16,33,35,41,43,44,45,37,29,34,38,42,46,47,48,40,32]
+	Notify nodes = []
+	Waiting nodes = []
+
+2. Sync buffer < b2 : Buffer >
+	Monitor nodes = [21,22,20,41,43,37,42,46,40]
+	Notify nodes = [22]
+	Waiting nodes = [44,47]
+
+====================================================

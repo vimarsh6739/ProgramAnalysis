@@ -1,0 +1,249 @@
+THREAD 0 : Class UselessReadWrite
+BB1:	BEGIN
+Local Pred edges = []
+Local Succ edges = [2]
+Start Pred edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB2: Label:null		count = 0;
+Local Pred edges = [1]
+Local Succ edges = [3]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB3: Label:null		b = new Buffer();
+Local Pred edges = [2]
+Local Succ edges = [4]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB4: Label:null		w1 = new Writer();
+Local Pred edges = [3]
+Local Succ edges = [5]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB5: Label:null		w1.b=b;
+Local Pred edges = [4]
+Local Succ edges = [6]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB6: Label:L1	w1.start()
+Local In edges = [5]
+Local Out edges = [7]
+Start succ edges = [17]
+GEN = [17]
+KILL = []
+M = []
+OUT = []
+
+BB7: Label:L2		count = count+one;
+Local Pred edges = [6]
+Local Succ edges = [8]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB8: Label:null	w1.join()
+Local Pred edges = [7]
+Local Succ edges = [9]
+GEN = []
+KILL = [17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+M = []
+OUT = []
+
+BB9: Label:null		System.out.println(count);
+Local Pred edges = [8]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+====================================================
+THREAD 1 : Class Writer
+BB17:	BEGIN
+Local Pred edges = []
+Local Succ edges = [18]
+Start Pred edges = [6]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB18: Label:L4		x = 55;
+Local Pred edges = [17]
+Local Succ edges = [19]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB19: Label:null		r = new Reader();
+Local Pred edges = [18]
+Local Succ edges = [20]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB20: Label:null	r.start()
+Local In edges = [19]
+Local Out edges = [21]
+Start succ edges = [10]
+GEN = [10]
+KILL = []
+M = []
+OUT = []
+
+BB21: Label:null		System.out.println(x);
+Local Pred edges = [20]
+Local Succ edges = [22]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB22: Label:null	r.join()
+Local Pred edges = [21]
+Local Succ edges = [23]
+GEN = []
+KILL = [10,11,12,13,14,15,16]
+M = []
+OUT = []
+
+BB23: Label:L5	(b,entry)
+Local Pred edges = [22]
+Local Succ edges = [27]
+GEN = []
+KILL = [26,27,25,14,15,13]
+M = []
+OUT = []
+
+BB24:	SYNCHRONIZED(b){
+	BB26: BLOCK {
+		BB27: Label:null	b.wait()
+		Local Pred edges = [23]
+		Local Succ edges = [28]
+		GEN = []
+		KILL = []
+		M = []
+		OUT = []
+
+		BB28:	(b,waiting-pred)
+		Local Pred edges = [27]
+		Local Succ edges = [29]
+		GEN = []
+		KILL = []
+		M = []
+		OUT = []
+
+		BB29:	(b,notified-entry)
+		Local Pred edges = [28]
+		Local Succ edges = [25]
+		Notify Pred edges = []
+		GEN = []
+		KILL = [26,27,25,14,15,13]
+		M = []
+		OUT = []
+
+
+	END-BLOCK }	BB26:
+
+	BB25:	(b,exit)
+	Local Pred edges = [29]
+	Local Succ edges = [30]
+	GEN = []
+	KILL = []
+	M = []
+	OUT = []
+
+END-SYNCHRONIZED}	BB24: 
+
+BB30:	END
+Local Pred edges = [25]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+====================================================
+THREAD 2 : Class Reader
+BB10:	BEGIN
+Local Pred edges = []
+Local Succ edges = [11]
+Start Pred edges = [20]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB11: Label:null	(b,entry)
+Local Pred edges = [10]
+Local Succ edges = [15]
+GEN = []
+KILL = [26,27,25,14,15,13]
+M = []
+OUT = []
+
+BB12:	SYNCHRONIZED(b){
+	BB14: BLOCK {
+		BB15: Label:L3	b.notify()
+		Local Pred edges = [11]
+		Local Succ edges = [13]
+		Notify Succ edges = []
+		GEN = []
+		KILL = [28]
+		M = []
+		OUT = []
+
+
+	END-BLOCK }	BB14:
+
+	BB13:	(b,exit)
+	Local Pred edges = [15]
+	Local Succ edges = [16]
+	GEN = []
+	KILL = []
+	M = []
+	OUT = []
+
+END-SYNCHRONIZED}	BB12: 
+
+BB16:	END
+Local Pred edges = [13]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+====================================================
+QUERIES:
+MHP(L1,L5)
+MHP(L1,L3)
+MHP(L3,L4)
+MHP(L2,L4)
+MHP(L2,L3)
+====================================================
+SYNCHRONIZATION MAPS:
+1. Sync buffer < b : Buffer >
+	Monitor nodes = [26,27,25,14,15,13]
+	Notify nodes = [15]
+	Waiting nodes = [28]
+
+====================================================

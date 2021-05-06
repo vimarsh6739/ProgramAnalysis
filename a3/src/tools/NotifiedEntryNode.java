@@ -33,6 +33,12 @@ public class NotifiedEntryNode extends BB {
     }
 
     @Override
+    public void initializeGenKill() {
+        // Add Monitor(buffer) to kill set
+        this.KILL.addAll(st.monitor.get(buffer));
+    }
+    
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+":\t");
@@ -53,6 +59,30 @@ public class NotifiedEntryNode extends BB {
         }
         sb.append("]\n"+st.nestIndent+"Notify Pred edges = [");
         for(BB f : this.notifyPred){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"GEN = [");
+        delim = "";
+        for(BB f : this.GEN){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"KILL = [");
+        delim = "";
+        for(BB f : this.KILL){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"M = [");
+        delim = "";
+        for(BB f : this.M){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"OUT = [");
+        delim = "";
+        for(BB f : this.OUT){
             sb.append(delim + f.bbid);
             delim = ",";
         }

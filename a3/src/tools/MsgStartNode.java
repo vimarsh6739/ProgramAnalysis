@@ -34,6 +34,12 @@ public class MsgStartNode extends BB {
     }
 
     @Override
+    public void initializeGenKill() {
+        // Add all start successors to GEN
+        this.GEN.addAll(this.startSucc);
+    }
+    
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+": Label:"+this.ann+"\t");
@@ -55,6 +61,30 @@ public class MsgStartNode extends BB {
         sb.append("]\n"+st.nestIndent+"Start succ edges = [");
         delim="";
         for(BB f : this.startSucc){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"GEN = [");
+        delim = "";
+        for(BB f : this.GEN){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"KILL = [");
+        delim = "";
+        for(BB f : this.KILL){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"M = [");
+        delim = "";
+        for(BB f : this.M){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"OUT = [");
+        delim = "";
+        for(BB f : this.OUT){
             sb.append(delim + f.bbid);
             delim = ",";
         }

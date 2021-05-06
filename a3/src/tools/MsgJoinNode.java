@@ -20,6 +20,13 @@ public class MsgJoinNode extends BB{
     }
 
     @Override
+    public void initializeGenKill() {
+        // N(tField) to kill set
+        int other_tid = st.thFieldMap.get(this.tField);
+        this.KILL.addAll(st.N.get(other_tid));
+    }
+    
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+": Label:"+this.ann+"\t");
@@ -35,6 +42,30 @@ public class MsgJoinNode extends BB{
         sb.append("]\n"+st.nestIndent+"Local Succ edges = [");
         delim = "";
         for(BB f : this.localSucc){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"GEN = [");
+        delim = "";
+        for(BB f : this.GEN){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"KILL = [");
+        delim = "";
+        for(BB f : this.KILL){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"M = [");
+        delim = "";
+        for(BB f : this.M){
+            sb.append(delim + f.bbid);
+            delim = ",";
+        }
+        sb.append("]\n"+st.nestIndent+"OUT = [");
+        delim = "";
+        for(BB f : this.OUT){
             sb.append(delim + f.bbid);
             delim = ",";
         }

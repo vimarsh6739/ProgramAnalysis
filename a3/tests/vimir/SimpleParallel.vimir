@@ -1,0 +1,136 @@
+THREAD 0 : Class SimpleParallel
+BB1:	BEGIN
+Local Pred edges = []
+Local Succ edges = [2]
+Start Pred edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB2: Label:null		t1 = new A();
+Local Pred edges = [1]
+Local Succ edges = [3]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB3: Label:null		t2 = new B();
+Local Pred edges = [2]
+Local Succ edges = [4]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB4: Label:null	t1.start()
+Local In edges = [3]
+Local Out edges = [5]
+Start succ edges = [8]
+GEN = [8]
+KILL = []
+M = []
+OUT = []
+
+BB5: Label:null	t2.start()
+Local In edges = [4]
+Local Out edges = [6]
+Start succ edges = [12]
+GEN = [12]
+KILL = []
+M = []
+OUT = []
+
+BB6: Label:null	t1.join()
+Local Pred edges = [5]
+Local Succ edges = [7]
+GEN = []
+KILL = [8,9,10,11]
+M = []
+OUT = []
+
+BB7: Label:null	t2.join()
+Local Pred edges = [6]
+Local Succ edges = []
+GEN = []
+KILL = [12,13,14,15]
+M = []
+OUT = []
+
+====================================================
+THREAD 1 : Class A
+BB8:	BEGIN
+Local Pred edges = []
+Local Succ edges = [9]
+Start Pred edges = [4]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB9: Label:null		x = 12;
+Local Pred edges = [8]
+Local Succ edges = [10]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB10: Label:L1		System.out.println(x);
+Local Pred edges = [9]
+Local Succ edges = [11]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB11:	END
+Local Pred edges = [10]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+====================================================
+THREAD 2 : Class B
+BB12:	BEGIN
+Local Pred edges = []
+Local Succ edges = [13]
+Start Pred edges = [5]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB13: Label:null		y = 20;
+Local Pred edges = [12]
+Local Succ edges = [14]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB14: Label:L2		System.out.println(y);
+Local Pred edges = [13]
+Local Succ edges = [15]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB15:	END
+Local Pred edges = [14]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+====================================================
+QUERIES:
+MHP(L1,L2)
+====================================================
+SYNCHRONIZATION MAPS:
+====================================================
