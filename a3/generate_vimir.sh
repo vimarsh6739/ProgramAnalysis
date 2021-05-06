@@ -22,7 +22,7 @@ singlerun () {
     echo "Generating ${filename}.vimir"
     
     # Populate file 
-    (cat $input | java -jar dist/MHPAnalysis.jar)  > ${output} 
+    (cat $input | java -jar dist/MHPAnalysis.jar --codegen)  > ${output} 
 }
 
 export RED='\033[0;31m'    # Red color

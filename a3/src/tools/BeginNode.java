@@ -19,6 +19,34 @@ public class BeginNode extends BB {
     }
 
     @Override
+    public void updateMHP() {
+        int sinit = this.M.size();
+        Set<BB> tmpM = new LinkedHashSet<>();
+        for(BB parent : this.startPred){
+            tmpM.addAll(parent.OUT);
+        }
+
+        // Remove current thread's nodes from M
+        tmpM.removeAll(st.N.get(this.tid));
+        M.addAll(tmpM);
+        
+        if(sinit != this.M.size()){
+            st.changeM = true;
+        }
+
+        // Update OUT using M, GEN and KILL
+        sinit = this.OUT.size();
+        this.OUT.clear();
+        this.OUT.addAll(this.M);
+        this.OUT.addAll(this.GEN);
+        this.OUT.removeAll(this.KILL);
+            
+        if(sinit != this.OUT.size()){
+            st.changeOUT = true;
+        }        
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append("BB"+bbid+":\t");

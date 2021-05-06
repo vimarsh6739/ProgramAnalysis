@@ -1,0 +1,121 @@
+MHP Algorithm converged in 21 iterations
+THREAD 0 : Class Main
+BB1:	BEGIN
+Local Pred edges = []
+Local Succ edges = [2]
+Start Pred edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB2: Label:null		x = 10;
+Local Pred edges = [1]
+Local Succ edges = [3]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB3: Label:null		a = new A();
+Local Pred edges = [2]
+Local Succ edges = [4]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB4: Label:null		thread = new MyThread();
+Local Pred edges = [3]
+Local Succ edges = [5]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB5: Label:L1		thread.a=a;
+Local Pred edges = [4]
+Local Succ edges = [6]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB6: Label:null	thread.start()
+Local In edges = [5]
+Local Out edges = [7]
+Start succ edges = [10]
+GEN = [10]
+KILL = []
+M = []
+OUT = [10]
+
+BB7: Label:L2		a.value=x;
+Local Pred edges = [6]
+Local Succ edges = [8]
+GEN = []
+KILL = []
+M = [10,11,12,13]
+OUT = [10,11,12,13]
+
+BB8: Label:null	thread.join()
+Local Pred edges = [7]
+Local Succ edges = [9]
+GEN = []
+KILL = [10,11,12,13]
+M = [10,11,12,13]
+OUT = []
+
+BB9: Label:null		System.out.println(x);
+Local Pred edges = [8]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+====================================================
+THREAD 1 : Class MyThread
+BB10:	BEGIN
+Local Pred edges = []
+Local Succ edges = [11]
+Start Pred edges = [6]
+GEN = []
+KILL = []
+M = [7,8]
+OUT = [7,8]
+
+BB11: Label:null		y = 20;
+Local Pred edges = [10]
+Local Succ edges = [12]
+GEN = []
+KILL = []
+M = [7,8]
+OUT = [7,8]
+
+BB12: Label:L3		a.value=y;
+Local Pred edges = [11]
+Local Succ edges = [13]
+GEN = []
+KILL = []
+M = [7,8]
+OUT = [7,8]
+
+BB13:	END
+Local Pred edges = [12]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = [7,8]
+OUT = [7,8]
+
+====================================================
+QUERIES:
+MHP(L1,L3)
+MHP(L2,L3)
+MHP(L1,L2)
+====================================================
+SYNCHRONIZATION MAPS:
+====================================================
+WORKLIST NODES = []
+====================================================

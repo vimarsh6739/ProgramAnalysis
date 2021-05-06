@@ -110,7 +110,7 @@ BB14: Label:L1	(b1,entry)
 Local Pred edges = [13]
 Local Succ edges = [18]
 GEN = []
-KILL = [17,18,21,22,20,16,33,35,41,43,44,45,37,29,34,38,42,46,47,48,40,32]
+KILL = [18,22,20,16,35,43,44,45,37,29,38,46,47,48,40,32]
 M = []
 OUT = []
 
@@ -120,7 +120,7 @@ BB15:	SYNCHRONIZED(b1){
 		Local Pred edges = [14]
 		Local Succ edges = [22]
 		GEN = []
-		KILL = [21,22,20,41,43,37,42,46,40]
+		KILL = [22,20,43,37,46,40]
 		M = []
 		OUT = []
 
@@ -192,7 +192,7 @@ BB27: Label:null	(b1,entry)
 Local Pred edges = [25]
 Local Succ edges = [35]
 GEN = []
-KILL = [17,18,21,22,20,16,33,35,41,43,44,45,37,29,34,38,42,46,47,48,40,32]
+KILL = [18,22,20,16,35,43,44,45,37,29,38,46,47,48,40,32]
 M = []
 OUT = []
 
@@ -202,7 +202,7 @@ BB28:	SYNCHRONIZED(b1){
 		Local Pred edges = [27]
 		Local Succ edges = [43]
 		GEN = []
-		KILL = [21,22,20,41,43,37,42,46,40]
+		KILL = [22,20,43,37,46,40]
 		M = []
 		OUT = []
 
@@ -229,7 +229,7 @@ BB28:	SYNCHRONIZED(b1){
 				Local Succ edges = [37]
 				Notify Pred edges = []
 				GEN = []
-				KILL = [21,22,20,41,43,37,42,46,40]
+				KILL = [22,20,43,37,46,40]
 				M = []
 				OUT = []
 
@@ -282,7 +282,7 @@ BB30: Label:null	(b1,entry)
 Local Pred edges = [26]
 Local Succ edges = [38]
 GEN = []
-KILL = [17,18,21,22,20,16,33,35,41,43,44,45,37,29,34,38,42,46,47,48,40,32]
+KILL = [18,22,20,16,35,43,44,45,37,29,38,46,47,48,40,32]
 M = []
 OUT = []
 
@@ -292,7 +292,7 @@ BB31:	SYNCHRONIZED(b1){
 		Local Pred edges = [30]
 		Local Succ edges = [46]
 		GEN = []
-		KILL = [21,22,20,41,43,37,42,46,40]
+		KILL = [22,20,43,37,46,40]
 		M = []
 		OUT = []
 
@@ -319,7 +319,7 @@ BB31:	SYNCHRONIZED(b1){
 				Local Succ edges = [40]
 				Notify Pred edges = []
 				GEN = []
-				KILL = [21,22,20,41,43,37,42,46,40]
+				KILL = [22,20,43,37,46,40]
 				M = []
 				OUT = []
 
@@ -366,13 +366,15 @@ MHP(L3,L4)
 ====================================================
 SYNCHRONIZATION MAPS:
 1. Sync buffer < b1 : Buffer >
-	Monitor nodes = [17,18,21,22,20,16,33,35,41,43,44,45,37,29,34,38,42,46,47,48,40,32]
+	Monitor nodes = [18,22,20,16,35,43,44,45,37,29,38,46,47,48,40,32]
 	Notify nodes = []
 	Waiting nodes = []
 
 2. Sync buffer < b2 : Buffer >
-	Monitor nodes = [21,22,20,41,43,37,42,46,40]
+	Monitor nodes = [22,20,43,37,46,40]
 	Notify nodes = [22]
 	Waiting nodes = [44,47]
 
+====================================================
+WORKLIST NODES = [12,13]
 ====================================================

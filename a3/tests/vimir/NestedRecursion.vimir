@@ -154,7 +154,7 @@ BB19: Label:L1	(c,entry)
 Local Pred edges = [18]
 Local Succ edges = [23]
 GEN = []
-KILL = [22,23,24,25,26,29,21,51,53,55,57,59,61,47,52,54,56,58,60,62,50]
+KILL = [23,24,25,26,29,21,53,55,57,59,61,47,54,56,58,60,62,50]
 M = []
 OUT = []
 
@@ -208,7 +208,7 @@ BB20:	SYNCHRONIZED(c){
 		Local Succ edges = [29]
 		Notify Pred edges = []
 		GEN = []
-		KILL = [22,23,24,25,26,29,21,51,53,55,57,59,61,47,52,54,56,58,60,62,50]
+		KILL = [23,24,25,26,29,21,53,55,57,59,61,47,54,56,58,60,62,50]
 		M = []
 		OUT = []
 
@@ -243,6 +243,13 @@ M = []
 OUT = []
 
 BB31:	IF(z)
+Local Pred edges = [30]
+Local Succ edges = [33,36]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
 	BB32: BLOCK {
 		BB33: Label:L2	d2.start()
 		Local In edges = [31]
@@ -329,7 +336,7 @@ BB45: Label:L3	(c,entry)
 Local Pred edges = [43]
 Local Succ edges = [53]
 GEN = []
-KILL = [22,23,24,25,26,29,21,51,53,55,57,59,61,47,52,54,56,58,60,62,50]
+KILL = [23,24,25,26,29,21,53,55,57,59,61,47,54,56,58,60,62,50]
 M = []
 OUT = []
 
@@ -394,6 +401,13 @@ BB46:	SYNCHRONIZED(c){
 END-SYNCHRONIZED}	BB46: 
 
 BB63:	IF(z)
+Local Pred edges = [47]
+Local Succ edges = [67,73]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
 	BB65: BLOCK {
 		BB67: Label:L4		a2 = new D();
 		Local Pred edges = [63]
@@ -504,7 +518,7 @@ BB48: Label:L3	(c,entry)
 Local Pred edges = [44]
 Local Succ edges = [54]
 GEN = []
-KILL = [22,23,24,25,26,29,21,51,53,55,57,59,61,47,52,54,56,58,60,62,50]
+KILL = [23,24,25,26,29,21,53,55,57,59,61,47,54,56,58,60,62,50]
 M = []
 OUT = []
 
@@ -569,6 +583,13 @@ BB49:	SYNCHRONIZED(c){
 END-SYNCHRONIZED}	BB49: 
 
 BB64:	IF(z)
+Local Pred edges = [50]
+Local Succ edges = [68,74]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
 	BB66: BLOCK {
 		BB68: Label:L4		a2 = new D();
 		Local Pred edges = [64]
@@ -658,8 +679,10 @@ MHP(L5,L5)
 ====================================================
 SYNCHRONIZATION MAPS:
 1. Sync buffer < c : C >
-	Monitor nodes = [22,23,24,25,26,29,21,51,53,55,57,59,61,47,52,54,56,58,60,62,50]
+	Monitor nodes = [23,24,25,26,29,21,53,55,57,59,61,47,54,56,58,60,62,50]
 	Notify nodes = [61,62]
 	Waiting nodes = [27]
 
+====================================================
+WORKLIST NODES = [10,11,12]
 ====================================================

@@ -42,6 +42,61 @@ public class MsgNotifyNode extends BB{
     }
     
     @Override
+    public void updateMHP() {
+        int sinit = this.notifySucc.size();
+        // Compute NotifySucc and add to worklist if necessary
+        for(BB m_wtp : st.waitingNodes.get(buffer)){
+            // Check if waiting predecessor runs in ||el with this notifyAll node
+            if(this.M.contains(m_wtp)){
+                // Add it's waiting successor to notifySucc
+                BB w_succ = st.waitingSucc.get(m_wtp);
+                this.notifySucc.add(w_succ);
+
+                // Add this node to notifyPred of w_succ
+                if(st.notifyPred.containsKey(w_succ)){
+                    st.notifyPred.get(w_succ).add(this);
+                }
+                else{
+                    System.out.println("[DEBUG] You messed up in the waitingSucc map in BB"+this.bbid+":\nIt contains -> BB"+w_succ.bbid);
+                }
+            }
+        }
+        
+        if(sinit != this.notifySucc.size()){
+            // Change in notifySucc, add it to the worklist
+            st.changeNotifySucc = true;
+            st.worklist.addAll(this.notifySucc);
+        }
+
+        // Compute M
+        sinit = this.M.size();
+        Set<BB> tmpM = new LinkedHashSet<>();
+        for(BB parent : this.localPred){
+            tmpM.addAll(parent.OUT);
+        }
+        this.M.addAll(tmpM);
+
+        if(sinit != this.M.size()){
+            st.changeM = true; 
+        }
+
+        // Recompute GEN for the current node
+        this.GEN.clear();
+        this.GEN.addAll(this.notifySucc);
+        
+        // Compute OUT
+        sinit = this.OUT.size();
+        this.OUT.clear();
+        this.OUT.addAll(this.M);
+        this.OUT.addAll(this.GEN);
+        this.OUT.removeAll(this.KILL);
+
+        if(sinit != this.OUT.size()){
+            st.changeOUT = true;
+        }
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+": Label:"+this.ann+"\t");

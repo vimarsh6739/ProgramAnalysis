@@ -48,6 +48,12 @@ public class SymbolTable {
     Map<BB,Set<BB>> KILL;                   // Kill map
     Map<BB,Set<BB>> OUT;                    // Out map
     
+    // Worklist needed for algo
+    Deque<BB> worklist;         
+    boolean changeM;            
+    boolean changeOUT;          
+    boolean changeNotifySucc;   
+    
     // Labeled set
     Map<String, Set<BB>> labelled_blks;     
 
@@ -57,6 +63,7 @@ public class SymbolTable {
     
     // Metadata
     Clazz curr_class;
+    Clazz mainClass;
     boolean inRun;
     String nestIndent;
 
@@ -92,13 +99,19 @@ public class SymbolTable {
         this.KILL   = new HashMap<>();
         this.OUT    = new HashMap<>();
 
+        this.worklist = new ArrayDeque<>();
+        this.changeM    = false ;       
+        this.changeOUT  = false ;       
+        this.changeNotifySucc = false;
+
         this.labelled_blks = new HashMap<>();
         this.q_lhs  = new ArrayList<>();
         this.q_rhs  = new ArrayList<>();
 
         this.curr_class = null;
+        this.mainClass  = null;
         this.inRun      = false;
-        nestIndent = "";
+        this.nestIndent = "";
 
         /** Set symbol table for all basic blocks */
         BB.st = this;
@@ -144,6 +157,11 @@ public class SymbolTable {
         }
         this.curr_class.cFields.add(f);
         f.scope.add(this.curr_class);
+        
+        // Set main class of PEG
+        if(var.equals("main")){
+            this.mainClass = this.curr_class;
+        }
     }
     
     public void addThread(String var) {
@@ -401,24 +419,86 @@ public class SymbolTable {
             for(BB f : peg){
                 f.initializeGenKill();
             }
+
+            /** Initialize worklist for main class */
+            if(this.mainClass == this.thClassMap.get(tid)){
+                for(BB f: peg){
+                    f.initializeWorklist();
+                }
+            }
         }
     }
     
     /** Run MHP worklist algorithm, and update PEG along with MHP sets */
     void runWorklistAlgo(){
+        // Build MHP sets iteratively
+        int iter=0;
+        while(!worklist.isEmpty()){
+            ++iter;
+            BB curr = worklist.poll();
+            changeM = false;
+            changeOUT = false;
+            changeNotifySucc = false;
+            Set<BB> oldM = new LinkedHashSet<>(curr.M);
 
+            curr.updateMHP();
+
+            // Symmetry step
+            if(changeM){
+                for(BB f : curr.M){
+                    if(!oldM.contains(f)){
+                        f.M.add(curr);
+                        worklist.add(f);
+                    }
+                }
+            }
+
+            // Add successors
+            if(changeOUT){
+                worklist.addAll(curr.localSucc);
+                if(this.startSucc.containsKey(curr)){
+                    worklist.addAll(this.startSucc.get(curr));
+                }
+            }
+        }
+
+        System.out.println("MHP Algorithm converged in "+iter+" iterations");
     }
     
     /** Output result for stored queries */
-    void outputQueries(){
+    public void outputQueries(){
+        int n = this.q_lhs.size();
+        boolean isMHP = false;
 
+        for(int i = 0;i<n;++i){
+            String l1 = this.q_lhs.get(i);
+            String l2 = this.q_rhs.get(i);
+            // Don't want concurrent modification
+            Set<BB> lhs = new LinkedHashSet<>(this.labelled_blks.get(l1));
+            Set<BB> rhs = new LinkedHashSet<>(this.labelled_blks.get(l2));
+            for(BB f1 : lhs){
+                for(BB f2 : rhs){
+                    if(f1 != f2){
+                        if(f1.M.contains(f2) && f2.M.contains(f1)){
+                            isMHP =  true;
+                        }
+                    }
+                }
+            }
+
+            if(isMHP){
+                System.out.println("Yes");
+            }
+            else{
+                System.out.println("No");
+            }
+        }
     }
 
     public void analyze() {
         this.buildPEG();
         this.initializeSets();
         this.runWorklistAlgo();
-        this.outputQueries();
     }
 
     public void printVariables() {
@@ -500,6 +580,17 @@ public class SymbolTable {
             System.out.print("]\n\n");
             ++i;
         }
+        System.out.println("====================================================");
+    }
+
+    public void printWorklist(){
+        System.out.print("WORKLIST NODES = [");
+        String delim="";
+        for(BB f : this.worklist){
+            System.out.print(delim+f.bbid);
+            delim=",";
+        }
+        System.out.print("]\n");
         System.out.println("====================================================");
     }
 }

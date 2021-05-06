@@ -79,6 +79,12 @@ public class MsgWaitNode extends BB {
     }
 
     @Override
+    public void initializeWorklist() {
+        this.waitingPred.initializeWorklist();
+        this.notifiedEntry.initializeWorklist();
+    }
+    
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+": Label:"+this.ann+"\t");

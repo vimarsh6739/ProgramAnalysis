@@ -3,8 +3,15 @@ import tools.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        
+        boolean printCFG=false;
+        for(int i = 0; i <args.length;++i){
+            if(args[i].equals("--codegen")){
+                printCFG=true;
+            }
+        }
+
         try {
-            
             new QParJavaParser(System.in);
             Node root = QParJavaParser.Goal();
             SymbolPass pass1 = new SymbolPass();
@@ -18,9 +25,15 @@ public class Main {
             root.accept(pass2);
             
             st.analyze();
-            st.printProgram();
-            st.printSyncVariables();
-            
+
+            if(printCFG){
+                st.printProgram();
+                st.printSyncVariables();
+                st.printWorklist();
+            } else{
+                st.outputQueries();
+            }
+
         } catch (ParseException e) {
             e.printStackTrace();
         }

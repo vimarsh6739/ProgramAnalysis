@@ -41,7 +41,6 @@ class B extends Thread
     public void run()
     {
         try{
-            B a;
             int y;
             a = this;
             y = 10;

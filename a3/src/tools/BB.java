@@ -84,6 +84,37 @@ public class BB {
     public void updateMonitor(Field obj, boolean b) {
         if(b) {st.monitor.get(obj).add(this);}
     }
+    
+    /** Overridden method to add initial entries in worklist */
+    public void initializeWorklist() {}
+
+    /** Overridden method for MHP Transfer functions */
+    public void updateMHP() {
+        // Updates MHP information for local predecessors
+
+        // Update M using OUT of localPred
+        int sinit = this.M.size();
+        Set<BB> tmpM = new LinkedHashSet<>();
+        for(BB parent : this.localPred){
+            tmpM.addAll(parent.OUT);
+        }
+        this.M.addAll(tmpM);
+
+        if(sinit != this.M.size()){
+            st.changeM = true; 
+        }
+        
+        // Update OUT using M, GEN and KILL
+        sinit = this.OUT.size();
+        this.OUT.clear();
+        this.OUT.addAll(this.M);
+        this.OUT.addAll(this.GEN);
+        this.OUT.removeAll(this.KILL);
+
+        if(sinit != this.OUT.size()){
+            st.changeOUT = true;
+        }
+    }
 
     @Override
     public String toString() {

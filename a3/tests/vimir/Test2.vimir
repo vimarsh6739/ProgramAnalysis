@@ -78,7 +78,7 @@ BB10: Label:null	(obj,entry)
 Local Pred edges = [9]
 Local Succ edges = [14]
 GEN = []
-KILL = [13,14,17,12,27,28,29,32,33,26,39,40,41,38]
+KILL = [14,17,12,28,29,32,33,26,40,41,38]
 M = []
 OUT = []
 
@@ -105,7 +105,7 @@ BB11:	SYNCHRONIZED(obj){
 		Local Succ edges = [17]
 		Notify Pred edges = []
 		GEN = []
-		KILL = [13,14,17,12,27,28,29,32,33,26,39,40,41,38]
+		KILL = [14,17,12,28,29,32,33,26,40,41,38]
 		M = []
 		OUT = []
 
@@ -186,7 +186,7 @@ BB24: Label:null	(obj,entry)
 Local Pred edges = [23]
 Local Succ edges = [28]
 GEN = []
-KILL = [13,14,17,12,27,28,29,32,33,26,39,40,41,38]
+KILL = [14,17,12,28,29,32,33,26,40,41,38]
 M = []
 OUT = []
 
@@ -222,7 +222,7 @@ BB25:	SYNCHRONIZED(obj){
 		Local Succ edges = [32]
 		Notify Pred edges = []
 		GEN = []
-		KILL = [13,14,17,12,27,28,29,32,33,26,39,40,41,38]
+		KILL = [14,17,12,28,29,32,33,26,40,41,38]
 		M = []
 		OUT = []
 
@@ -280,7 +280,7 @@ BB36: Label:null	(obj,entry)
 Local Pred edges = [35]
 Local Succ edges = [40]
 GEN = []
-KILL = [13,14,17,12,27,28,29,32,33,26,39,40,41,38]
+KILL = [14,17,12,28,29,32,33,26,40,41,38]
 M = []
 OUT = []
 
@@ -321,7 +321,7 @@ BB42: Label:null	(obj2,entry)
 Local Pred edges = [38]
 Local Succ edges = [46]
 GEN = []
-KILL = [45,46,47,48,49,50,51,52,44]
+KILL = [46,47,48,49,51,52,44]
 M = []
 OUT = []
 
@@ -416,13 +416,15 @@ MHP(L5,L9)
 ====================================================
 SYNCHRONIZATION MAPS:
 1. Sync buffer < obj : C2_1 >
-	Monitor nodes = [13,14,17,12,27,28,29,32,33,26,39,40,41,38]
+	Monitor nodes = [14,17,12,28,29,32,33,26,40,41,38]
 	Notify nodes = [40]
 	Waiting nodes = [15,30]
 
 2. Sync buffer < obj2 : C2_1 >
-	Monitor nodes = [45,46,47,48,49,50,51,52,44]
+	Monitor nodes = [46,47,48,49,51,52,44]
 	Notify nodes = []
 	Waiting nodes = []
 
+====================================================
+WORKLIST NODES = [7,8]
 ====================================================

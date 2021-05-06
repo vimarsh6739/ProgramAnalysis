@@ -39,6 +39,52 @@ public class NotifiedEntryNode extends BB {
     }
     
     @Override
+    public void updateMHP() {
+        int sinit;
+        // Re-Compute GEN_notifyAll using Vimarsh's update equation
+        this.GEN.clear();
+        BB my_p = this.waitingPred;
+        for(BB other_p : st.waitingNodes.get(buffer)){
+            // Check if other_p MHP my_p
+            if(my_p != other_p && other_p.M.contains(my_p)){
+                for(BB r : st.notifyNodes.get(buffer)){
+                    if(r.op == NodeType.NOTIFYALL){
+                        // Collect all notifyAll nodes with current buffer
+                        if(my_p.M.contains(r) && other_p.M.contains(r)){
+                            this.GEN.add(st.waitingSucc.get(other_p));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Compute M(using GEN_notifyAll), notifyPred and waitingPred
+        sinit = this.M.size();
+        Set<BB> tmpM = new LinkedHashSet<>();
+        for(BB p: this.notifyPred){
+            tmpM.addAll(p.OUT);
+        }
+        tmpM.retainAll(this.waitingPred.OUT);
+        tmpM.addAll(this.GEN);
+        M.addAll(tmpM);
+        
+        if(sinit != this.M.size()){
+            st.changeM = true;
+        }
+
+        // Update OUT using M, GEN and KILL
+        sinit = this.OUT.size();
+        this.OUT.clear();
+        this.OUT.addAll(this.M);
+        this.OUT.addAll(this.GEN);
+        this.OUT.removeAll(this.KILL);
+
+        if(sinit != this.OUT.size()){
+            st.changeOUT = true;
+        }
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+":\t");

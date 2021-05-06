@@ -66,6 +66,13 @@ public class SynchronizeNode extends BB{
         this.body.initializeGenKill();
         this.exit.initializeGenKill();
     }
+
+    @Override
+    public void initializeWorklist() {
+        this.entry.initializeWorklist();
+        this.body.initializeWorklist();
+        this.exit.initializeWorklist();
+    }
     
     @Override
     public String toString() {
