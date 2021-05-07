@@ -21,7 +21,7 @@ The workspace contains the following folders, where:
 The code can be built and run using the following command
 ```bash
 ant
-java -jar dist/AliasAnalysis.jar < INPUT.java
+cat INPUT.java | java -jar dist/AliasAnalysis.jar
 ```
 where `INPUT.java` is an input program.
 
