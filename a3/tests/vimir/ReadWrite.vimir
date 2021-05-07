@@ -1,3 +1,6 @@
+MHP Algorithm converged in 460 iterations
+MHP Algorithm converged in 3 iterations
+MHP Algorithm converged in 3 iterations
 THREAD 0 : Class ReadWrite
 BB1:	BEGIN
 Local Pred edges = []
@@ -103,7 +106,7 @@ Start succ edges = [41]
 GEN = [41]
 KILL = []
 M = []
-OUT = []
+OUT = [41]
 
 BB14: Label:L1	r1.start()
 Local In edges = [13]
@@ -111,8 +114,8 @@ Local Out edges = [15]
 Start succ edges = [21]
 GEN = [21]
 KILL = []
-M = []
-OUT = []
+M = [41,42,43,47,48,49,45,50]
+OUT = [41,42,43,47,48,49,45,50,21]
 
 BB15: Label:null	r2.start()
 Local In edges = [14]
@@ -120,39 +123,39 @@ Local Out edges = [16]
 Start succ edges = [22]
 GEN = [22]
 KILL = []
-M = []
-OUT = []
+M = [41,21,42,23,43,25,47,33,48,35,49,37,45,27,50,39]
+OUT = [41,21,42,23,43,25,47,33,48,35,49,37,45,27,50,39,22]
 
 BB16: Label:L2		count = count+one;
 Local Pred edges = [15]
 Local Succ edges = [17]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [41,21,22,42,24,43,23,28,25,47,34,33,48,36,35,49,38,37,45,30,27,50,40,39]
+OUT = [41,21,22,42,24,43,23,28,25,47,34,33,48,36,35,49,38,37,45,30,27,50,40,39]
 
 BB17: Label:null	w1.join()
 Local Pred edges = [16]
 Local Succ edges = [18]
 GEN = []
 KILL = [41,42,43,44,45,46,47,48,49,50]
-M = []
-OUT = []
+M = [41,21,22,42,43,23,24,28,47,25,34,33,48,36,35,49,38,37,45,30,27,50,40,39]
+OUT = [21,22,23,24,28,25,34,33,36,35,38,37,30,27,40,39]
 
 BB18: Label:null	r1.join()
 Local Pred edges = [17]
 Local Succ edges = [19]
 GEN = []
 KILL = [21,23,25,26,27,31,33,35,37,39]
-M = []
-OUT = []
+M = [21,22,23,24,25,28,34,33,36,35,38,37,30,27,40,39]
+OUT = [22,24,28,34,36,38,30,40]
 
 BB19: Label:null	r2.join()
 Local Pred edges = [18]
 Local Succ edges = [20]
 GEN = []
 KILL = [22,24,28,29,30,32,34,36,38,40]
-M = []
+M = [22,24,28,34,36,38,30,40]
 OUT = []
 
 BB20: Label:null		System.out.println(count);
@@ -171,24 +174,24 @@ Local Succ edges = [42]
 Start Pred edges = [13]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [14,15,21,16,22,23,17,24,25,28,33,34,35,36,37,38,27,30,39,40]
+OUT = [14,15,21,16,22,23,17,24,25,28,33,34,35,36,37,38,27,30,39,40]
 
 BB42: Label:null		oz = b.one;
 Local Pred edges = [41]
 Local Succ edges = [43]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [14,15,21,16,22,24,23,17,25,28,33,34,35,36,37,38,27,30,39,40]
+OUT = [14,15,21,16,22,24,23,17,25,28,33,34,35,36,37,38,27,30,39,40]
 
 BB43: Label:L5	(b,entry)
 Local Pred edges = [42]
 Local Succ edges = [47]
 GEN = []
 KILL = [47,48,49,45,33,35,37,27,34,36,38,30]
-M = []
-OUT = []
+M = [14,15,21,16,22,24,23,17,28,25,33,34,35,36,37,38,27,30,39,40]
+OUT = [14,15,21,16,22,24,23,17,28,25,39,40]
 
 BB44:	SYNCHRONIZED(b){
 	BB46: BLOCK {
@@ -197,8 +200,8 @@ BB44:	SYNCHRONIZED(b){
 		Local Succ edges = [48]
 		GEN = []
 		KILL = []
-		M = []
-		OUT = []
+		M = [14,15,21,16,22,24,23,17,28,25,39,40]
+		OUT = [14,15,21,16,22,24,23,17,28,25,39,40]
 
 
 		BB48: Label:null		z = z-oz;
@@ -206,8 +209,8 @@ BB44:	SYNCHRONIZED(b){
 		Local Succ edges = [49]
 		GEN = []
 		KILL = []
-		M = []
-		OUT = []
+		M = [14,15,21,16,22,24,23,17,28,25,39,40]
+		OUT = [14,15,21,16,22,24,23,17,28,25,39,40]
 
 
 		BB49: Label:null		b.x=z;
@@ -215,8 +218,8 @@ BB44:	SYNCHRONIZED(b){
 		Local Succ edges = [45]
 		GEN = []
 		KILL = []
-		M = []
-		OUT = []
+		M = [14,15,21,16,22,24,23,17,28,25,39,40]
+		OUT = [14,15,21,16,22,24,23,17,28,25,39,40]
 
 
 	END-BLOCK }	BB46:
@@ -226,8 +229,8 @@ BB44:	SYNCHRONIZED(b){
 	Local Succ edges = [50]
 	GEN = []
 	KILL = []
-	M = []
-	OUT = []
+	M = [14,15,21,16,22,24,23,17,28,25,39,40]
+	OUT = [14,15,21,16,22,24,23,17,28,25,39,40]
 
 END-SYNCHRONIZED}	BB44: 
 
@@ -236,8 +239,8 @@ Local Pred edges = [45]
 Local Succ edges = []
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [14,15,21,16,22,24,23,17,28,25,34,33,36,35,38,37,30,40,27,39]
+OUT = [14,15,21,16,22,24,23,17,28,25,34,33,36,35,38,37,30,40,27,39]
 
 ====================================================
 THREAD 2 : Class Reader
@@ -247,24 +250,24 @@ Local Succ edges = [23]
 Start Pred edges = [14]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [15,41,16,22,42,17,24,43,18,28,47,34,48,36,49,38,45,30,50,40]
+OUT = [15,41,16,22,42,17,24,43,18,28,47,34,48,36,49,38,45,30,50,40]
 
 BB23: Label:null		oy = b.one;
 Local Pred edges = [21]
 Local Succ edges = [25]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [15,41,42,16,22,43,17,24,28,18,47,34,48,36,49,38,45,30,50,40]
+OUT = [15,41,42,16,22,43,17,24,28,18,47,34,48,36,49,38,45,30,50,40]
 
 BB25: Label:L3	(b,entry)
 Local Pred edges = [23]
 Local Succ edges = [33]
 GEN = []
 KILL = [47,48,49,45,33,35,37,27,34,36,38,30]
-M = []
-OUT = []
+M = [15,41,42,16,22,17,43,24,47,28,18,34,48,36,49,38,45,30,50,40]
+OUT = [15,41,42,16,22,17,43,24,28,18,50,40]
 
 BB26:	SYNCHRONIZED(b){
 	BB31: BLOCK {
@@ -273,8 +276,8 @@ BB26:	SYNCHRONIZED(b){
 		Local Succ edges = [35]
 		GEN = []
 		KILL = []
-		M = []
-		OUT = []
+		M = [15,41,42,43,16,22,24,17,18,28,50,40]
+		OUT = [15,41,42,43,16,22,24,17,18,28,50,40]
 
 
 		BB35: Label:null		y = y+oy;
@@ -282,8 +285,8 @@ BB26:	SYNCHRONIZED(b){
 		Local Succ edges = [37]
 		GEN = []
 		KILL = []
-		M = []
-		OUT = []
+		M = [15,41,42,43,16,22,24,17,28,18,50,40]
+		OUT = [15,41,42,43,16,22,24,17,28,18,50,40]
 
 
 		BB37: Label:null		b.x=y;
@@ -291,8 +294,8 @@ BB26:	SYNCHRONIZED(b){
 		Local Succ edges = [27]
 		GEN = []
 		KILL = []
-		M = []
-		OUT = []
+		M = [15,41,42,43,16,22,24,17,28,18,50,40]
+		OUT = [15,41,42,43,16,22,24,17,28,18,50,40]
 
 
 	END-BLOCK }	BB31:
@@ -302,8 +305,8 @@ BB26:	SYNCHRONIZED(b){
 	Local Succ edges = [39]
 	GEN = []
 	KILL = []
-	M = []
-	OUT = []
+	M = [15,41,42,43,16,22,24,17,28,18,50,40]
+	OUT = [15,41,42,43,16,22,24,17,28,18,50,40]
 
 END-SYNCHRONIZED}	BB26: 
 
@@ -312,8 +315,8 @@ Local Pred edges = [27]
 Local Succ edges = []
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [15,41,42,43,16,22,24,17,28,34,18,47,36,48,38,49,30,40,50,45]
+OUT = [15,41,42,43,16,22,24,17,28,34,18,47,36,48,38,49,30,40,50,45]
 
 ====================================================
 THREAD 3 : Class Reader
@@ -323,24 +326,24 @@ Local Succ edges = [24]
 Start Pred edges = [15]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [16,41,21,42,17,43,23,18,25,47,19,33,48,35,49,37,45,27,50,39]
+OUT = [16,41,21,42,17,43,23,18,25,47,19,33,48,35,49,37,45,27,50,39]
 
 BB24: Label:null		oy = b.one;
 Local Pred edges = [22]
 Local Succ edges = [28]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [16,41,21,42,43,23,17,47,18,25,19,33,48,35,49,37,45,27,50,39]
+OUT = [16,41,21,42,43,23,17,47,18,25,19,33,48,35,49,37,45,27,50,39]
 
 BB28: Label:L3	(b,entry)
 Local Pred edges = [24]
 Local Succ edges = [34]
 GEN = []
 KILL = [47,48,49,45,33,35,37,27,34,36,38,30]
-M = []
-OUT = []
+M = [16,41,21,42,43,23,17,47,25,18,48,19,33,35,49,37,45,27,50,39]
+OUT = [16,41,21,42,43,23,17,25,18,19,50,39]
 
 BB29:	SYNCHRONIZED(b){
 	BB32: BLOCK {
@@ -349,8 +352,8 @@ BB29:	SYNCHRONIZED(b){
 		Local Succ edges = [36]
 		GEN = []
 		KILL = []
-		M = []
-		OUT = []
+		M = [16,41,21,42,43,23,17,25,18,19,50,39]
+		OUT = [16,41,21,42,43,23,17,25,18,19,50,39]
 
 
 		BB36: Label:null		y = y+oy;
@@ -358,8 +361,8 @@ BB29:	SYNCHRONIZED(b){
 		Local Succ edges = [38]
 		GEN = []
 		KILL = []
-		M = []
-		OUT = []
+		M = [16,41,21,42,43,23,17,25,18,19,50,39]
+		OUT = [16,41,21,42,43,23,17,25,18,19,50,39]
 
 
 		BB38: Label:null		b.x=y;
@@ -367,8 +370,8 @@ BB29:	SYNCHRONIZED(b){
 		Local Succ edges = [30]
 		GEN = []
 		KILL = []
-		M = []
-		OUT = []
+		M = [16,41,21,42,43,23,17,25,18,19,50,39]
+		OUT = [16,41,21,42,43,23,17,25,18,19,50,39]
 
 
 	END-BLOCK }	BB32:
@@ -378,8 +381,8 @@ BB29:	SYNCHRONIZED(b){
 	Local Succ edges = [40]
 	GEN = []
 	KILL = []
-	M = []
-	OUT = []
+	M = [16,41,21,42,43,23,17,25,18,19,50,39]
+	OUT = [16,41,21,42,43,23,17,25,18,19,50,39]
 
 END-SYNCHRONIZED}	BB29: 
 
@@ -388,8 +391,8 @@ Local Pred edges = [30]
 Local Succ edges = []
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [16,41,21,42,43,23,17,25,18,19,33,47,35,48,37,49,50,39,27,45]
+OUT = [16,41,21,42,43,23,17,25,18,19,33,47,35,48,37,49,50,39,27,45]
 
 ====================================================
 QUERIES:
@@ -406,5 +409,10 @@ SYNCHRONIZATION MAPS:
 	Waiting nodes = []
 
 ====================================================
-WORKLIST NODES = [13,14,15]
+WORKLIST NODES = []
 ====================================================
+Yes
+No
+Yes
+Yes
+No

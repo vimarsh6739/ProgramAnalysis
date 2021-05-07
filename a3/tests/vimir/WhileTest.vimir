@@ -1,0 +1,487 @@
+MHP Algorithm converged in 386 iterations
+MHP Algorithm converged in 100 iterations
+MHP Algorithm converged in 6 iterations
+MHP Algorithm converged in 6 iterations
+THREAD 0 : Class WhileTest
+BB1:	BEGIN
+Local Pred edges = []
+Local Succ edges = [2]
+Start Pred edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB2: Label:null		ten = 10;
+Local Pred edges = [1]
+Local Succ edges = [3]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB3: Label:null		a = new A();
+Local Pred edges = [2]
+Local Succ edges = [4]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB4: Label:null		b = new B();
+Local Pred edges = [3]
+Local Succ edges = [5]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB5: Label:null		c = new C();
+Local Pred edges = [4]
+Local Succ edges = [6]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB6: Label:null		d = new D();
+Local Pred edges = [5]
+Local Succ edges = [7]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB7: Label:null		a.b=b;
+Local Pred edges = [6]
+Local Succ edges = [8]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB8: Label:null		a.c=c;
+Local Pred edges = [7]
+Local Succ edges = [9]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB9: Label:null		a.d=d;
+Local Pred edges = [8]
+Local Succ edges = [10]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB10: Label:null	a.start()
+Local In edges = [9]
+Local Out edges = [11]
+Start succ edges = [30]
+GEN = [30]
+KILL = []
+M = []
+OUT = [30]
+
+BB11: Label:null		one = 1;
+Local Pred edges = [10]
+Local Succ edges = [12]
+GEN = []
+KILL = []
+M = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54]
+OUT = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54]
+
+BB12: Label:null		y1 = 1;
+Local Pred edges = [11]
+Local Succ edges = [13]
+GEN = []
+KILL = []
+M = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54]
+OUT = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54]
+
+BB13: Label:null		x1 = y1<ten;
+Local Pred edges = [12]
+Local Succ edges = [14]
+GEN = []
+KILL = []
+M = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54]
+OUT = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54]
+
+BB14:	WHILE(x1){
+Local Pred edges = [13,28]
+Local Succ edges = [16,29]
+GEN = []
+KILL = []
+M = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54,55,56,57,58,36,59]
+OUT = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54,55,56,57,58,36,59]
+
+	BB15: BLOCK {
+		BB16: Label:L1		y1 = y1+one;
+		Local Pred edges = [14]
+		Local Succ edges = [17]
+		GEN = []
+		KILL = []
+		M = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54,55,56,57,58,36,59]
+		OUT = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54,55,56,57,58,36,59]
+
+
+		BB17: Label:null	(b,entry)
+		Local Pred edges = [16]
+		Local Succ edges = [21]
+		GEN = []
+		KILL = [21,22,23,27,25,19,38,39,43,44,45,49,50,47,51,41,52,53,56,57,58,36]
+		M = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54,55,56,57,58,36,59]
+		OUT = [30,31,32,33,34,54,55,59]
+
+		BB18:	SYNCHRONIZED(b){
+			BB20: BLOCK {
+				BB21: Label:null		b.v=y1;
+				Local Pred edges = [17]
+				Local Succ edges = [22]
+				GEN = []
+				KILL = []
+				M = [30,31,32,33,34,54,55,59]
+				OUT = [30,31,32,33,34,54,55,59]
+
+
+				BB22: Label:null	b.notifyAll()
+				Local Pred edges = [21]
+				Local Succ edges = [23]
+				Notify Succ edges = [55]
+				GEN = [55]
+				KILL = [54]
+				M = [30,31,32,33,34,54,55,59]
+				OUT = [30,31,32,33,34,55,59]
+
+
+				BB23: Label:null	(d,entry)
+				Local Pred edges = [22]
+				Local Succ edges = [27]
+				GEN = []
+				KILL = [27,25,49,50,47]
+				M = [30,31,32,33,34,55,59]
+				OUT = [30,31,32,33,34,55,59]
+
+				BB24:	SYNCHRONIZED(d){
+					BB26: BLOCK {
+						BB27: Label:L7		c.x2=y1;
+						Local Pred edges = [23]
+						Local Succ edges = [25]
+						GEN = []
+						KILL = []
+						M = [30,31,32,33,34,55,59]
+						OUT = [30,31,32,33,34,55,59]
+
+
+					END-BLOCK }	BB26:
+
+					BB25:	(d,exit)
+					Local Pred edges = [27]
+					Local Succ edges = [19]
+					GEN = []
+					KILL = []
+					M = [30,31,32,33,34,55,59]
+					OUT = [30,31,32,33,34,55,59]
+
+				END-SYNCHRONIZED}	BB24: 
+
+
+			END-BLOCK }	BB20:
+
+			BB19:	(b,exit)
+			Local Pred edges = [25]
+			Local Succ edges = [28]
+			GEN = []
+			KILL = []
+			M = [30,31,32,33,34,55,59]
+			OUT = [30,31,32,33,34,55,59]
+
+		END-SYNCHRONIZED}	BB18: 
+
+
+		BB28: Label:L6		x1 = y1<ten;
+		Local Pred edges = [19]
+		Local Succ edges = [14]
+		GEN = []
+		KILL = []
+		M = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54,55,56,57,58,36,59]
+		OUT = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54,55,56,57,58,36,59]
+
+
+	END-BLOCK }	BB15:
+
+}ENDWHILE -> BB14
+
+BB29: Label:L_join	a.join()
+Local Pred edges = [14]
+Local Succ edges = []
+GEN = []
+KILL = [30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
+M = [30,31,32,33,34,38,39,43,44,45,49,50,47,51,41,52,53,54,55,56,57,58,36,59]
+OUT = []
+
+====================================================
+THREAD 1 : Class A
+BB30:	BEGIN
+Local Pred edges = []
+Local Succ edges = [31]
+Start Pred edges = [10]
+GEN = []
+KILL = []
+M = [11,12,13,14,16,29,17,21,22,23,27,25,19,28]
+OUT = [11,12,13,14,16,29,17,21,22,23,27,25,19,28]
+
+BB31: Label:null		x = 0;
+Local Pred edges = [30]
+Local Succ edges = [32]
+GEN = []
+KILL = []
+M = [11,12,13,14,16,29,17,21,22,23,27,25,19,28]
+OUT = [11,12,13,14,16,29,17,21,22,23,27,25,19,28]
+
+BB32: Label:null		y = 1;
+Local Pred edges = [31]
+Local Succ edges = [33]
+GEN = []
+KILL = []
+M = [11,12,13,14,16,29,17,21,22,23,27,25,19,28]
+OUT = [11,12,13,14,16,29,17,21,22,23,27,25,19,28]
+
+BB33: Label:L2		x = x+y;
+Local Pred edges = [32]
+Local Succ edges = [34]
+GEN = []
+KILL = []
+M = [11,12,13,14,16,29,17,21,22,23,27,25,19,28]
+OUT = [11,12,13,14,16,29,17,21,22,23,27,25,19,28]
+
+BB34: Label:null	(b,entry)
+Local Pred edges = [33]
+Local Succ edges = [38]
+GEN = []
+KILL = [21,22,23,27,25,19,38,39,43,44,45,49,50,47,51,41,52,53,56,57,58,36]
+M = [11,12,13,14,16,29,17,21,22,23,27,25,19,28]
+OUT = [11,12,13,14,16,29,17,28]
+
+BB35:	SYNCHRONIZED(b){
+	BB37: BLOCK {
+		BB38: Label:null		b.u=x;
+		Local Pred edges = [34]
+		Local Succ edges = [39]
+		GEN = []
+		KILL = []
+		M = [11,12,13,14,16,29,17,28]
+		OUT = [11,12,13,14,16,29,17,28]
+
+
+		BB39: Label:null	(c,entry)
+		Local Pred edges = [38]
+		Local Succ edges = [43]
+		GEN = []
+		KILL = [43,44,45,49,50,47,51,41]
+		M = [11,12,13,14,16,29,17,28]
+		OUT = [11,12,13,14,16,29,17,28]
+
+		BB40:	SYNCHRONIZED(c){
+			BB42: BLOCK {
+				BB43: Label:null		c.w=x;
+				Local Pred edges = [39]
+				Local Succ edges = [44]
+				GEN = []
+				KILL = []
+				M = [11,12,13,14,16,29,17,28]
+				OUT = [11,12,13,14,16,29,17,28]
+
+
+				BB44: Label:null	c.notifyAll()
+				Local Pred edges = [43]
+				Local Succ edges = [45]
+				Notify Succ edges = []
+				GEN = []
+				KILL = []
+				M = [11,12,13,14,16,29,17,28]
+				OUT = [11,12,13,14,16,29,17,28]
+
+
+				BB45: Label:null	(d,entry)
+				Local Pred edges = [44]
+				Local Succ edges = [49]
+				GEN = []
+				KILL = [27,25,49,50,47]
+				M = [11,12,13,14,16,29,17,28]
+				OUT = [11,12,13,14,16,29,17,28]
+
+				BB46:	SYNCHRONIZED(d){
+					BB48: BLOCK {
+						BB49: Label:L3		d.d1=x;
+						Local Pred edges = [45]
+						Local Succ edges = [50]
+						GEN = []
+						KILL = []
+						M = [11,12,13,14,16,29,17,28]
+						OUT = [11,12,13,14,16,29,17,28]
+
+
+						BB50: Label:null	d.notify()
+						Local Pred edges = [49]
+						Local Succ edges = [47]
+						Notify Succ edges = []
+						GEN = []
+						KILL = []
+						M = [11,12,13,14,16,29,17,28]
+						OUT = [11,12,13,14,16,29,17,28]
+
+
+					END-BLOCK }	BB48:
+
+					BB47:	(d,exit)
+					Local Pred edges = [50]
+					Local Succ edges = [51]
+					GEN = []
+					KILL = []
+					M = [11,12,13,14,16,29,17,28]
+					OUT = [11,12,13,14,16,29,17,28]
+
+				END-SYNCHRONIZED}	BB46: 
+
+
+				BB51: Label:L4		c.x2=y;
+				Local Pred edges = [47]
+				Local Succ edges = [41]
+				GEN = []
+				KILL = []
+				M = [11,12,13,14,16,29,17,28]
+				OUT = [11,12,13,14,16,29,17,28]
+
+
+			END-BLOCK }	BB42:
+
+			BB41:	(c,exit)
+			Local Pred edges = [51]
+			Local Succ edges = [52]
+			GEN = []
+			KILL = []
+			M = [11,12,13,14,16,29,17,28]
+			OUT = [11,12,13,14,16,29,17,28]
+
+		END-SYNCHRONIZED}	BB40: 
+
+
+		BB52: Label:null		b.v=x;
+		Local Pred edges = [41]
+		Local Succ edges = [53]
+		GEN = []
+		KILL = []
+		M = [11,12,13,14,16,29,17,28]
+		OUT = [11,12,13,14,16,29,17,28]
+
+
+		BB53: Label:L_wait	b.wait()
+		Local Pred edges = [52]
+		Local Succ edges = [54]
+		GEN = []
+		KILL = []
+		M = [11,12,13,14,16,29,17,28]
+		OUT = [11,12,13,14,16,29,17,28]
+
+		BB54:	(b,waiting-pred)
+		Local Pred edges = [53]
+		Local Succ edges = [55]
+		GEN = []
+		KILL = []
+		M = [11,12,13,14,16,29,17,21,22,28]
+		OUT = [11,12,13,14,16,29,17,21,22,28]
+
+		BB55:	(b,notified-entry)
+		Local Pred edges = [54]
+		Local Succ edges = [56]
+		Notify Pred edges = [22]
+		GEN = []
+		KILL = [21,22,23,27,25,19,38,39,43,44,45,49,50,47,51,41,52,53,56,57,58,36]
+		M = [23,27,25,19,28,14,16,29,17,21,22]
+		OUT = [28,14,16,29,17]
+
+
+		BB56: Label:L5		y = b.u;
+		Local Pred edges = [55]
+		Local Succ edges = [57]
+		GEN = []
+		KILL = []
+		M = [28,14,16,29,17]
+		OUT = [28,14,16,29,17]
+
+
+		BB57: Label:null		x = y+x;
+		Local Pred edges = [56]
+		Local Succ edges = [58]
+		GEN = []
+		KILL = []
+		M = [28,14,16,29,17]
+		OUT = [28,14,16,29,17]
+
+
+		BB58: Label:null		b.u=x;
+		Local Pred edges = [57]
+		Local Succ edges = [36]
+		GEN = []
+		KILL = []
+		M = [28,14,16,29,17]
+		OUT = [28,14,16,29,17]
+
+
+	END-BLOCK }	BB37:
+
+	BB36:	(b,exit)
+	Local Pred edges = [58]
+	Local Succ edges = [59]
+	GEN = []
+	KILL = []
+	M = [28,14,16,29,17]
+	OUT = [28,14,16,29,17]
+
+END-SYNCHRONIZED}	BB35: 
+
+BB59:	END
+Local Pred edges = [36]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = [28,14,16,29,17,21,22,23,27,25,19]
+OUT = [28,14,16,29,17,21,22,23,27,25,19]
+
+====================================================
+QUERIES:
+MHP(L1,L2)
+MHP(L2,L7)
+MHP(L1,L5)
+MHP(L4,L7)
+MHP(L_wait,L7)
+MHP(L_join,L5)
+====================================================
+SYNCHRONIZATION MAPS:
+1. Sync buffer < b : B >
+	Monitor nodes = [21,22,23,27,25,19,38,39,43,44,45,49,50,47,51,41,52,53,56,57,58,36]
+	Notify nodes = [22]
+	Waiting nodes = [54]
+
+2. Sync buffer < d : D >
+	Monitor nodes = [27,25,49,50,47]
+	Notify nodes = [50]
+	Waiting nodes = []
+
+3. Sync buffer < c : C >
+	Monitor nodes = [43,44,45,49,50,47,51,41]
+	Notify nodes = [44]
+	Waiting nodes = []
+
+====================================================
+WORKLIST NODES = []
+====================================================
+Yes
+Yes
+Yes
+No
+No
+Yes

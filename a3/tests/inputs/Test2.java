@@ -36,7 +36,6 @@ class C2_1 extends Thread{
 				/*L6:*/ System.out.println(i);
 				/*L7:*/ obj.wait();
 				/*L5:*/ i = i*i;
-				/*Added_code:*/i = i-i;
 			}
 			
 		}catch (Exception e){}

@@ -42,8 +42,14 @@ public class MsgNotifyNode extends BB{
     }
     
     @Override
+    public void initializeWorklist() {
+        st.worklist.add(this);
+    }
+    
+    @Override
     public void updateMHP() {
-        int sinit = this.notifySucc.size();
+        Set<BB> oldNotifySucc = new LinkedHashSet<>(this.notifySucc);
+
         // Compute NotifySucc and add to worklist if necessary
         for(BB m_wtp : st.waitingNodes.get(buffer)){
             // Check if waiting predecessor runs in ||el with this notifyAll node
@@ -61,39 +67,30 @@ public class MsgNotifyNode extends BB{
                 }
             }
         }
-        
-        if(sinit != this.notifySucc.size()){
-            // Change in notifySucc, add it to the worklist
-            st.changeNotifySucc = true;
-            st.worklist.addAll(this.notifySucc);
-        }
 
+        if(!oldNotifySucc.equals(this.notifySucc)){
+            // Add the new nodes to the worklist
+            for(BB b0 : this.notifySucc){
+                st.worklist.add(b0);
+            }
+        }
+        
         // Compute M
-        sinit = this.M.size();
         Set<BB> tmpM = new LinkedHashSet<>();
         for(BB parent : this.localPred){
             tmpM.addAll(parent.OUT);
         }
         this.M.addAll(tmpM);
-
-        if(sinit != this.M.size()){
-            st.changeM = true; 
-        }
-
+        
         // Recompute GEN for the current node
         this.GEN.clear();
         this.GEN.addAll(this.notifySucc);
         
         // Compute OUT
-        sinit = this.OUT.size();
         this.OUT.clear();
         this.OUT.addAll(this.M);
         this.OUT.addAll(this.GEN);
         this.OUT.removeAll(this.KILL);
-
-        if(sinit != this.OUT.size()){
-            st.changeOUT = true;
-        }
     }
 
     @Override
@@ -118,6 +115,7 @@ public class MsgNotifyNode extends BB{
             delim = ",";
         }
         sb.append("]\n"+st.nestIndent+"Notify Succ edges = [");
+        delim="";
         for(BB f : this.notifySucc){
             sb.append(delim + f.bbid);
             delim = ",";

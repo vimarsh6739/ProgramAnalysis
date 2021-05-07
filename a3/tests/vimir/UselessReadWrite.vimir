@@ -1,3 +1,6 @@
+MHP Algorithm converged in 102 iterations
+MHP Algorithm converged in 5 iterations
+MHP Algorithm converged in 5 iterations
 THREAD 0 : Class UselessReadWrite
 BB1:	BEGIN
 Local Pred edges = []
@@ -47,31 +50,31 @@ Start succ edges = [17]
 GEN = [17]
 KILL = []
 M = []
-OUT = []
+OUT = [17]
 
 BB7: Label:L2		count = count+one;
 Local Pred edges = [6]
 Local Succ edges = [8]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [17,18,19,20,21,10,22,11,15,13,23,16,27,28]
+OUT = [17,18,19,20,21,10,22,11,15,13,23,16,27,28]
 
 BB8: Label:null	w1.join()
 Local Pred edges = [7]
 Local Succ edges = [9]
 GEN = []
 KILL = [17,18,19,20,21,22,23,24,25,26,27,28,29,30]
-M = []
-OUT = []
+M = [17,18,19,20,21,10,22,23,11,15,13,16,27,28]
+OUT = [10,11,15,13,16]
 
 BB9: Label:null		System.out.println(count);
 Local Pred edges = [8]
 Local Succ edges = []
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [10,11,15,13,16]
+OUT = [10,11,15,13,16]
 
 ====================================================
 THREAD 1 : Class Writer
@@ -81,24 +84,24 @@ Local Succ edges = [18]
 Start Pred edges = [6]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [7,8]
+OUT = [7,8]
 
 BB18: Label:L4		x = 55;
 Local Pred edges = [17]
 Local Succ edges = [19]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [7,8]
+OUT = [7,8]
 
 BB19: Label:null		r = new Reader();
 Local Pred edges = [18]
 Local Succ edges = [20]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [7,8]
+OUT = [7,8]
 
 BB20: Label:null	r.start()
 Local In edges = [19]
@@ -106,32 +109,32 @@ Local Out edges = [21]
 Start succ edges = [10]
 GEN = [10]
 KILL = []
-M = []
-OUT = []
+M = [7,8]
+OUT = [7,8,10]
 
 BB21: Label:null		System.out.println(x);
 Local Pred edges = [20]
 Local Succ edges = [22]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [10,11,15,7,13,16,8]
+OUT = [10,11,15,7,13,16,8]
 
 BB22: Label:null	r.join()
 Local Pred edges = [21]
 Local Succ edges = [23]
 GEN = []
 KILL = [10,11,12,13,14,15,16]
-M = []
-OUT = []
+M = [10,11,15,7,13,8,16]
+OUT = [7,8]
 
 BB23: Label:L5	(b,entry)
 Local Pred edges = [22]
 Local Succ edges = [27]
 GEN = []
 KILL = [27,25,15,13]
-M = []
-OUT = []
+M = [7,8]
+OUT = [7,8]
 
 BB24:	SYNCHRONIZED(b){
 	BB26: BLOCK {
@@ -140,16 +143,16 @@ BB24:	SYNCHRONIZED(b){
 		Local Succ edges = [28]
 		GEN = []
 		KILL = []
-		M = []
-		OUT = []
+		M = [7,8]
+		OUT = [7,8]
 
 		BB28:	(b,waiting-pred)
 		Local Pred edges = [27]
 		Local Succ edges = [29]
 		GEN = []
 		KILL = []
-		M = []
-		OUT = []
+		M = [7,8]
+		OUT = [7,8]
 
 		BB29:	(b,notified-entry)
 		Local Pred edges = [28]
@@ -189,16 +192,16 @@ Local Succ edges = [11]
 Start Pred edges = [20]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [21,22,7,8,9]
+OUT = [21,22,7,8,9]
 
 BB11: Label:null	(b,entry)
 Local Pred edges = [10]
 Local Succ edges = [15]
 GEN = []
 KILL = [27,25,15,13]
-M = []
-OUT = []
+M = [21,22,7,8,9]
+OUT = [21,22,7,8,9]
 
 BB12:	SYNCHRONIZED(b){
 	BB14: BLOCK {
@@ -208,8 +211,8 @@ BB12:	SYNCHRONIZED(b){
 		Notify Succ edges = []
 		GEN = []
 		KILL = [28]
-		M = []
-		OUT = []
+		M = [21,22,7,8,9]
+		OUT = [21,22,7,8,9]
 
 
 	END-BLOCK }	BB14:
@@ -219,8 +222,8 @@ BB12:	SYNCHRONIZED(b){
 	Local Succ edges = [16]
 	GEN = []
 	KILL = []
-	M = []
-	OUT = []
+	M = [21,22,7,8,9]
+	OUT = [21,22,7,8,9]
 
 END-SYNCHRONIZED}	BB12: 
 
@@ -229,8 +232,8 @@ Local Pred edges = [13]
 Local Succ edges = []
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [21,22,7,8,9]
+OUT = [21,22,7,8,9]
 
 ====================================================
 QUERIES:
@@ -247,5 +250,10 @@ SYNCHRONIZATION MAPS:
 	Waiting nodes = [28]
 
 ====================================================
-WORKLIST NODES = [6]
+WORKLIST NODES = []
 ====================================================
+No
+No
+No
+Yes
+Yes

@@ -39,8 +39,13 @@ public class NotifiedEntryNode extends BB {
     }
     
     @Override
+    public void initializeWorklist() {
+        st.worklist.add(this);
+    }
+    
+    @Override
     public void updateMHP() {
-        int sinit;
+
         // Re-Compute GEN_notifyAll using Vimarsh's update equation
         this.GEN.clear();
         BB my_p = this.waitingPred;
@@ -59,7 +64,6 @@ public class NotifiedEntryNode extends BB {
         }
 
         // Compute M(using GEN_notifyAll), notifyPred and waitingPred
-        sinit = this.M.size();
         Set<BB> tmpM = new LinkedHashSet<>();
         for(BB p: this.notifyPred){
             tmpM.addAll(p.OUT);
@@ -67,21 +71,12 @@ public class NotifiedEntryNode extends BB {
         tmpM.retainAll(this.waitingPred.OUT);
         tmpM.addAll(this.GEN);
         M.addAll(tmpM);
-        
-        if(sinit != this.M.size()){
-            st.changeM = true;
-        }
 
         // Update OUT using M, GEN and KILL
-        sinit = this.OUT.size();
         this.OUT.clear();
         this.OUT.addAll(this.M);
         this.OUT.addAll(this.GEN);
         this.OUT.removeAll(this.KILL);
-
-        if(sinit != this.OUT.size()){
-            st.changeOUT = true;
-        }
     }
 
     @Override
@@ -104,6 +99,7 @@ public class NotifiedEntryNode extends BB {
             delim = ",";
         }
         sb.append("]\n"+st.nestIndent+"Notify Pred edges = [");
+        delim="";
         for(BB f : this.notifyPred){
             sb.append(delim + f.bbid);
             delim = ",";

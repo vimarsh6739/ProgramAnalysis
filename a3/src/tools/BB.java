@@ -93,27 +93,17 @@ public class BB {
         // Updates MHP information for local predecessors
 
         // Update M using OUT of localPred
-        int sinit = this.M.size();
         Set<BB> tmpM = new LinkedHashSet<>();
         for(BB parent : this.localPred){
             tmpM.addAll(parent.OUT);
         }
         this.M.addAll(tmpM);
 
-        if(sinit != this.M.size()){
-            st.changeM = true; 
-        }
-        
         // Update OUT using M, GEN and KILL
-        sinit = this.OUT.size();
         this.OUT.clear();
         this.OUT.addAll(this.M);
         this.OUT.addAll(this.GEN);
         this.OUT.removeAll(this.KILL);
-
-        if(sinit != this.OUT.size()){
-            st.changeOUT = true;
-        }
     }
 
     @Override
@@ -121,5 +111,4 @@ public class BB {
         StringBuilder sb = new StringBuilder("BB"+this.bbid+" <NOP>");
         return sb.toString();
     }
-
 }

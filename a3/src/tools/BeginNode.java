@@ -20,7 +20,8 @@ public class BeginNode extends BB {
 
     @Override
     public void updateMHP() {
-        int sinit = this.M.size();
+        
+        // Update M
         Set<BB> tmpM = new LinkedHashSet<>();
         for(BB parent : this.startPred){
             tmpM.addAll(parent.OUT);
@@ -30,20 +31,11 @@ public class BeginNode extends BB {
         tmpM.removeAll(st.N.get(this.tid));
         M.addAll(tmpM);
         
-        if(sinit != this.M.size()){
-            st.changeM = true;
-        }
-
         // Update OUT using M, GEN and KILL
-        sinit = this.OUT.size();
         this.OUT.clear();
         this.OUT.addAll(this.M);
         this.OUT.addAll(this.GEN);
-        this.OUT.removeAll(this.KILL);
-            
-        if(sinit != this.OUT.size()){
-            st.changeOUT = true;
-        }        
+        this.OUT.removeAll(this.KILL);        
     }
 
     @Override

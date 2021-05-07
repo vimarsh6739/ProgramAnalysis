@@ -46,57 +46,81 @@ OUT = []
 BB6: Label:null	thread.start()
 Local In edges = [5]
 Local Out edges = [7]
-Start succ edges = [9]
-GEN = [9]
+Start succ edges = [12]
+GEN = [12]
 KILL = []
 M = []
-OUT = [9]
+OUT = [12]
 
 BB7: Label:L2		a.value=x;
 Local Pred edges = [6]
 Local Succ edges = [8]
 GEN = []
 KILL = []
-M = [9,10,11,12]
-OUT = [9,10,11,12]
+M = [12,13,14,15]
+OUT = [12,13,14,15]
 
-BB8: Label:null		System.out.println(x);
+BB8: Label:null	thread.join()
 Local Pred edges = [7]
+Local Succ edges = [9]
+GEN = []
+KILL = [12,13,14,15]
+M = [12,13,14,15]
+OUT = []
+
+BB9: Label:null		x = 30;
+Local Pred edges = [8]
+Local Succ edges = [10]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB10: Label:L4		a.value=x;
+Local Pred edges = [9]
+Local Succ edges = [11]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB11: Label:null		System.out.println(x);
+Local Pred edges = [10]
 Local Succ edges = []
 GEN = []
 KILL = []
-M = [9,10,11,12]
-OUT = [9,10,11,12]
+M = []
+OUT = []
 
 ====================================================
 THREAD 1 : Class MyThread
-BB9:	BEGIN
+BB12:	BEGIN
 Local Pred edges = []
-Local Succ edges = [10]
+Local Succ edges = [13]
 Start Pred edges = [6]
 GEN = []
 KILL = []
 M = [7,8]
 OUT = [7,8]
 
-BB10: Label:null		y = 20;
-Local Pred edges = [9]
-Local Succ edges = [11]
+BB13: Label:null		y = 20;
+Local Pred edges = [12]
+Local Succ edges = [14]
 GEN = []
 KILL = []
 M = [7,8]
 OUT = [7,8]
 
-BB11: Label:L3		a.value=y;
-Local Pred edges = [10]
-Local Succ edges = [12]
+BB14: Label:L3		a.value=y;
+Local Pred edges = [13]
+Local Succ edges = [15]
 GEN = []
 KILL = []
 M = [7,8]
 OUT = [7,8]
 
-BB12:	END
-Local Pred edges = [11]
+BB15:	END
+Local Pred edges = [14]
 Local Succ edges = []
 GEN = []
 KILL = []
@@ -108,6 +132,7 @@ QUERIES:
 MHP(L1,L3)
 MHP(L2,L3)
 MHP(L1,L2)
+MHP(L4,L3)
 ====================================================
 SYNCHRONIZATION MAPS:
 ====================================================
@@ -115,4 +140,5 @@ WORKLIST NODES = []
 ====================================================
 No
 Yes
+No
 No

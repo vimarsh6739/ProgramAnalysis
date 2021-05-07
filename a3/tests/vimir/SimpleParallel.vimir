@@ -1,3 +1,6 @@
+MHP Algorithm converged in 73 iterations
+MHP Algorithm converged in 2 iterations
+MHP Algorithm converged in 2 iterations
 THREAD 0 : Class SimpleParallel
 BB1:	BEGIN
 Local Pred edges = []
@@ -31,7 +34,7 @@ Start succ edges = [8]
 GEN = [8]
 KILL = []
 M = []
-OUT = []
+OUT = [8]
 
 BB5: Label:null	t2.start()
 Local In edges = [4]
@@ -39,23 +42,23 @@ Local Out edges = [6]
 Start succ edges = [12]
 GEN = [12]
 KILL = []
-M = []
-OUT = []
+M = [8,9,10,11]
+OUT = [8,9,10,11,12]
 
 BB6: Label:null	t1.join()
 Local Pred edges = [5]
 Local Succ edges = [7]
 GEN = []
 KILL = [8,9,10,11]
-M = []
-OUT = []
+M = [8,12,13,9,14,10,15,11]
+OUT = [12,13,14,15]
 
 BB7: Label:null	t2.join()
 Local Pred edges = [6]
 Local Succ edges = []
 GEN = []
 KILL = [12,13,14,15]
-M = []
+M = [12,13,14,15]
 OUT = []
 
 ====================================================
@@ -66,32 +69,32 @@ Local Succ edges = [9]
 Start Pred edges = [4]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [5,6,12,13,14,15]
+OUT = [5,6,12,13,14,15]
 
 BB9: Label:null		x = 12;
 Local Pred edges = [8]
 Local Succ edges = [10]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [5,6,12,13,14,15]
+OUT = [5,6,12,13,14,15]
 
 BB10: Label:L1		System.out.println(x);
 Local Pred edges = [9]
 Local Succ edges = [11]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [5,6,12,13,14,15]
+OUT = [5,6,12,13,14,15]
 
 BB11:	END
 Local Pred edges = [10]
 Local Succ edges = []
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [5,6,12,13,14,15]
+OUT = [5,6,12,13,14,15]
 
 ====================================================
 THREAD 2 : Class B
@@ -101,32 +104,32 @@ Local Succ edges = [13]
 Start Pred edges = [5]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [6,8,7,9,10,11]
+OUT = [6,8,7,9,10,11]
 
 BB13: Label:null		y = 20;
 Local Pred edges = [12]
 Local Succ edges = [14]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [6,8,7,9,10,11]
+OUT = [6,8,7,9,10,11]
 
 BB14: Label:L2		System.out.println(y);
 Local Pred edges = [13]
 Local Succ edges = [15]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [6,8,7,9,10,11]
+OUT = [6,8,7,9,10,11]
 
 BB15:	END
 Local Pred edges = [14]
 Local Succ edges = []
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [6,8,7,9,10,11]
+OUT = [6,8,7,9,10,11]
 
 ====================================================
 QUERIES:
@@ -134,5 +137,6 @@ MHP(L1,L2)
 ====================================================
 SYNCHRONIZATION MAPS:
 ====================================================
-WORKLIST NODES = [4,5]
+WORKLIST NODES = []
 ====================================================
+Yes

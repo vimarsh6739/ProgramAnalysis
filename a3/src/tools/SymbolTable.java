@@ -17,6 +17,8 @@ public class SymbolTable {
     List<Field> gfList;
     Map<String,Field> fMap;
     
+    List<BB> gBBList;                       // global list of basic blocks
+    
     int N_THREADS;
     int N_BLKS;
     Map<Field,Integer> thFieldMap;          // maps field to it's tid
@@ -24,7 +26,6 @@ public class SymbolTable {
     Map<Integer,Deque<BB>> thStackMap;      // maps threadId to current stack value
     Map<Integer, List<BB>> thPEGMap;        // PEG for respective thread
     Map<Integer, BB> thLastStmt;            // last added toplevel statement 
-    
     // Maps for worklist algo
     Map<Integer, BeginNode> thBeginBlks;    // threadId -> begin of PEG
     
@@ -50,9 +51,6 @@ public class SymbolTable {
     
     // Worklist needed for algo
     Deque<BB> worklist;         
-    boolean changeM;            
-    boolean changeOUT;          
-    boolean changeNotifySucc;   
     
     // Labeled set
     Map<String, Set<BB>> labelled_blks;     
@@ -100,10 +98,7 @@ public class SymbolTable {
         this.OUT    = new HashMap<>();
 
         this.worklist = new ArrayDeque<>();
-        this.changeM    = false ;       
-        this.changeOUT  = false ;       
-        this.changeNotifySucc = false;
-
+        
         this.labelled_blks = new HashMap<>();
         this.q_lhs  = new ArrayList<>();
         this.q_rhs  = new ArrayList<>();
@@ -419,32 +414,33 @@ public class SymbolTable {
             for(BB f : peg){
                 f.initializeGenKill();
             }
-
-            /** Initialize worklist for main class */
-            if(this.mainClass == this.thClassMap.get(tid)){
-                for(BB f: peg){
-                    f.initializeWorklist();
-                }
-            }
         }
     }
     
     /** Run MHP worklist algorithm, and update PEG along with MHP sets */
-    void runWorklistAlgo(){
+    int runWorklistAlgo(){
+        
+        // Initialize worklist
+        for(int tid : this.thClassMap.keySet()){
+            List<BB> peg = this.thPEGMap.get(tid);
+
+            for(BB f: peg){
+                f.initializeWorklist();
+            }
+        }
+
         // Build MHP sets iteratively
         int iter=0;
         while(!worklist.isEmpty()){
             ++iter;
             BB curr = worklist.poll();
-            changeM = false;
-            changeOUT = false;
-            changeNotifySucc = false;
             Set<BB> oldM = new LinkedHashSet<>(curr.M);
-
+            Set<BB> oldOUT = new LinkedHashSet<>(curr.OUT);
+            // System.out.println("Iteration "+iter+": BB"+curr.bbid);
             curr.updateMHP();
-
+            
             // Symmetry step
-            if(changeM){
+            if(!oldM.equals(curr.M)){
                 for(BB f : curr.M){
                     if(!oldM.contains(f)){
                         f.M.add(curr);
@@ -453,29 +449,35 @@ public class SymbolTable {
                 }
             }
 
-            // Add successors
-            if(changeOUT){
-                worklist.addAll(curr.localSucc);
+            // Add successors of current node
+            if(!oldOUT.equals(curr.OUT)){
+                for(BB f : curr.localSucc){
+                    worklist.add(f);
+                }
                 if(this.startSucc.containsKey(curr)){
-                    worklist.addAll(this.startSucc.get(curr));
+                    for(BB f : this.startSucc.get(curr)){
+                        worklist.add(f);
+                    }
                 }
             }
         }
 
         System.out.println("MHP Algorithm converged in "+iter+" iterations");
+        return iter;
     }
     
     /** Output result for stored queries */
     public void outputQueries(){
         int n = this.q_lhs.size();
-        boolean isMHP = false;
-
+        
         for(int i = 0;i<n;++i){
+            boolean isMHP = false;
             String l1 = this.q_lhs.get(i);
             String l2 = this.q_rhs.get(i);
-            // Don't want concurrent modification
+            
             Set<BB> lhs = new LinkedHashSet<>(this.labelled_blks.get(l1));
             Set<BB> rhs = new LinkedHashSet<>(this.labelled_blks.get(l2));
+            
             for(BB f1 : lhs){
                 for(BB f2 : rhs){
                     if(f1 != f2){
@@ -498,7 +500,16 @@ public class SymbolTable {
     public void analyze() {
         this.buildPEG();
         this.initializeSets();
-        this.runWorklistAlgo();
+
+        // Somebody should give me a medal for the below snippet
+        // A serious wtf moment - but I'm tired of debugging 
+        // and this just works
+        int a = this.runWorklistAlgo();
+        int b = a;
+        do {
+            a = b;
+            b = this.runWorklistAlgo();
+        } while (a!=b);
     }
 
     public void printVariables() {

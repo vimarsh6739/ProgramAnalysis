@@ -102,6 +102,9 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
       n.f25.accept(this);
       n.f26.accept(this);
       n.f27.accept(this);
+
+      // Add the end node
+
       this.st.resetClass();
       return _ret;
    }
@@ -133,6 +136,10 @@ public class CFGPass extends GJNoArguDepthFirst<String> {
       n.f3.accept(this);
       n.f4.accept(this);
       
+      this.op = NodeType.END;
+      this.arg1=this.arg2=this.arg3=null;
+      this.st.addStatement(this.op,this.lbl,this.arg1,this.arg2,this.arg3);
+      this.lbl=null;
       this.st.resetClass();
       return _ret;
    }

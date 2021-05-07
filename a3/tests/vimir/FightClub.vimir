@@ -1,3 +1,6 @@
+MHP Algorithm converged in 146 iterations
+MHP Algorithm converged in 7 iterations
+MHP Algorithm converged in 7 iterations
 THREAD 0 : Class FightClub
 BB1:	BEGIN
 Local Pred edges = []
@@ -95,7 +98,7 @@ Start succ edges = [25]
 GEN = [25]
 KILL = []
 M = []
-OUT = []
+OUT = [25]
 
 BB13: Label:null	uncle2.start()
 Local In edges = [12]
@@ -103,16 +106,16 @@ Local Out edges = [14]
 Start succ edges = [26]
 GEN = [26]
 KILL = []
-M = []
-OUT = []
+M = [25,27,35,43,44]
+OUT = [25,27,35,43,44,26]
 
 BB14: Label:L1	(b1,entry)
 Local Pred edges = [13]
 Local Succ edges = [18]
 GEN = []
 KILL = [18,22,20,16,35,43,44,45,37,29,38,46,47,48,40,32]
-M = []
-OUT = []
+M = [25,26,30,27,38,35,46,43,47,44]
+OUT = [25,26,30,27]
 
 BB15:	SYNCHRONIZED(b1){
 	BB17: BLOCK {
@@ -121,8 +124,8 @@ BB15:	SYNCHRONIZED(b1){
 		Local Succ edges = [22]
 		GEN = []
 		KILL = [22,20,43,37,46,40]
-		M = []
-		OUT = []
+		M = [25,26,27,30]
+		OUT = [25,26,27,30]
 
 		BB19:	SYNCHRONIZED(b2){
 			BB21: BLOCK {
@@ -132,8 +135,8 @@ BB15:	SYNCHRONIZED(b1){
 				Notify Succ edges = []
 				GEN = []
 				KILL = [44,47]
-				M = []
-				OUT = []
+				M = [25,26,27,30]
+				OUT = [25,26,27,30]
 
 
 			END-BLOCK }	BB21:
@@ -143,8 +146,8 @@ BB15:	SYNCHRONIZED(b1){
 			Local Succ edges = [16]
 			GEN = []
 			KILL = []
-			M = []
-			OUT = []
+			M = [25,26,30,27]
+			OUT = [25,26,30,27]
 
 		END-SYNCHRONIZED}	BB19: 
 
@@ -156,8 +159,8 @@ BB15:	SYNCHRONIZED(b1){
 	Local Succ edges = [23]
 	GEN = []
 	KILL = []
-	M = []
-	OUT = []
+	M = [25,26,30,27]
+	OUT = [25,26,30,27]
 
 END-SYNCHRONIZED}	BB15: 
 
@@ -166,15 +169,15 @@ Local Pred edges = [16]
 Local Succ edges = [24]
 GEN = []
 KILL = [25,27,28,29,33,35,36,37,41,43,44,45,49]
-M = []
-OUT = []
+M = [25,26,30,27,38,35,46,43,47,44]
+OUT = [26,30,38,46,47]
 
 BB24: Label:null	uncle2.join()
 Local Pred edges = [23]
 Local Succ edges = []
 GEN = []
 KILL = [26,30,31,32,34,38,39,40,42,46,47,48,50]
-M = []
+M = [26,30,38,46,47]
 OUT = []
 
 ====================================================
@@ -185,16 +188,16 @@ Local Succ edges = [27]
 Start Pred edges = [12]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [13,14,26,18,30,22,38,20,46,16,47,23]
+OUT = [13,14,26,18,30,22,38,20,46,16,47,23]
 
 BB27: Label:null	(b1,entry)
 Local Pred edges = [25]
 Local Succ edges = [35]
 GEN = []
 KILL = [18,22,20,16,35,43,44,45,37,29,38,46,47,48,40,32]
-M = []
-OUT = []
+M = [13,14,26,18,30,22,38,20,46,16,47,23]
+OUT = [13,14,26,30,23]
 
 BB28:	SYNCHRONIZED(b1){
 	BB33: BLOCK {
@@ -203,8 +206,8 @@ BB28:	SYNCHRONIZED(b1){
 		Local Succ edges = [43]
 		GEN = []
 		KILL = [22,20,43,37,46,40]
-		M = []
-		OUT = []
+		M = [13,14,26,30,23]
+		OUT = [13,14,26,30,23]
 
 		BB36:	SYNCHRONIZED(b2){
 			BB41: BLOCK {
@@ -213,16 +216,16 @@ BB28:	SYNCHRONIZED(b1){
 				Local Succ edges = [44]
 				GEN = []
 				KILL = []
-				M = []
-				OUT = []
+				M = [13,14,26,30,23]
+				OUT = [13,14,26,30,23]
 
 				BB44:	(b2,waiting-pred)
 				Local Pred edges = [43]
 				Local Succ edges = [45]
 				GEN = []
 				KILL = []
-				M = []
-				OUT = []
+				M = [13,14,26,30,23]
+				OUT = [13,14,26,30,23]
 
 				BB45:	(b2,notified-entry)
 				Local Pred edges = [44]
@@ -275,16 +278,16 @@ Local Succ edges = [30]
 Start Pred edges = [13]
 GEN = []
 KILL = []
-M = []
-OUT = []
+M = [14,25,18,27,22,35,20,43,16,44,23,24]
+OUT = [14,25,18,27,22,35,20,43,16,44,23,24]
 
 BB30: Label:null	(b1,entry)
 Local Pred edges = [26]
 Local Succ edges = [38]
 GEN = []
 KILL = [18,22,20,16,35,43,44,45,37,29,38,46,47,48,40,32]
-M = []
-OUT = []
+M = [14,25,27,18,35,22,20,43,16,44,23,24]
+OUT = [14,25,27,23,24]
 
 BB31:	SYNCHRONIZED(b1){
 	BB34: BLOCK {
@@ -293,8 +296,8 @@ BB31:	SYNCHRONIZED(b1){
 		Local Succ edges = [46]
 		GEN = []
 		KILL = [22,20,43,37,46,40]
-		M = []
-		OUT = []
+		M = [14,25,27,23,24]
+		OUT = [14,25,27,23,24]
 
 		BB39:	SYNCHRONIZED(b2){
 			BB42: BLOCK {
@@ -303,16 +306,16 @@ BB31:	SYNCHRONIZED(b1){
 				Local Succ edges = [47]
 				GEN = []
 				KILL = []
-				M = []
-				OUT = []
+				M = [14,25,27,23,24]
+				OUT = [14,25,27,23,24]
 
 				BB47:	(b2,waiting-pred)
 				Local Pred edges = [46]
 				Local Succ edges = [48]
 				GEN = []
 				KILL = []
-				M = []
-				OUT = []
+				M = [14,25,27,23,24]
+				OUT = [14,25,27,23,24]
 
 				BB48:	(b2,notified-entry)
 				Local Pred edges = [47]
@@ -376,5 +379,9 @@ SYNCHRONIZATION MAPS:
 	Waiting nodes = [44,47]
 
 ====================================================
-WORKLIST NODES = [12,13]
+WORKLIST NODES = []
 ====================================================
+Yes
+No
+No
+No

@@ -30,9 +30,8 @@ public class Main {
                 st.printProgram();
                 st.printSyncVariables();
                 st.printWorklist();
-            } else{
-                st.outputQueries();
-            }
+            } 
+            st.outputQueries();
 
         } catch (ParseException e) {
             e.printStackTrace();

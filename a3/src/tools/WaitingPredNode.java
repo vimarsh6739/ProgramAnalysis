@@ -27,6 +27,11 @@ public class WaitingPredNode extends BB {
     }
 
     @Override
+    public void initializeWorklist() {
+        st.worklist.add(this);
+    }
+    
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("");
         sb.append(st.nestIndent+"BB"+bbid+":\t");

@@ -61,7 +61,7 @@ class A extends Thread
                 synchronized(c)
                 {
                     c.w = x;
-                    c.notifyAll();//no effect on anyone
+                    c.notifyAll();
                     synchronized(d)
                     {
                         /*L3:*/d.d1 = x;
