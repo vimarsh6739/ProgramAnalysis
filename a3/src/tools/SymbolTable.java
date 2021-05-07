@@ -462,14 +462,14 @@ public class SymbolTable {
             }
         }
 
-        System.out.println("MHP Algorithm converged in "+iter+" iterations");
+        // System.out.println("MHP Algorithm converged in "+iter+" iterations");
         return iter;
     }
     
     /** Output result for stored queries */
     public void outputQueries(){
         int n = this.q_lhs.size();
-        
+        String delim="";
         for(int i = 0;i<n;++i){
             boolean isMHP = false;
             String l1 = this.q_lhs.get(i);
@@ -489,11 +489,12 @@ public class SymbolTable {
             }
 
             if(isMHP){
-                System.out.println("Yes");
+                System.out.print(delim+"Yes");
             }
             else{
-                System.out.println("No");
+                System.out.print(delim+"No");
             }
+            delim="\n";
         }
     }
 

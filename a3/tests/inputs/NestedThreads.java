@@ -31,7 +31,7 @@ class A extends Thread
     public void run()
     {
         try{
-            B d2;
+            D d2;
             int x;
             int one;
             int ten;
