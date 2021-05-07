@@ -2,5 +2,5 @@
 Add statements to PEG(using stack) = done
 Build intra CFG edges(inEdge,outEdge and flowInfo) = done
 Initialize metadata sets for node = done
-Run worklist algo on all nodes = not done
-Output MHP sets per label = not done
+Run worklist algo on all nodes = done
+Output MHP sets per label = done
