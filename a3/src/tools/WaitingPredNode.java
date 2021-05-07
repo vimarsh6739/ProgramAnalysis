@@ -4,8 +4,8 @@ public class WaitingPredNode extends BB {
     Field buffer;
     BB waitingSucc;
     
-    public WaitingPredNode(int bbid,int tid,Field buffer) {
-        super(NodeType.WAITING_PRED, bbid,tid,null);
+    public WaitingPredNode(int bbid,int tid,String ann,Field buffer) {
+        super(NodeType.WAITING_PRED, bbid,tid,ann);
         this.buffer = buffer;
     }
 

@@ -3,7 +3,7 @@
 ## Parallel Script to run alias analysis on all testcases provided in the qTACoJava format.   
 ## Reads input from tests/inputs and tests/outputs and dumps outputs in tests/temp  
 ## Usage:
-## ./run_all.sh <input folder> <output folder> <temp folder>  
+## ./run_all.sh [INPUT FOLDER] [REFERENCE FOLDER] [OUTPUT FOLDER]  
 
 singlerun () {
     input=$1
@@ -31,9 +31,10 @@ singlerun () {
 
     if [ $? -ne 0 ]; then
         printf ${fmt_fail} "Testing ${bname}: " "FAIL"
-        exit 1
+        return 1
     else 
         printf ${fmt_pass} "Testing ${bname}: " "PASS"
+        return 0
     fi 
 }
 

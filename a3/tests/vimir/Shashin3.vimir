@@ -1,0 +1,267 @@
+THREAD 0 : Class Shashin3
+BB1:	BEGIN
+Local Pred edges = []
+Local Succ edges = [2]
+Start Pred edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB2: Label:null		zero = 0;
+Local Pred edges = [1]
+Local Succ edges = [3]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB3: Label:null		l = new Lock();
+Local Pred edges = [2]
+Local Succ edges = [4]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB4: Label:null		l.data=zero;
+Local Pred edges = [3]
+Local Succ edges = [5]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB5: Label:null		a = new A();
+Local Pred edges = [4]
+Local Succ edges = [6]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB6: Label:null		a.l=l;
+Local Pred edges = [5]
+Local Succ edges = [7]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB7: Label:null		b = new B();
+Local Pred edges = [6]
+Local Succ edges = [8]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB8: Label:null		b.l=l;
+Local Pred edges = [7]
+Local Succ edges = [9]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB9: Label:null	a.start()
+Local In edges = [8]
+Local Out edges = [10]
+Start succ edges = [13]
+GEN = [13]
+KILL = []
+M = []
+OUT = [13]
+
+BB10: Label:null	a.join()
+Local Pred edges = [9]
+Local Succ edges = [11]
+GEN = []
+KILL = [13,14,15,16,17,18,19,20,21]
+M = [13,14,15,19,20,17,21]
+OUT = []
+
+BB11: Label:null	b.start()
+Local In edges = [10]
+Local Out edges = [12]
+Start succ edges = [22]
+GEN = [22]
+KILL = []
+M = []
+OUT = [22]
+
+BB12: Label:null	b.join()
+Local Pred edges = [11]
+Local Succ edges = []
+GEN = []
+KILL = [22,23,24,25,26,27,28,29,30,31,32]
+M = [22,23,27,28]
+OUT = []
+
+====================================================
+THREAD 1 : Class A
+BB13:	BEGIN
+Local Pred edges = []
+Local Succ edges = [14]
+Start Pred edges = [9]
+GEN = []
+KILL = []
+M = [10]
+OUT = [10]
+
+BB14: Label:null		t = 99;
+Local Pred edges = [13]
+Local Succ edges = [15]
+GEN = []
+KILL = []
+M = [10]
+OUT = [10]
+
+BB15: Label:null	(l,entry)
+Local Pred edges = [14]
+Local Succ edges = [19]
+GEN = []
+KILL = [19,20,17,27,30,31,25]
+M = [10]
+OUT = [10]
+
+BB16:	SYNCHRONIZED(l){
+	BB18: BLOCK {
+		BB19: Label:S0		l.data=t;
+		Local Pred edges = [15]
+		Local Succ edges = [20]
+		GEN = []
+		KILL = []
+		M = [10]
+		OUT = [10]
+
+
+		BB20: Label:null	l.notify()
+		Local Pred edges = [19]
+		Local Succ edges = [17]
+		Notify Succ edges = []
+		GEN = []
+		KILL = [28]
+		M = [10]
+		OUT = [10]
+
+
+	END-BLOCK }	BB18:
+
+	BB17:	(l,exit)
+	Local Pred edges = [20]
+	Local Succ edges = [21]
+	GEN = []
+	KILL = []
+	M = [10]
+	OUT = [10]
+
+END-SYNCHRONIZED}	BB16: 
+
+BB21:	END
+Local Pred edges = [17]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = [10]
+OUT = [10]
+
+====================================================
+THREAD 2 : Class B
+BB22:	BEGIN
+Local Pred edges = []
+Local Succ edges = [23]
+Start Pred edges = [11]
+GEN = []
+KILL = []
+M = [12]
+OUT = [12]
+
+BB23: Label:null	(l,entry)
+Local Pred edges = [22]
+Local Succ edges = [27]
+GEN = []
+KILL = [19,20,17,27,30,31,25]
+M = [12]
+OUT = [12]
+
+BB24:	SYNCHRONIZED(l){
+	BB26: BLOCK {
+		BB27: Label:null	l.wait()
+		Local Pred edges = [23]
+		Local Succ edges = [28]
+		GEN = []
+		KILL = []
+		M = [12]
+		OUT = [12]
+
+		BB28:	(l,waiting-pred)
+		Local Pred edges = [27]
+		Local Succ edges = [29]
+		GEN = []
+		KILL = []
+		M = [12]
+		OUT = [12]
+
+		BB29:	(l,notified-entry)
+		Local Pred edges = [28]
+		Local Succ edges = [30]
+		Notify Pred edges = []
+		GEN = []
+		KILL = [19,20,17,27,30,31,25]
+		M = []
+		OUT = []
+
+
+		BB30: Label:S1		t = l.data;
+		Local Pred edges = [29]
+		Local Succ edges = [31]
+		GEN = []
+		KILL = []
+		M = []
+		OUT = []
+
+
+		BB31: Label:null		System.out.println(t);
+		Local Pred edges = [30]
+		Local Succ edges = [25]
+		GEN = []
+		KILL = []
+		M = []
+		OUT = []
+
+
+	END-BLOCK }	BB26:
+
+	BB25:	(l,exit)
+	Local Pred edges = [31]
+	Local Succ edges = [32]
+	GEN = []
+	KILL = []
+	M = []
+	OUT = []
+
+END-SYNCHRONIZED}	BB24: 
+
+BB32:	END
+Local Pred edges = [25]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+====================================================
+QUERIES:
+MHP(S0,S1)
+====================================================
+SYNCHRONIZATION MAPS:
+1. Sync buffer < l : Lock >
+	Monitor nodes = [19,20,17,27,30,31,25]
+	Notify nodes = [20]
+	Waiting nodes = [28]
+
+====================================================
+WORKLIST NODES = []
+====================================================
+No

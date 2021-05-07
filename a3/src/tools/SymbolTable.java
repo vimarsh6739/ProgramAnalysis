@@ -16,9 +16,7 @@ public class SymbolTable {
     
     List<Field> gfList;
     Map<String,Field> fMap;
-    
-    List<BB> gBBList;                       // global list of basic blocks
-    
+        
     int N_THREADS;
     int N_BLKS;
     Map<Field,Integer> thFieldMap;          // maps field to it's tid
@@ -26,6 +24,7 @@ public class SymbolTable {
     Map<Integer,Deque<BB>> thStackMap;      // maps threadId to current stack value
     Map<Integer, List<BB>> thPEGMap;        // PEG for respective thread
     Map<Integer, BB> thLastStmt;            // last added toplevel statement 
+
     // Maps for worklist algo
     Map<Integer, BeginNode> thBeginBlks;    // threadId -> begin of PEG
     
@@ -63,7 +62,11 @@ public class SymbolTable {
     Clazz curr_class;
     Clazz mainClass;
     boolean inRun;
+    
     String nestIndent;
+
+    /** Flag to control labelling of wait/waiting nodes */
+    public boolean waitLabel;
 
     public SymbolTable() {
         this.cList      = new ArrayList<>();
@@ -107,6 +110,9 @@ public class SymbolTable {
         this.mainClass  = null;
         this.inRun      = false;
         this.nestIndent = "";
+        
+        // Default label on wait()
+        this.waitLabel = true;
 
         /** Set symbol table for all basic blocks */
         BB.st = this;
@@ -331,18 +337,41 @@ public class SymbolTable {
                     case WAIT:
                         int waitPred_bbid = this.getBlkId();
                         int notEntry_bbid = this.getBlkId();
-                        BB wait_pred_blk = new WaitingPredNode(waitPred_bbid, tid,f1);
+                        BB wait_pred_blk;
+                        if(this.waitLabel){
+                            // Dont give label
+                            wait_pred_blk = new WaitingPredNode(waitPred_bbid,tid,null,f1);
+                        }
+                        else{
+                            // Give label
+                            wait_pred_blk = new WaitingPredNode(bbid, tid, ann, f1);
+                        }
+
                         BB not_entry_blk = new NotifiedEntryNode(notEntry_bbid, tid,f1);
-                        blk = new MsgWaitNode(op, bbid, tid, ann, f1,wait_pred_blk,not_entry_blk);
+
+                        if(this.waitLabel){
+                            blk = new MsgWaitNode(op, bbid, tid, ann, f1,wait_pred_blk,not_entry_blk);
+                        }
+                        else{
+                            blk = new MsgWaitNode(op, bbid, tid, null, f1, wait_pred_blk, not_entry_blk);
+                        }
+
                         this.updateEntry(tid, blk);
 
                         this.waitingNodes.get(f1).add(wait_pred_blk);
                         this.N.get(tid).add(blk);
                         this.N.get(tid).add(wait_pred_blk);
                         this.N.get(tid).add(not_entry_blk);
+                        
                         /** Have to decide on which block to give the label to here */
-                        if(ann != null)
-                            this.labelled_blks.get(ann).add(blk);
+                        if(ann != null){
+                            if(this.waitLabel){
+                                this.labelled_blks.get(ann).add(blk);
+                            }
+                            else{
+                                this.labelled_blks.get(ann).add(wait_pred_blk);
+                            }
+                        }
                         break;
         
                     case NOTIFY:

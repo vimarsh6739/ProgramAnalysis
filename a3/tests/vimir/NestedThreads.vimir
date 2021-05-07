@@ -1,8 +1,4 @@
-MHP Algorithm converged in 870 iterations
-MHP Algorithm converged in 813 iterations
-MHP Algorithm converged in 11 iterations
-MHP Algorithm converged in 11 iterations
-THREAD 0 : Class NestedRecursion
+THREAD 0 : Class NestedThreads
 BB1:	BEGIN
 Local Pred edges = []
 Local Succ edges = [2]
@@ -119,7 +115,7 @@ KILL = [39,41,43,45,46,47,51,53,55,57,59,61,63,65,67,69,71,73]
 M = [39,75,41,77,79,43,81,45,83,53,55,57,59,61,47,63,67,73,69,76,78,80,82,84,40,42,44,48,54,56,58,60,62,50,64,68,74,70]
 OUT = [75,77,79,81,83,76,78,80,82,84,40,42,44,48,54,56,58,60,62,50,64,68,74,70]
 
-BB15: Label:null	d.join()
+BB15: Label:L6	d.join()
 Local Pred edges = [14]
 Local Succ edges = []
 GEN = []
@@ -680,6 +676,7 @@ MHP(L1,L1)
 MHP(L3,L4)
 MHP(L4,L1)
 MHP(L5,L5)
+MHP(L6,L5)
 ====================================================
 SYNCHRONIZATION MAPS:
 1. Sync buffer < c : C >
@@ -692,6 +689,7 @@ WORKLIST NODES = []
 ====================================================
 No
 No
+Yes
 Yes
 Yes
 Yes

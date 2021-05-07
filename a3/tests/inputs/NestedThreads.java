@@ -1,4 +1,4 @@
-class NestedRecursion {
+class NestedThreads {
     public static void main(String[] agr)
     {
         try{
@@ -20,7 +20,7 @@ class NestedRecursion {
             d.start();
             a.join();
             b.join();
-            d.join();
+            /*L6:*/d.join();
         }
         catch(InterruptedException e){}
     }    
@@ -31,7 +31,7 @@ class A extends Thread
     public void run()
     {
         try{
-            D d2;
+            B d2;
             int x;
             int one;
             int ten;
@@ -114,3 +114,4 @@ class C
 /*L3 mhp? L4*/
 /*L4 mhp? L1*/
 /*L5 mhp? L5*/
+/*L6 mhp? L5*/

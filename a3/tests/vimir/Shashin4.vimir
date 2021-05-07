@@ -1,0 +1,195 @@
+THREAD 0 : Class Shashin4
+BB1:	BEGIN
+Local Pred edges = []
+Local Succ edges = [2]
+Start Pred edges = []
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB2: Label:null		zero = 0;
+Local Pred edges = [1]
+Local Succ edges = [3]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB3: Label:null		d = new Data();
+Local Pred edges = [2]
+Local Succ edges = [4]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB4: Label:null		d.d=zero;
+Local Pred edges = [3]
+Local Succ edges = [5]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB5: Label:null		a = new A();
+Local Pred edges = [4]
+Local Succ edges = [6]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB6: Label:null		b = new B();
+Local Pred edges = [5]
+Local Succ edges = [7]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB7: Label:null		a.x=d;
+Local Pred edges = [6]
+Local Succ edges = [8]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB8: Label:null		b.x=d;
+Local Pred edges = [7]
+Local Succ edges = [9]
+GEN = []
+KILL = []
+M = []
+OUT = []
+
+BB9: Label:null	a.start()
+Local In edges = [8]
+Local Out edges = [10]
+Start succ edges = [13]
+GEN = [13]
+KILL = []
+M = []
+OUT = [13]
+
+BB10: Label:null	b.start()
+Local In edges = [9]
+Local Out edges = [11]
+Start succ edges = [19]
+GEN = [19]
+KILL = []
+M = [13,14,15,16,17,18]
+OUT = [13,14,15,16,17,18,19]
+
+BB11: Label:null	a.join()
+Local Pred edges = [10]
+Local Succ edges = [12]
+GEN = []
+KILL = [13,14,15,16,17,18]
+M = [13,19,20,14,21,15,22,16,17,18]
+OUT = [19,20,21,22]
+
+BB12: Label:null	b.join()
+Local Pred edges = [11]
+Local Succ edges = []
+GEN = []
+KILL = [19,20,21,22]
+M = [19,20,21,22]
+OUT = []
+
+====================================================
+THREAD 1 : Class A
+BB13:	BEGIN
+Local Pred edges = []
+Local Succ edges = [14]
+Start Pred edges = [9]
+GEN = []
+KILL = []
+M = [10,11,19,20,21,22]
+OUT = [10,11,19,20,21,22]
+
+BB14: Label:null		one = 1;
+Local Pred edges = [13]
+Local Succ edges = [15]
+GEN = []
+KILL = []
+M = [10,11,19,20,21,22]
+OUT = [10,11,19,20,21,22]
+
+BB15: Label:null		t = x.d;
+Local Pred edges = [14]
+Local Succ edges = [16]
+GEN = []
+KILL = []
+M = [10,11,19,20,21,22]
+OUT = [10,11,19,20,21,22]
+
+BB16: Label:null		t = t+one;
+Local Pred edges = [15]
+Local Succ edges = [17]
+GEN = []
+KILL = []
+M = [10,11,19,20,21,22]
+OUT = [10,11,19,20,21,22]
+
+BB17: Label:S0		x.d=t;
+Local Pred edges = [16]
+Local Succ edges = [18]
+GEN = []
+KILL = []
+M = [10,11,19,20,21,22]
+OUT = [10,11,19,20,21,22]
+
+BB18:	END
+Local Pred edges = [17]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = [10,11,19,20,21,22]
+OUT = [10,11,19,20,21,22]
+
+====================================================
+THREAD 2 : Class B
+BB19:	BEGIN
+Local Pred edges = []
+Local Succ edges = [20]
+Start Pred edges = [10]
+GEN = []
+KILL = []
+M = [11,13,12,14,15,16,17,18]
+OUT = [11,13,12,14,15,16,17,18]
+
+BB20: Label:S1		t = x.d;
+Local Pred edges = [19]
+Local Succ edges = [21]
+GEN = []
+KILL = []
+M = [11,13,12,14,15,16,17,18]
+OUT = [11,13,12,14,15,16,17,18]
+
+BB21: Label:null		System.out.println(t);
+Local Pred edges = [20]
+Local Succ edges = [22]
+GEN = []
+KILL = []
+M = [11,13,12,14,15,16,17,18]
+OUT = [11,13,12,14,15,16,17,18]
+
+BB22:	END
+Local Pred edges = [21]
+Local Succ edges = []
+GEN = []
+KILL = []
+M = [11,13,12,14,15,16,17,18]
+OUT = [11,13,12,14,15,16,17,18]
+
+====================================================
+QUERIES:
+MHP(S0,S1)
+====================================================
+SYNCHRONIZATION MAPS:
+====================================================
+WORKLIST NODES = []
+====================================================
+Yes

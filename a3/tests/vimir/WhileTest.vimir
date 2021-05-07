@@ -1,7 +1,3 @@
-MHP Algorithm converged in 386 iterations
-MHP Algorithm converged in 100 iterations
-MHP Algorithm converged in 6 iterations
-MHP Algorithm converged in 6 iterations
 THREAD 0 : Class WhileTest
 BB1:	BEGIN
 Local Pred edges = []

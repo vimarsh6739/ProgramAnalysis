@@ -5,9 +5,17 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         boolean printCFG=false;
+        boolean waitLabel = false;
+
         for(int i = 0; i <args.length;++i){
             if(args[i].equals("--codegen")){
                 printCFG=true;
+            }
+            if(args[i].equals("--waiting")){
+                waitLabel = false;
+            }
+            if(args[i].equals("--wait")){
+                waitLabel = true;
             }
         }
 
@@ -17,7 +25,10 @@ public class Main {
             SymbolPass pass1 = new SymbolPass();
             SymbolTable st = pass1.st;
             root.accept(pass1);
-            
+
+            // Set labelling convention for program
+            st.waitLabel = waitLabel;
+
             // Print variables
             st.updateThreads();
             
