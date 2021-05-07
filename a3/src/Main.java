@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         boolean printCFG=false;
-        boolean waitLabel = false;
+        boolean waitLabel = true;
 
         for(int i = 0; i <args.length;++i){
             if(args[i].equals("--codegen")){
