@@ -30,13 +30,13 @@ jobs:
     - name:  Test Alias Analyzer
       run: |
         # Run all testcases
-        cd a2
+        cd AliasAnalysis
         ./run_all.sh
         cd ..
 
     - name: Test MHP Analyzer
       run: |
         # Run all testcases
-        cd a3
+        cd MHPAnalysis
         ./run_all.sh
         cd ..

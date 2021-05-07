@@ -16,12 +16,12 @@
 *.pdfsync
 
 # Test case output files
-a2/tests/temp/*
-a3/tests/temp/*
+AliasAnalysis/tests/temp/*
+MHPAnalysis/tests/temp/*
 
 # Submission folder
-a2/CS17B046/*
-a3/CS17B046/*
+AliasAnalysis/CS17B046/*
+MHPAnalysis/CS17B046/*
 
 # Written assignment zip
 CS17B046_W1.zip
