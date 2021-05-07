@@ -31,6 +31,7 @@ singlerun () {
 
     if [ $? -ne 0 ]; then
         printf ${fmt_fail} "Testing ${bname}: " "FAIL"
+        exit 1
     else 
         printf ${fmt_pass} "Testing ${bname}: " "PASS"
     fi 

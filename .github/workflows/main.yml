@@ -32,3 +32,9 @@ jobs:
         # Run all testcases
         cd a2
         ./run_all.sh
+
+    - name: Test MHP Analyzer
+      run: |
+        # Run all testcases
+        cd a3
+        ./run_all.sh
