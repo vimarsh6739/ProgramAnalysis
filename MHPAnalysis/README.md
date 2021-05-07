@@ -23,7 +23,7 @@ synchronized(c){
 The workspace contains the following folders:
 
 - `src`: source code for performing analysis
-- `src/tools`: contains code for working with a given 
+- `src/tools`: contains code for computing MHP sets for a given program
 - `lib`: Contains the `jar` for [JTB](http://compilers.cs.ucla.edu/jtb/)
 - `tests`: Contains various testcases for testing MHP Analysis
 
