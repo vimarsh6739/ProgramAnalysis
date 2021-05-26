@@ -1,4 +1,10 @@
 # Parallel Program Analysis (CS 6235 : Spring '21)
+
+<p align="center">
+  <img src="images/ProgramAnalysis.png">
+</p>
+
+
 This repo contains the solutions to all programming assignments completed as part of a static program analysis course conducted by Prof. [V. Krishna Nandivada](http://www.cse.iitm.ac.in/~krishna/), IIT Madras.   
 There are 3 assignments in total. Their description is as follows.   
 
